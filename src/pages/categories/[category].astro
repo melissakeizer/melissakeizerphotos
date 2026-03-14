@@ -1,0 +1,51 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const base = import.meta.env.BASE_URL;
+
+export async function getStaticPaths() {
+  const stories = await getCollection('stories');
+  const allCats = new Set(stories.flatMap(s => s.data.categories));
+  return [...allCats].map(cat => ({
+    params: { category: cat.toLowerCase().replace(/\s+/g, '-') },
+    props: { cat, stories: stories.filter(s => s.data.categories.includes(cat)).sort((a, b) => {
+      const da = a.data.date ? new Date(a.data.date).getTime() : 0;
+      const db = b.data.date ? new Date(b.data.date).getTime() : 0;
+      return db - da;
+    })},
+  }));
+}
+
+const { cat, stories } = Astro.props;
+---
+
+<Layout title={`${cat} — Melissa Keizer Photography`}>
+  <main class="categories-page">
+    <h1 class="categories-page__title">{cat}</h1>
+    <div class="stories-grid">
+      {stories.map((story) => {
+        const cover = story.data.coverImage || story.data.photos[0];
+        return (
+          <article class="story-card">
+            {cover && (
+              <img
+                class="story-card__img"
+                src={`${base}${cover.replace(/^\//, '')}`}
+                alt={story.data.title}
+                loading="lazy"
+                decoding="async"
+              />
+            )}
+            <div class="story-card__overlay">
+              <h2 class="story-card__title">{story.data.title}</h2>
+              {story.data.subtitle && <p class="story-card__subtitle">{story.data.subtitle}</p>}
+              {story.data.date && <div class="story-card__meta"><span>{story.data.date}</span></div>}
+            </div>
+            <a class="story-card__link" href={`${base}stories/${story.id}`} aria-label={`View ${story.data.title}`}></a>
+          </article>
+        );
+      })}
+    </div>
+  </main>
+</Layout>

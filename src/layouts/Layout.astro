@@ -1,0 +1,58 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const base = import.meta.env.BASE_URL;
+const { title = 'Photography by Melissa Keizer', description = 'Freelance pet & event photographer based in Bangor, Northern Ireland.', image } = Astro.props;
+const fullTitle = title === 'Photography by Melissa Keizer' ? title : `${title} — Melissa Keizer Photography`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    {image && <meta property="og:image" content={image} />}
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <title>{fullTitle}</title>
+    <link rel="icon" type="image/jpeg" href={`${base}photos/sky-odin/000-ph_log7wlnpvdpmhx0i.jpg`} />
+  </head>
+  <body>
+    <nav class="site-nav">
+      <a class="site-nav__brand" href={base}>Melissa Keizer</a>
+      <ul class="site-nav__links">
+        <li><a href={`${base}categories`}>Categories</a></li>
+        <li><a href={`${base}contact`}>Contact</a></li>
+      </ul>
+      <ul class="site-nav__social" aria-label="Social links">
+        <li><a href="https://instagram.com/keizgoesboom" target="_blank" rel="noopener" title="Instagram" aria-label="Instagram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+        </a></li>
+        <li><a href="https://x.com/KeizGoesBoom" target="_blank" rel="noopener" title="X / Twitter" aria-label="X">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a></li>
+        <li><a href="http://facebook.com/melissakeizerphotography" target="_blank" rel="noopener" title="Facebook" aria-label="Facebook">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </a></li>
+        <li><a href="http://flickr.com/photos/tinyspark_boom" target="_blank" rel="noopener" title="Flickr" aria-label="Flickr">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="7" cy="12" r="5"/><circle cx="17" cy="12" r="5"/></svg>
+        </a></li>
+        <li><a href="http://500px.com/melissakeizer" target="_blank" rel="noopener" title="500px" aria-label="500px">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M9.5 6.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11zm0 8.5a3 3 0 1 1 0-6 3 3 0 0 1 0 6zM21 7h-3V4h-2v3h-3v2h3v3h2V9h3V7z"/></svg>
+        </a></li>
+      </ul>
+    </nav>
+    <slot />
+    <footer class="site-footer">
+      <p>&copy; {new Date().getFullYear()} Melissa Keizer. All rights reserved.</p>
+    </footer>
+  </body>
+</html>

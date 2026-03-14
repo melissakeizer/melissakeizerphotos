@@ -1,0 +1,38 @@
+---
+title: "The City of Dublin"
+subtitle: null
+date: "March 12th, 2014"
+categories: []
+coverImage: "/photos/the-city-of-dublin/000-cover.jpg"
+photos:
+  - "/photos/the-city-of-dublin/001-6kxzg9x8re50o1orq62erekce1r79zfrntio.jpg"
+  - "/photos/the-city-of-dublin/002-nx5oenqsbgrs5rk9nxilgwn89v7eewmi59q4.jpg"
+  - "/photos/the-city-of-dublin/003-9gog2vj4u2384cxrhtf7yoesmykl0udiq3j5.jpg"
+  - "/photos/the-city-of-dublin/004-owe0yecfivrc0udiqi9ohnqhvfwjc3diu5uj.jpg"
+  - "/photos/the-city-of-dublin/005-zqf0eadzhv6ajory9tjj02aprb2o6rdiyjh5.jpg"
+  - "/photos/the-city-of-dublin/006-0v38sb2dp4gta9k9eyyqwy7lbgbep14i2la0.jpg"
+  - "/photos/the-city-of-dublin/007-e6kn5cjkuhht1emis1epdalu6y00ms4i4609.jpg"
+  - "/photos/the-city-of-dublin/008-3gj2k2mfoft21emisarja148geukgldiwzmg.jpg"
+  - "/photos/the-city-of-dublin/009-h20h6pddmb73nmid18qe1wywtcblnmi2bjya.jpg"
+  - "/photos/the-city-of-dublin/010-tbm3seij8lpzxgviq7pxk8egiwv78pvizaau.jpg"
+  - "/photos/the-city-of-dublin/011-qcop7xzimum78pviafskudgaj3qy3nmioz58.jpg"
+  - "/photos/the-city-of-dublin/012-mnlxy356ng17cik9mfegthyz43oko6rzugnv.jpg"
+  - "/photos/the-city-of-dublin/013-j90s86y5c1r4fgvi4lrjf83q6fbyy14i90tb.jpg"
+  - "/photos/the-city-of-dublin/014-qkx9ijdf7ubzw7b9a0kziaa98ex3l3di01ja.jpg"
+  - "/photos/the-city-of-dublin/015-joxsvpmh57jsjork1dh7xxordiy66r37d9ls.jpg"
+  - "/photos/the-city-of-dublin/016-v7s8d1gpq95xko6rzu1wx4546rms4ibd9n2k.jpg"
+  - "/photos/the-city-of-dublin/017-jc6tycfq18zlrf6rswmczqdh12kxzuxrf2fm.jpg"
+  - "/photos/the-city-of-dublin/018-1n0loixgsx3fecdi55cd6786eb4ndn295e72.jpg"
+  - "/photos/the-city-of-dublin/019-i9c7qpu0c7ynwmicy9couvi2bakyb9yyxb5g.jpg"
+  - "/photos/the-city-of-dublin/020-b014x153i2mon7b9zwjcdsxx3eib2o6r0ft5.jpg"
+  - "/photos/the-city-of-dublin/021-p0v2bzymt7arwwmimlep1r3e4k46ajorryda.jpg"
+  - "/photos/the-city-of-dublin/022-rm7w86qsxpoav2t93ub7ox2ye1wwb3xrb32t.jpg"
+  - "/photos/the-city-of-dublin/023-38sgnbk9po8q6w29hvn2h70ycjt3mcxrwkxw.jpg"
+  - "/photos/the-city-of-dublin/024-otta7rxm34tgwrk9cd684m44ewxw29sno96d.jpg"
+  - "/photos/the-city-of-dublin/025-22aw26wd4n3o9a4irh2l7gl5av7snhfre2p5.jpg"
+  - "/photos/the-city-of-dublin/026-ph_jg9l8ba69uqazrny.jpg"
+  - "/photos/the-city-of-dublin/027-ph_log7wlnpvdpmhx0i.jpg"
+description: "A late February visit to Dublin was a Christmas treat for my boyfriend Michael and myself. We were keen to explore the vibrant city again after first making a trip there together two years ago. We made our journey south by train from Belfast, and arrived at the city early Thursday afternoon.Many photos were taken during our 3 day stay, here’s just a few."
+footnotes: "FootNotes\n                      \n                    \n                    \n                      \n                          All photos were taken with a Sony a580 and my two favourite lenses - a Tokina f/2.8 11-16mm and a Sony f/1.8 35mm"
+---
+A late February visit to Dublin was a Christmas treat for my boyfriend Michael and myself. We were keen to explore the vibrant city again after first making a trip there together two years ago. We made our journey south by train from Belfast, and arrived at the city early Thursday afternoon.Many photos were taken during our 3 day stay, here’s just a few.

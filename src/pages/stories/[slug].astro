@@ -1,0 +1,143 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+const base = import.meta.env.BASE_URL;
+
+export async function getStaticPaths() {
+  const stories = await getCollection('stories');
+  return stories.map((story) => ({
+    params: { slug: story.id },
+    props: { story },
+  }));
+}
+
+interface Props {
+  story: CollectionEntry<'stories'>;
+}
+
+const { story } = Astro.props;
+const { data } = story;
+const cover = data.coverImage || data.photos[0];
+
+// All photos excluding the cover to avoid duplication in gallery
+const galleryPhotos = data.coverImage
+  ? data.photos
+  : data.photos.slice(1);
+---
+
+<Layout title={data.title} description={data.description || undefined} image={cover ? `${base}${cover.replace(/^\//, '')}` : undefined}>
+  {cover && (
+    <img
+      class="story-hero"
+      src={`${base}${cover.replace(/^\//, '')}`}
+      alt={data.title}
+    />
+  )}
+
+  <div class="story-page">
+    <header class="story-header">
+      <a class="story-header__back" href={base}>← All Stories</a>
+      <h1 class="story-header__title">{data.title}</h1>
+      {data.subtitle && <p class="story-header__subtitle">{data.subtitle}</p>}
+      <div class="story-header__meta">
+        {data.date && <span>{data.date}</span>}
+        {data.categories.map(cat => (
+          <a href={`${base}categories/${cat.toLowerCase().replace(/\s+/g, '-')}`}>{cat}</a>
+        ))}
+      </div>
+      <hr class="story-divider" />
+    </header>
+
+    {data.description && (
+      <div class="story-body">
+        <p>{data.description}</p>
+      </div>
+    )}
+
+    {galleryPhotos.length > 0 && (
+      <div class="photo-gallery" id="gallery">
+        {galleryPhotos.map((photo, i) => (
+          <div
+            class="photo-gallery__item"
+            data-index={i}
+            data-src={`${base}${photo.replace(/^\//, '')}`}
+            role="button"
+            tabindex="0"
+            aria-label={`View photo ${i + 1}`}
+          >
+            <img
+              src={`${base}${photo.replace(/^\//, '')}`}
+              alt={`${data.title} — photo ${i + 1}`}
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        ))}
+      </div>
+    )}
+
+    {data.footnotes && (
+      <aside class="story-footnotes">
+        <p>{data.footnotes}</p>
+      </aside>
+    )}
+  </div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+    <button class="lightbox__close" id="lightbox-close" aria-label="Close">&times;</button>
+    <button class="lightbox__prev" id="lightbox-prev" aria-label="Previous photo">&#8249;</button>
+    <img class="lightbox__img" id="lightbox-img" src="" alt="" />
+    <button class="lightbox__next" id="lightbox-next" aria-label="Next photo">&#8250;</button>
+  </div>
+</Layout>
+
+<script>
+  const gallery = document.getElementById('gallery');
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
+  const closeBtn = document.getElementById('lightbox-close');
+  const prevBtn = document.getElementById('lightbox-prev');
+  const nextBtn = document.getElementById('lightbox-next');
+
+  if (!gallery || !lightbox || !lightboxImg) throw new Error('Missing elements');
+
+  const items = Array.from(gallery.querySelectorAll<HTMLElement>('.photo-gallery__item'));
+  let current = 0;
+
+  function openAt(index: number) {
+    current = index;
+    const src = items[current].dataset.src || '';
+    lightboxImg.src = src;
+    lightboxImg.alt = items[current].querySelector('img')?.alt || '';
+    lightbox!.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function close() {
+    lightbox!.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+
+  function prev() { openAt((current - 1 + items.length) % items.length); }
+  function next() { openAt((current + 1) % items.length); }
+
+  items.forEach((item, i) => {
+    item.addEventListener('click', () => openAt(i));
+    item.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') openAt(i); });
+  });
+
+  closeBtn?.addEventListener('click', close);
+  prevBtn?.addEventListener('click', prev);
+  nextBtn?.addEventListener('click', next);
+
+  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) close(); });
+
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('is-open')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') prev();
+    if (e.key === 'ArrowRight') next();
+  });
+</script>

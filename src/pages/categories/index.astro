@@ -1,0 +1,60 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const base = import.meta.env.BASE_URL;
+const stories = await getCollection('stories');
+
+// Group by category
+const categoryMap = new Map<string, typeof stories>();
+for (const story of stories) {
+  for (const cat of story.data.categories) {
+    if (!categoryMap.has(cat)) categoryMap.set(cat, []);
+    categoryMap.get(cat)!.push(story);
+  }
+}
+const categories = [...categoryMap.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+---
+
+<Layout title="Categories — Melissa Keizer Photography">
+  <main class="categories-page">
+    <h1 class="categories-page__title">Categories</h1>
+
+    {categories.map(([cat, catStories]) => (
+      <section class="category-section">
+        <h2 class="category-section__heading">
+          <a href={`${base}categories/${cat.toLowerCase().replace(/\s+/g, '-')}`}>{cat}</a>
+          <span style="font-weight:400;font-size:0.9em;color:var(--color-muted);margin-left:0.5rem">({catStories.length})</span>
+        </h2>
+        <div class="stories-grid">
+          {catStories.slice(0, 6).map((story) => {
+            const cover = story.data.coverImage || story.data.photos[0];
+            return (
+              <article class="story-card">
+                {cover && (
+                  <img
+                    class="story-card__img"
+                    src={`${base}${cover.replace(/^\//, '')}`}
+                    alt={story.data.title}
+                    loading="lazy"
+                  />
+                )}
+                <div class="story-card__overlay">
+                  <h3 class="story-card__title">{story.data.title}</h3>
+                </div>
+                <a class="story-card__link" href={`${base}stories/${story.id}`} aria-label={story.data.title}></a>
+              </article>
+            );
+          })}
+        </div>
+        {catStories.length > 6 && (
+          <p style="text-align:center;margin-top:1rem">
+            <a href={`${base}categories/${cat.toLowerCase().replace(/\s+/g, '-')}`} style="font-size:0.8rem;text-transform:uppercase;letter-spacing:0.1em;border-bottom:1px solid currentColor">
+              View all {catStories.length} →
+            </a>
+          </p>
+        )}
+      </section>
+    ))}
+  </main>
+</Layout>
