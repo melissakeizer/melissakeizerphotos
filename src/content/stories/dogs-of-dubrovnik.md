@@ -3,7 +3,7 @@ title: "Dogs of Dubrovnik"
 subtitle: null
 date: "August 20th, 2019"
 categories: []
-coverImage: "/photos/dogs-of-dubrovnik/000-cover.jpg"
+coverImage: "/photos/dogs-of-dubrovnik/000-photo.jpg"
 photos:
   - "/photos/dogs-of-dubrovnik/001-9gk25hptq1wehkar6f8zo6kpw61bph614ypp.jpg"
   - "/photos/dogs-of-dubrovnik/002-wztfc4x8lbchgz0hkgyoepxx3wt5z81djqha.jpg"

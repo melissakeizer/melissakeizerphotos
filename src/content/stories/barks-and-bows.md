@@ -3,7 +3,7 @@ title: "Barks & Bows"
 subtitle: null
 date: "August 17th, 2019"
 categories: []
-coverImage: "/photos/barks-and-bows/000-cover.jpg"
+coverImage: "/photos/barks-and-bows/000-photo.jpg"
 photos:
   - "/photos/barks-and-bows/001-33opjb5s4w8kt9td9lya8ct8i79zfrjr10zs.jpg"
   - "/photos/barks-and-bows/002-0onlt0ji4wqdj9k9y1au3044qft4vx6r6uxd.jpg"
@@ -29,4 +29,3 @@ photos:
 description: "Write your story here. (Optional)"
 footnotes: null
 ---
-Write your story here. (Optional)

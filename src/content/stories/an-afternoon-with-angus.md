@@ -3,7 +3,7 @@ title: "An Afternoon with Angus"
 subtitle: null
 date: "November 10th, 2020"
 categories: []
-coverImage: "/photos/an-afternoon-with-angus/000-cover.jpg"
+coverImage: "/photos/an-afternoon-with-angus/000-photo.jpg"
 photos:
   - "/photos/an-afternoon-with-angus/001-ufa7n8rfjmg2bb25zu1y9d16jjc3ksx7taoq.jpg"
   - "/photos/an-afternoon-with-angus/002-4wks2klf1861o9r0itx79p5qu4xvs0samfkp.jpg"
@@ -29,4 +29,3 @@ photos:
 description: "I love when my two favourite things come together; dogs + photography, so I was happy to team up with Clandeboye Estate to offer a pet photoshoot to the winner of their Facebook competition.I met the lucky winner, Emma, and her beautiful dog, Angus, on a frosty December afternoon to take some photos. We strolled around the beautiful grounds of Clandeboye Estate, spotting a variety of aesthetic backdrops and letting Angus explore his new surroundings."
 footnotes: "FootNotes\n                      \n                    \n                    \n                      \n                          Photos taken with Sony A7ii using Sony 55mm f/1.8 prime, 28mm f/2 prime and 70-200mm f/4 telephoto zoom"
 ---
-I love when my two favourite things come together; dogs + photography, so I was happy to team up with Clandeboye Estate to offer a pet photoshoot to the winner of their Facebook competition.I met the lucky winner, Emma, and her beautiful dog, Angus, on a frosty December afternoon to take some photos. We strolled around the beautiful grounds of Clandeboye Estate, spotting a variety of aesthetic backdrops and letting Angus explore his new surroundings.

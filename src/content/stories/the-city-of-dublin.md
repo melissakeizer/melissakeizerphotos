@@ -3,7 +3,7 @@ title: "The City of Dublin"
 subtitle: null
 date: "March 12th, 2014"
 categories: []
-coverImage: "/photos/the-city-of-dublin/000-cover.jpg"
+coverImage: "/photos/the-city-of-dublin/000-photo.jpg"
 photos:
   - "/photos/the-city-of-dublin/001-6kxzg9x8re50o1orq62erekce1r79zfrntio.jpg"
   - "/photos/the-city-of-dublin/002-nx5oenqsbgrs5rk9nxilgwn89v7eewmi59q4.jpg"
@@ -35,4 +35,3 @@ photos:
 description: "A late February visit to Dublin was a Christmas treat for my boyfriend Michael and myself. We were keen to explore the vibrant city again after first making a trip there together two years ago. We made our journey south by train from Belfast, and arrived at the city early Thursday afternoon.Many photos were taken during our 3 day stay, here’s just a few."
 footnotes: "FootNotes\n                      \n                    \n                    \n                      \n                          All photos were taken with a Sony a580 and my two favourite lenses - a Tokina f/2.8 11-16mm and a Sony f/1.8 35mm"
 ---
-A late February visit to Dublin was a Christmas treat for my boyfriend Michael and myself. We were keen to explore the vibrant city again after first making a trip there together two years ago. We made our journey south by train from Belfast, and arrived at the city early Thursday afternoon.Many photos were taken during our 3 day stay, here’s just a few.

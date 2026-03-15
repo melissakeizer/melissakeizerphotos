@@ -3,7 +3,7 @@ title: "BORN THIS WAY, BABY"
 subtitle: null
 date: "October 19th, 2014"
 categories: []
-coverImage: "/photos/born-this-way-baby/000-cover.jpg"
+coverImage: "/photos/born-this-way-baby/000-photo.jpg"
 photos:
   - "/photos/born-this-way-baby/001-dhsm50eppiafw29i6xicbmjczl7hkt96xyf0.jpg"
   - "/photos/born-this-way-baby/002-orakem6j8fuk57b9tq3c40e89llerk9woudh.jpg"
@@ -20,4 +20,3 @@ photos:
 description: "If you know me well, you’ll know I love Lady Gaga, ever since she released her first big hit back in 2008. On Friday night I attended The ArtRave, her latest show in Dublin at the o2 Arena. It was amazing. I had so much fun and it reminded me why I’m such a huge fan. Although I didn’t bring my camera with me on this occasion, it inspired me to share a collection of my photos from past shows when I snuck my DSLR into the arenas and shot from the crowd. The picture below was taken at The Fame Ball tour in February 2010. Though I’d first watched her perform live when she was touring with The Pussycat Dolls the year before, this was the first Lady Gaga concert I attended, and I was blown away. "
 footnotes: "FootNotes\n                      \n                    \n                    \n                      \n                          See more of my Gaga shots on my Flickr stream https://www.flickr.com/photos/tinyspark_boom/sets"
 ---
-If you know me well, you’ll know I love Lady Gaga, ever since she released her first big hit back in 2008. On Friday night I attended The ArtRave, her latest show in Dublin at the o2 Arena. It was amazing. I had so much fun and it reminded me why I’m such a huge fan. Although I didn’t bring my camera with me on this occasion, it inspired me to share a collection of my photos from past shows when I snuck my DSLR into the arenas and shot from the crowd. The picture below was taken at The Fame Ball tour in February 2010. Though I’d first watched her perform live when she was touring with The Pussycat Dolls the year before, this was the first Lady Gaga concert I attended, and I was blown away. 

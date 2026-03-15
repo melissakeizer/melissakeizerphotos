@@ -3,7 +3,7 @@ title: "Stablemates"
 subtitle: null
 date: "April 22nd, 2015"
 categories: []
-coverImage: "/photos/stablemates/000-cover.jpg"
+coverImage: "/photos/stablemates/000-photo.jpg"
 photos:
   - "/photos/stablemates/001-id1fbsi2i8gp66rjubx1bsq2fixjemivnjfj.jpg"
   - "/photos/stablemates/002-fmlxk3qtio4j9k90kswakaml6fuhaor9l5a2.jpg"
@@ -31,4 +31,3 @@ photos:
 description: "With my main loves being animals and photography, I relish every opportunity to combine both of these things. One Sunday afternoon I did just that, setting off with my sister Nicole and our friend Lucia to Pinecroft Stables in Newtownards."
 footnotes: "FootNotes\n                      \n                    \n                    \n                      \n                          Photos taken with Sony a580 kitted with a 35mm f/1.8 lens"
 ---
-With my main loves being animals and photography, I relish every opportunity to combine both of these things. One Sunday afternoon I did just that, setting off with my sister Nicole and our friend Lucia to Pinecroft Stables in Newtownards.

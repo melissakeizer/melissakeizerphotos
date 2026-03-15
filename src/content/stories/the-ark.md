@@ -3,7 +3,7 @@ title: "The Ark"
 subtitle: null
 date: "November 10th, 2013"
 categories: []
-coverImage: "/photos/the-ark/000-cover.jpg"
+coverImage: "/photos/the-ark/000-photo.jpg"
 photos:
   - "/photos/the-ark/001-ysbqa22axt8g2e29q0gpg4isv66zjjorufynlzfy.jpg"
   - "/photos/the-ark/002-w61f1i5i98zx5hfr0lefy425afdjwcdir203ptd4.jpg"
@@ -41,4 +41,3 @@ photos:
 description: "I drive by the sign for \"The Ark Open Farm\" several times a week, but it had been years since I've visited. Since both myself and my boyfriend Michael have a great love for the four-legged creatures of the world, we thought it would be nice to spend a few hours there at the weekend."
 footnotes: "FootNotes\n                      \n                    \n                    \n                      \n                          View more shots from the farm on my Flickr (flickr.com/tinyspark_boom)"
 ---
-I drive by the sign for "The Ark Open Farm" several times a week, but it had been years since I've visited. Since both myself and my boyfriend Michael have a great love for the four-legged creatures of the world, we thought it would be nice to spend a few hours there at the weekend.

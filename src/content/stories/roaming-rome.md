@@ -3,7 +3,7 @@ title: "Roaming Rome"
 subtitle: null
 date: "December 30th, 2016"
 categories: []
-coverImage: "/photos/roaming-rome/000-cover.jpg"
+coverImage: "/photos/roaming-rome/000-photo.jpg"
 photos:
   - "/photos/roaming-rome/001-evdhzwl9pdl7zlxi0c2384cxru0m4caxnpwz.jpg"
   - "/photos/roaming-rome/002-j45jbcxvfyid4y088w1z1714i8wzjh05e06b.jpg"
@@ -60,4 +60,3 @@ photos:
 description: "A wonderful trip to Rome, Italy with my Mum"
 footnotes: "FootNotes\n                      \n                    \n                    \n                      \n                          Photos taken with Sony A7ii or iPhone 6s"
 ---
-A wonderful trip to Rome, Italy with my Mum

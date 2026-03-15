@@ -3,7 +3,7 @@ title: "Mutley & Dexter"
 subtitle: null
 date: "May 25th, 2016"
 categories: []
-coverImage: "/photos/mutley-and-dexter/000-cover.jpg"
+coverImage: "/photos/mutley-and-dexter/000-photo.jpg"
 photos:
   - "/photos/mutley-and-dexter/001-cljvbh5uph0ydfaaphh2p4x6rdzv1pizxa0l.jpg"
   - "/photos/mutley-and-dexter/002-ro8hnsoar1jstaqh9ferbpgb921dedkjdxyz.jpg"
@@ -23,4 +23,3 @@ photos:
 description: "If I could imagine my dream job, it would probably involve animals and a camera. After creating a bit of awareness about my pet photography services via a Facebook page, I got hired to do what I love.This is where these two gorgeous dogs come in."
 footnotes: "FootNotes\n                      \n                    \n                    \n                      \n                          Shot with Sony A7ii using Sony 28mm f/2 and Sony 55mm f/1.8"
 ---
-If I could imagine my dream job, it would probably involve animals and a camera. After creating a bit of awareness about my pet photography services via a Facebook page, I got hired to do what I love.This is where these two gorgeous dogs come in.

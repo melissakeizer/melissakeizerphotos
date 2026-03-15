@@ -3,7 +3,7 @@ title: "Lights"
 subtitle: null
 date: "September 7th, 2014"
 categories: []
-coverImage: "/photos/lights/000-cover.jpg"
+coverImage: "/photos/lights/000-photo.jpg"
 photos:
   - "/photos/lights/001-j95zgqk2h429be2929nm5mcqaaotuik9ev0k.jpg"
   - "/photos/lights/002-bg8f0gqwvp1fw29750cn0nev0u23xrolsmf4.jpg"
@@ -25,4 +25,3 @@ photos:
 description: "Back in February 2012, I had the opportunity to shoot an artist I love, Lights. This was my second time in the press pit, taking photos for AU Magazine."
 footnotes: null
 ---
-Back in February 2012, I had the opportunity to shoot an artist I love, Lights. This was my second time in the press pit, taking photos for AU Magazine.

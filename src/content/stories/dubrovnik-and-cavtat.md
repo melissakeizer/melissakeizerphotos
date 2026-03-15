@@ -3,7 +3,7 @@ title: "Dubrovnik & Cavtat"
 subtitle: null
 date: "April 5th, 2020"
 categories: []
-coverImage: "/photos/dubrovnik-and-cavtat/000-cover.jpg"
+coverImage: "/photos/dubrovnik-and-cavtat/000-photo.jpg"
 photos:
   - "/photos/dubrovnik-and-cavtat/001-5ygtu7eulv784a0qvnwgkmdxt2lemh5h84o3.jpg"
   - "/photos/dubrovnik-and-cavtat/002-hml8620k5xiz6usubkpoml0rlo9i4x9anudz.jpg"
@@ -59,4 +59,3 @@ photos:
 description: "Since we're now cooped up indoors for the foreseeable future while this pandemic plays out, I've found the time and motivation to pull my holiday photos out of the archives, prepare a photo story, and enjoy the feeling of reliving my week in Croatia.Last July I hopped on a plane to Dubrovnik Airport with my boyfriend Michael. We'd decided to spend a week in the quaint, coastal town of Cavtat."
 footnotes: "FootNotes\n                      \n                    \n                    \n                      \n                          Shot with Sony A7ii  with Sony 55mm f/1.8  and 28mm f/2 lensess"
 ---
-Since we're now cooped up indoors for the foreseeable future while this pandemic plays out, I've found the time and motivation to pull my holiday photos out of the archives, prepare a photo story, and enjoy the feeling of reliving my week in Croatia.Last July I hopped on a plane to Dubrovnik Airport with my boyfriend Michael. We'd decided to spend a week in the quaint, coastal town of Cavtat.

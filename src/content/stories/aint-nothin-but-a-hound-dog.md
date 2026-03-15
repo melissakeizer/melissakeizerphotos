@@ -3,7 +3,7 @@ title: "Ain't Nothin' But a Hound Dog"
 subtitle: null
 date: "February 22nd, 2018"
 categories: []
-coverImage: "/photos/aint-nothin-but-a-hound-dog/000-cover.jpg"
+coverImage: "/photos/aint-nothin-but-a-hound-dog/000-photo.jpg"
 photos:
   - "/photos/aint-nothin-but-a-hound-dog/001-40et0gy0ko61f4gbbtw3tkycumqb68zvslk6.jpg"
   - "/photos/aint-nothin-but-a-hound-dog/002-zmnqqtziqag4dfo22k6itkow1nh191ce5l4m.jpg"
@@ -26,4 +26,3 @@ photos:
 description: "A while ago I partnered with Main Street My Street Bangor for a Halloween promotion, offering a free pet photoshoot for the winner. The lucky winner was Louise and her gorgeous Basset Hound, Elvis! Our photo session included Louise's husband and four lovely children, with the star of the show being 4 month old puppy Elvis. We chose Stormont Estate as the location for our shoot as it held so many fond memories for Louise and her family and provided beautiful autumnal backdrops for our photos. "
 footnotes: "FootNotes\n                      \n                    \n                    \n                      \n                          Shot with Sony A7ii, Sony 55mm f/1.8 and Sony 28mm f/2"
 ---
-A while ago I partnered with Main Street My Street Bangor for a Halloween promotion, offering a free pet photoshoot for the winner. The lucky winner was Louise and her gorgeous Basset Hound, Elvis! Our photo session included Louise's husband and four lovely children, with the star of the show being 4 month old puppy Elvis. We chose Stormont Estate as the location for our shoot as it held so many fond memories for Louise and her family and provided beautiful autumnal backdrops for our photos. 

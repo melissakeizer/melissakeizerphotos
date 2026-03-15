@@ -3,7 +3,7 @@ title: "Meet Eckles"
 subtitle: null
 date: "August 18th, 2019"
 categories: []
-coverImage: "/photos/eckles/000-cover.jpg"
+coverImage: "/photos/eckles/000-photo.jpg"
 photos:
   - "/photos/eckles/001-3o64m5s5aeboiza7rjriqsnmrv6xkgz25zkv.jpg"
   - "/photos/eckles/002-m57fki3547modf1e92rzgo8wz5e4cyvonzcv.jpg"
@@ -20,4 +20,3 @@ photos:
 description: "On Mother's Day this year I decided to become a hamster-mum! I adopted this little bundle of cute from the Pets at Home store in Bangor. Her first day with me was mostly spent exploring her new surroundings, namely, my living room."
 footnotes: null
 ---
-On Mother's Day this year I decided to become a hamster-mum! I adopted this little bundle of cute from the Pets at Home store in Bangor. Her first day with me was mostly spent exploring her new surroundings, namely, my living room.

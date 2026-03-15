@@ -3,7 +3,7 @@ title: "creatures"
 subtitle: null
 date: "November 29th, 2018"
 categories: []
-coverImage: "/photos/creatures/000-cover.jpg"
+coverImage: "/photos/creatures/000-photo.jpg"
 photos:
   - "/photos/creatures/001-uq7qh4afosj55ppfs5zozax26vzsh7n4b96g.jpg"
   - "/photos/creatures/002-rmcst8368oqdi33z3e05tg35f83lbwuidqtj.jpg"
@@ -40,4 +40,3 @@ photos:
 description: "Months ago, as I was scouring the internet for fun things to do locally, I came across a link to an animal park in Craigavon. It looked promising, as I spotted some farm animals along with reptiles and lemurs in the website photos.So on a lovely bright day in September, Mikey and I set off to visit the creatures of C&amp;J's Animal Park, of which there were many!"
 footnotes: "FootNotes\n                      \n                    \n                    \n                      \n                          Shot with Sony A7II and 55mm f/1.8 lens"
 ---
-Months ago, as I was scouring the internet for fun things to do locally, I came across a link to an animal park in Craigavon. It looked promising, as I spotted some farm animals along with reptiles and lemurs in the website photos.So on a lovely bright day in September, Mikey and I set off to visit the creatures of C&amp;J's Animal Park, of which there were many!

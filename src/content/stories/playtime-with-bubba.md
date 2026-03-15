@@ -3,7 +3,7 @@ title: "Playtime with Bubba"
 subtitle: null
 date: "February 19th, 2016"
 categories: []
-coverImage: "/photos/playtime-with-bubba/000-cover.jpg"
+coverImage: "/photos/playtime-with-bubba/000-photo.jpg"
 photos:
   - "/photos/playtime-with-bubba/001-9s9pflqpoglssf8en0ryn9udit6jwhh6lyuc.jpg"
   - "/photos/playtime-with-bubba/002-u0z79e61r7jjnbf285sdfs9k9h7apypnh168.jpg"
@@ -28,4 +28,3 @@ photos:
 description: "When a friend gets a new puppy and invites you over to meet him, of course you're going to bring your camera and overstay your welcome, right? Luckily for me, my friend Sarah let me play with her little puppy and take photos until we'd both run out of energy.This is Bubba. He was only 8 weeks old when I first met him. Already he was so full of character, not to mention photogenic."
 footnotes: "FootNotes\n                      \n                    \n                    \n                      \n                          Photos taken using a Sony A7II with 55mm f/1.8 lens"
 ---
-When a friend gets a new puppy and invites you over to meet him, of course you're going to bring your camera and overstay your welcome, right? Luckily for me, my friend Sarah let me play with her little puppy and take photos until we'd both run out of energy.This is Bubba. He was only 8 weeks old when I first met him. Already he was so full of character, not to mention photogenic.

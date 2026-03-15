@@ -3,7 +3,7 @@ title: "Road to Sligo"
 subtitle: null
 date: "November 22nd, 2020"
 categories: []
-coverImage: "/photos/road-to-sligo/000-cover.jpg"
+coverImage: "/photos/road-to-sligo/000-photo.jpg"
 photos:
   - "/photos/road-to-sligo/001-d0ojqc7az6aqazpo45ruth1tgwa5y4353wc8.jpg"
   - "/photos/road-to-sligo/002-w1y5hm97h4nc5l8zkpmed60dy43uiit5akfm.jpg"
@@ -70,4 +70,3 @@ photos:
 description: "Like many, I look forward to spending some time away from home over the summer; soaking up the rays in a different country, sipping on sangria and doing some sight-seeing. 2020 threw us all a curveball. The pandemic has meant we've had to spend a lot more time at home and cancel our trips abroad. A little disappointing, but in the grand scheme of things, not a big deal.My perspective about a lot of things has changed over the these last few months. I realise how lucky I am to be able to work as normal (albeit, remotely) without having to worry about losing my job. I'm lucky to have such close relationships with my family and friends — I'm grateful we can rely on each other for support and laughs during such a strange time. I'm also really thankful to have my partner, Mikey, who never fails to listen, comfort me, and boost my happiness on a daily basis.Not content to be completely stuck at home, Mikey and I found new ways to entertain ourselves. This included exploring our own country and making the most of the beauty right on our doorstep — so, we decided to book a little weekend get-away to Sligo."
 footnotes: null
 ---
-Like many, I look forward to spending some time away from home over the summer; soaking up the rays in a different country, sipping on sangria and doing some sight-seeing. 2020 threw us all a curveball. The pandemic has meant we've had to spend a lot more time at home and cancel our trips abroad. A little disappointing, but in the grand scheme of things, not a big deal.My perspective about a lot of things has changed over the these last few months. I realise how lucky I am to be able to work as normal (albeit, remotely) without having to worry about losing my job. I'm lucky to have such close relationships with my family and friends — I'm grateful we can rely on each other for support and laughs during such a strange time. I'm also really thankful to have my partner, Mikey, who never fails to listen, comfort me, and boost my happiness on a daily basis.Not content to be completely stuck at home, Mikey and I found new ways to entertain ourselves. This included exploring our own country and making the most of the beauty right on our doorstep — so, we decided to book a little weekend get-away to Sligo.

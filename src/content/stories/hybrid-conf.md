@@ -3,7 +3,7 @@ title: "Hybrid Conf"
 subtitle: null
 date: "August 27th, 2015"
 categories: []
-coverImage: "/photos/hybrid-conf/000-cover.jpg"
+coverImage: "/photos/hybrid-conf/000-photo.jpg"
 photos:
   - "/photos/hybrid-conf/001-nqe51vsfsgi4quxr74g0ldkvezyta9k9lypv.jpg"
   - "/photos/hybrid-conf/002-mkwycodhhugnwmi89r0ikxglcsdcxrbguv1v.jpg"
@@ -43,4 +43,3 @@ photos:
 description: "This year I had the opportunity to attend a web conference like no other. After seeing hundreds of tweets about the conference in previous years, I was ecstatic that I was able to attend Hybrid this year, thanks to my lovely place of work, Eyekiller! :) "
 footnotes: "FootNotes\n                      \n                    \n                    \n                      \n                          Photos taken with Sony a580 using 35mm f/1.8 lens and a few with iPhone 5s"
 ---
-This year I had the opportunity to attend a web conference like no other. After seeing hundreds of tweets about the conference in previous years, I was ecstatic that I was able to attend Hybrid this year, thanks to my lovely place of work, Eyekiller! :) 

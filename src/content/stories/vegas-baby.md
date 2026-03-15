@@ -3,7 +3,7 @@ title: "Vegas, Baby"
 subtitle: null
 date: "December 21st, 2020"
 categories: []
-coverImage: "/photos/vegas-baby/000-cover.jpg"
+coverImage: "/photos/vegas-baby/000-photo.jpg"
 photos:
   - "/photos/vegas-baby/001-i6wbt3b7a43s69rejnxui3gqe7me5xhf72rd.jpg"
   - "/photos/vegas-baby/002-40r6fnoo23drfh1n4yvbu3k1zuz3bc15bvea.jpg"
@@ -72,4 +72,3 @@ photos:
 description: "Years ago, two of my best friends and I made a pledge to go on a girls trip to Vegas and live our best lives. We've made plenty of drunken plans that have come to nothing over the years, but thankfully, we made this one happen. In early October 2018, we got a bus to Dublin, flew to London then boarded our 10 hour flight to Las Vegas, Nevada.For our 5 day trip we booked Paris hotel, complete with Parisien-styled streets inside and a half-size Eiffel Tower."
 footnotes: null
 ---
-Years ago, two of my best friends and I made a pledge to go on a girls trip to Vegas and live our best lives. We've made plenty of drunken plans that have come to nothing over the years, but thankfully, we made this one happen. In early October 2018, we got a bus to Dublin, flew to London then boarded our 10 hour flight to Las Vegas, Nevada.For our 5 day trip we booked Paris hotel, complete with Parisien-styled streets inside and a half-size Eiffel Tower.

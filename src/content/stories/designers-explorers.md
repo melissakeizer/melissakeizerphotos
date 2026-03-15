@@ -3,7 +3,7 @@ title: "DESIGNERS/EXPLORERS"
 subtitle: null
 date: "December 11th, 2014"
 categories: []
-coverImage: "/photos/designers-explorers/000-cover.jpg"
+coverImage: "/photos/designers-explorers/000-photo.jpg"
 photos:
   - "/photos/designers-explorers/001-na3v8rrmv70vygb93ixbx118y1p58kt9o6o0.jpg"
   - "/photos/designers-explorers/002-szcmokpsbc56zuxrxm5vf1ujfnvims4iulqz.jpg"
@@ -26,4 +26,3 @@ photos:
 description: "Last year, the Rumble Labs Design Department embarked on their first photography trip together, taking photos at a few different locations in Northern Ireland. (I previously posted an Exposure story from the trip.)Continuing this new tradition, myself, Steven and Will grabbed our cameras and headed out on our annual road trip. "
 footnotes: "FootNotes\n                      \n                    \n                    \n                      \n                          Photos taken with iPhone 5s and Sony A580 (with Tokina f/2.8 11-16mm and Sony f/1.8 35mm)"
 ---
-Last year, the Rumble Labs Design Department embarked on their first photography trip together, taking photos at a few different locations in Northern Ireland. (I previously posted an Exposure story from the trip.)Continuing this new tradition, myself, Steven and Will grabbed our cameras and headed out on our annual road trip. 

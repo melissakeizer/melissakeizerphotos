@@ -3,7 +3,7 @@ title: "Cat Colony of Cala Bona"
 subtitle: null
 date: "September 24th, 2015"
 categories: []
-coverImage: "/photos/cat-colony-of-cala-bona/000-cover.jpg"
+coverImage: "/photos/cat-colony-of-cala-bona/000-photo.jpg"
 photos:
   - "/photos/cat-colony-of-cala-bona/001-zskzrips22yv6lxrr8qnkdgn4eyd5cdi3l6d.jpg"
   - "/photos/cat-colony-of-cala-bona/002-a0vfsya04kt3ayvifo09d5u0il0rizfrdtn5.jpg"
@@ -24,4 +24,3 @@ photos:
 description: "I recently returned from a late summer holiday in Mallorca, where I stayed in the small coastal town of Cala Bona, with my boyfriend Michael. On our first evening of the holiday, we walked from our hotel to the coast and strolled along the strip, full of restaurants and bars. Just outside a pizzeria named Panetosto, I noticed a couple of cats lurking around the restaurant. We walked over to pet them, and soon found ourselves surrounded by ten or twelve cats! During the rest of our week in Cala Bona, I photographed the cats whenever I spotted them. "
 footnotes: "FootNotes\n                      \n                    \n                    \n                      \n                          Photos taken with Sony a580, fitted with a Sony 35mm f/1.8 or Tokina 11-15mm f/2.8 lens."
 ---
-I recently returned from a late summer holiday in Mallorca, where I stayed in the small coastal town of Cala Bona, with my boyfriend Michael. On our first evening of the holiday, we walked from our hotel to the coast and strolled along the strip, full of restaurants and bars. Just outside a pizzeria named Panetosto, I noticed a couple of cats lurking around the restaurant. We walked over to pet them, and soon found ourselves surrounded by ten or twelve cats! During the rest of our week in Cala Bona, I photographed the cats whenever I spotted them. 

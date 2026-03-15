@@ -3,7 +3,7 @@ title: "A Story of Ice & Fire"
 subtitle: null
 date: "July 25th, 2014"
 categories: []
-coverImage: "/photos/a-story-of-ice-and-fire/000-cover.jpg"
+coverImage: "/photos/a-story-of-ice-and-fire/000-photo.jpg"
 photos:
   - "/photos/a-story-of-ice-and-fire/001-go6k7uf1bg25ipb971kkcqmd6gycik97iams.jpg"
   - "/photos/a-story-of-ice-and-fire/002-pv7yi6p5w4620529sbc00cxasjicc8fr6bvc.jpg"
@@ -41,4 +41,3 @@ photos:
 description: "I’m a huge Game of Thrones fan, anyone who follows me on Twitter could probably vouch for that. Many of the show’s filming locations are in my home country of Northern Ireland.So, when I heard that Westeros was returning to The Waterfront Hall in Belfast, I was pretty thrilled. My friends &amp; I managed to nab a few tickets and spent a Sunday afternoon checking it out. "
 footnotes: "FootNotes\n                      \n                    \n                    \n                      \n                          Shot with my Sony a580, using a Tokina 11-16mm 2.8 and a Sony 30mm 1.8"
 ---
-I’m a huge Game of Thrones fan, anyone who follows me on Twitter could probably vouch for that. Many of the show’s filming locations are in my home country of Northern Ireland.So, when I heard that Westeros was returning to The Waterfront Hall in Belfast, I was pretty thrilled. My friends &amp; I managed to nab a few tickets and spent a Sunday afternoon checking it out. 

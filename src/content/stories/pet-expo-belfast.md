@@ -3,7 +3,7 @@ title: "Pet Expo Belfast"
 subtitle: null
 date: "November 16th, 2019"
 categories: []
-coverImage: "/photos/pet-expo-belfast/000-cover.jpg"
+coverImage: "/photos/pet-expo-belfast/000-photo.jpg"
 photos:
   - "/photos/pet-expo-belfast/001-jgx6fhis36bzvpecqjz10edr9wknlmxlj2d0.jpg"
   - "/photos/pet-expo-belfast/002-asnkey1dcmbjgxa3gdwzoiqki38w0x4kznvf.jpg"
@@ -42,4 +42,3 @@ photos:
 description: "Being a huge animal lover there was no way I was going to miss Belfast Telegraph's Pet Expo this weekend, so it came as a pleasant surprise when my sister Nicole texted me a couple of weeks ago to tell me she'd won a pair of tickets, or really, her dog Riley had won them for us!She'd entered him into the \"Top Pets of Northern Ireland\" competition and he was chosen as one of the lucky winners, securing us two free tickets to the expo and his photo printed in the Belfast Telegraph."
 footnotes: "FootNotes\n                      \n                    \n                    \n                      \n                          Please email hi@melissakeizer.com if you wish to use any of my photos."
 ---
-Being a huge animal lover there was no way I was going to miss Belfast Telegraph's Pet Expo this weekend, so it came as a pleasant surprise when my sister Nicole texted me a couple of weeks ago to tell me she'd won a pair of tickets, or really, her dog Riley had won them for us!She'd entered him into the "Top Pets of Northern Ireland" competition and he was chosen as one of the lucky winners, securing us two free tickets to the expo and his photo printed in the Belfast Telegraph.

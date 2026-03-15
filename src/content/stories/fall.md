@@ -3,7 +3,7 @@ title: "Fall"
 subtitle: null
 date: "December 9th, 2013"
 categories: []
-coverImage: "/photos/fall/000-cover.jpg"
+coverImage: "/photos/fall/000-photo.jpg"
 photos:
   - "/photos/fall/001-tgfrkn5ne63tmx6ran27gsex6u0x80k9g45l.jpg"
   - "/photos/fall/002-zphpzyeu6g0vygb9mpsdab2wmaiw9udico73.jpg"
@@ -23,4 +23,3 @@ photos:
 description: "During an afternoon discussion in Rumble Labs’ Design Department a few weeks ago, my colleagues and I planned a road trip for the weekend, with the goal of bettering our camera skills. In particular, we were interested in videography and wanted an excuse to get out of the office and practice filming. Early afternoon on the Saturday, we set off, seeking the waterfall in Glenoe."
 footnotes: "FootNotes\n                      \n                    \n                    \n                      \n                          Shot with my Sony A580 using a Tokina 11-16mm 2.8 and Sony 35mm 1.8 lens"
 ---
-During an afternoon discussion in Rumble Labs’ Design Department a few weeks ago, my colleagues and I planned a road trip for the weekend, with the goal of bettering our camera skills. In particular, we were interested in videography and wanted an excuse to get out of the office and practice filming. Early afternoon on the Saturday, we set off, seeking the waterfall in Glenoe.

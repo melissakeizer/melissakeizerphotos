@@ -3,7 +3,7 @@ title: "Animals & Afternoon tea"
 subtitle: null
 date: "March 26th, 2019"
 categories: []
-coverImage: "/photos/animals-afternoon-tea/000-cover.jpg"
+coverImage: "/photos/animals-afternoon-tea/000-photo.jpg"
 photos:
   - "/photos/animals-afternoon-tea/001-oj6p5tlex79ij0ss0lnbeah38j82cnbmabeo.jpg"
   - "/photos/animals-afternoon-tea/002-uo7zubwurnpn3g5lfxdqpwo97hfaqvsbqrbu.jpg"
@@ -40,4 +40,3 @@ photos:
 description: "Last year my friend organised an animal themed party for her three year old son. Someone from Party Animals NI came to their home with an array of exotic animals for the children to interact with. Naturally, I decided this was also a great idea for my 28th birthday party.To make it slightly more grown up, I swapped balloons and party hats for Prosecco and cupcakes. Needless to say, I was very excited about my party plans."
 footnotes: "FootNotes\n                      \n                    \n                    \n                      \n                          Shot with my Sony A7ii using my Sony 55mm f/1.8 lens"
 ---
-Last year my friend organised an animal themed party for her three year old son. Someone from Party Animals NI came to their home with an array of exotic animals for the children to interact with. Naturally, I decided this was also a great idea for my 28th birthday party.To make it slightly more grown up, I swapped balloons and party hats for Prosecco and cupcakes. Needless to say, I was very excited about my party plans.

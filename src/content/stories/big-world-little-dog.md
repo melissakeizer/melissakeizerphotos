@@ -3,7 +3,7 @@ title: "Big World, Little Dog"
 subtitle: null
 date: "February 2nd, 2013"
 categories: []
-coverImage: "/photos/big-world-little-dog/000-cover.jpg"
+coverImage: "/photos/big-world-little-dog/000-photo.jpg"
 photos:
   - "/photos/big-world-little-dog/001-fviu8ggpcdefusor3fx8sw5v1a2rcnmi8e9e.jpg"
   - "/photos/big-world-little-dog/002-yygoxp2frx3qsemisdd1hqsfmxvo0f6ryqqs.jpg"
@@ -17,4 +17,3 @@ photos:
 description: "This is my little dog, Matisse. He’s the little mutt we adopted from Dogs Trust six years ago, when he was only seven weeks old. "
 footnotes: "FootNotes\n                      \n                    \n                    \n                      \n                          Shot with my Sony a580 using a Tamron 17-50mm 2.8"
 ---
-This is my little dog, Matisse. He’s the little mutt we adopted from Dogs Trust six years ago, when he was only seven weeks old. 

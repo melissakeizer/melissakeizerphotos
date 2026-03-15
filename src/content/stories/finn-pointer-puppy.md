@@ -3,7 +3,7 @@ title: "Young Finn the GSP"
 subtitle: null
 date: "April 5th, 2021"
 categories: []
-coverImage: "/photos/finn-pointer-puppy/000-cover.jpg"
+coverImage: "/photos/finn-pointer-puppy/000-photo.jpg"
 photos:
   - "/photos/finn-pointer-puppy/001-wls2sdkt8a9qr094bjgd1544h8kld9lo7d29.jpg"
   - "/photos/finn-pointer-puppy/002-syi6hjzccnew30z6nkan1aha7kam8w1c2lnn.jpg"
@@ -29,4 +29,3 @@ photos:
 description: "When I heard that my friend's brother just got a new puppy, two words instantly sprang to my mind — puppy photoshoot. A few texts later and our shoot was planned for the following weekend.So this is young Finn, the eight week old German Short-haired Pointer. He's adorable, right?"
 footnotes: null
 ---
-When I heard that my friend's brother just got a new puppy, two words instantly sprang to my mind — puppy photoshoot. A few texts later and our shoot was planned for the following weekend.So this is young Finn, the eight week old German Short-haired Pointer. He's adorable, right?

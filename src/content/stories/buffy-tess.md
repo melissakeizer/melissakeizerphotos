@@ -3,7 +3,7 @@ title: "Buffy & Tess"
 subtitle: null
 date: "October 21st, 2017"
 categories: []
-coverImage: "/photos/buffy-tess/000-cover.jpg"
+coverImage: "/photos/buffy-tess/000-photo.jpg"
 photos:
   - "/photos/buffy-tess/001-yxnonnsljvr1i4nzi66u8blg494q2qdino1z.jpg"
   - "/photos/buffy-tess/002-woqr3bv7uiid8p9l12zwneqyaxpwdcai112c.jpg"
@@ -24,4 +24,3 @@ photos:
 description: "Pet photography session with Buffy and Tess"
 footnotes: null
 ---
-Pet photography session with Buffy and Tess

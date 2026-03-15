@@ -3,7 +3,7 @@ title: "TAKE A WALK WITH ME"
 subtitle: null
 date: "November 24th, 2014"
 categories: []
-coverImage: "/photos/take-a-walk-with-me/000-cover.jpg"
+coverImage: "/photos/take-a-walk-with-me/000-photo.jpg"
 photos:
   - "/photos/take-a-walk-with-me/001-9ylfomfh4b5oecdizh6sjv5durd1v2t9mxc3.jpg"
   - "/photos/take-a-walk-with-me/002-zkrydc3xaeixusorhe7rzcn827p0hpviif41.jpg"
@@ -25,4 +25,3 @@ photos:
 description: "I recently ventured to Cairn Wood, a forest not too far from my home, bringing with me my little crossbreed Matisse. Armed with my DSLR and my secondary camera, my iPhone 5s, we began our photo walk around the woods. "
 footnotes: "FootNotes\n                      \n                    \n                    \n                      \n                          All photos shot with Sony f/1.8 35mm lens on a Sony A580 or iPhone 5s"
 ---
-I recently ventured to Cairn Wood, a forest not too far from my home, bringing with me my little crossbreed Matisse. Armed with my DSLR and my secondary camera, my iPhone 5s, we began our photo walk around the woods. 

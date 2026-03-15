@@ -3,7 +3,7 @@ title: "The Salty-Dog Dog Show"
 subtitle: null
 date: "August 2nd, 2015"
 categories: []
-coverImage: "/photos/the-saltydog-dog-show/000-cover.jpg"
+coverImage: "/photos/the-saltydog-dog-show/000-photo.jpg"
 photos:
   - "/photos/the-saltydog-dog-show/001-hpclh3mzlgx5stt9u277fpdqj8h3erk9kxkj.jpg"
   - "/photos/the-saltydog-dog-show/002-bxzvjgiokgpn9udie9dgmavr71fw293nwstb.jpg"
@@ -36,4 +36,3 @@ photos:
 description: "Today I attended a local event that aimed to raise money for Assisi Animal Sanctuary, supported by local pet store, Armstrong‘s Twisted Fish. The Salty Dog restaurant in Bangor welcomed dogs and their owners to their very own dog show, where dogs could compete to win rosettes and a lot of great prizes. "
 footnotes: "FootNotes\n                      \n                    \n                    \n                      \n                          I shot these with my Sony a580 fitted with a 35mm f/1.8 lens."
 ---
-Today I attended a local event that aimed to raise money for Assisi Animal Sanctuary, supported by local pet store, Armstrong‘s Twisted Fish. The Salty Dog restaurant in Bangor welcomed dogs and their owners to their very own dog show, where dogs could compete to win rosettes and a lot of great prizes. 
