@@ -9,11 +9,7 @@ export async function getStaticPaths() {
   const allCats = new Set(stories.flatMap(s => s.data.categories));
   return [...allCats].map(cat => ({
     params: { category: cat.toLowerCase().replace(/\s+/g, '-') },
-    props: { cat, stories: stories.filter(s => s.data.categories.includes(cat)).sort((a, b) => {
-      const da = a.data.date ? new Date(a.data.date).getTime() : 0;
-      const db = b.data.date ? new Date(b.data.date).getTime() : 0;
-      return db - da;
-    })},
+    props: { cat, stories: stories.filter(s => s.data.categories.includes(cat)).sort((a, b) => a.data.order - b.data.order)},
   }));
 }
 

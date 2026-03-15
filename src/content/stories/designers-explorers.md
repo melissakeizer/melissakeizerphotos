@@ -2,6 +2,7 @@
 title: "DESIGNERS/EXPLORERS"
 subtitle: null
 date: "December 11th, 2014"
+order: 34
 categories: []
 coverImage: "/photos/designers-explorers/000-photo.jpg"
 photos:

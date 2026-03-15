@@ -2,6 +2,7 @@
 title: "Roaming Rome"
 subtitle: null
 date: "December 30th, 2016"
+order: 26
 categories: []
 coverImage: "/photos/roaming-rome/000-photo.jpg"
 photos:

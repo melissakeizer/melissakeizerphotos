@@ -2,6 +2,7 @@
 title: "Electric Pup"
 subtitle: null
 date: null
+order: 19
 categories: []
 coverImage: "/photos/electric-pup/000-ph_fljeuilmkre5rlsa.jpg"
 photos:

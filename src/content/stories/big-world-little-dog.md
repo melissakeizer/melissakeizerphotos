@@ -2,6 +2,7 @@
 title: "Big World, Little Dog"
 subtitle: null
 date: "February 2nd, 2013"
+order: 42
 categories: []
 coverImage: "/photos/big-world-little-dog/000-photo.jpg"
 photos:

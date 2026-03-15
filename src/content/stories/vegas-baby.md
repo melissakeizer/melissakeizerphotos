@@ -2,6 +2,7 @@
 title: "Vegas, Baby"
 subtitle: null
 date: "December 21st, 2020"
+order: 4
 categories: []
 coverImage: "/photos/vegas-baby/000-photo.jpg"
 photos:

@@ -2,6 +2,7 @@
 title: "An Afternoon with Angus"
 subtitle: null
 date: "November 10th, 2020"
+order: 6
 categories: []
 coverImage: "/photos/an-afternoon-with-angus/000-photo.jpg"
 photos:

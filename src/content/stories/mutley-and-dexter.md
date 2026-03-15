@@ -2,6 +2,7 @@
 title: "Mutley & Dexter"
 subtitle: null
 date: "May 25th, 2016"
+order: 28
 categories: []
 coverImage: "/photos/mutley-and-dexter/000-photo.jpg"
 photos:

@@ -2,6 +2,7 @@
 title: "Boo the British Blue"
 subtitle: null
 date: null
+order: 7
 categories: []
 coverImage: "/photos/boo-the-british-blue/000-ph_ab10qrw26lgh1kte.jpg"
 photos:

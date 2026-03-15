@@ -2,6 +2,7 @@
 title: "Buffy & Tess"
 subtitle: null
 date: "October 21st, 2017"
+order: 23
 categories: []
 coverImage: "/photos/buffy-tess/000-photo.jpg"
 photos:

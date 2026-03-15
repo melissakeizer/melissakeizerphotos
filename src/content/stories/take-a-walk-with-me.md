@@ -2,6 +2,7 @@
 title: "TAKE A WALK WITH ME"
 subtitle: null
 date: "November 24th, 2014"
+order: 35
 categories: []
 coverImage: "/photos/take-a-walk-with-me/000-photo.jpg"
 photos:

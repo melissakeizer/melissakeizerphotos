@@ -2,6 +2,7 @@
 title: "Playtime with Bubba"
 subtitle: null
 date: "February 19th, 2016"
+order: 29
 categories: []
 coverImage: "/photos/playtime-with-bubba/000-photo.jpg"
 photos:

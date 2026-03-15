@@ -2,6 +2,7 @@
 title: "Cat Colony of Cala Bona"
 subtitle: null
 date: "September 24th, 2015"
+order: 30
 categories: []
 coverImage: "/photos/cat-colony-of-cala-bona/000-photo.jpg"
 photos:

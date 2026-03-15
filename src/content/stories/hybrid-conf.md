@@ -2,6 +2,7 @@
 title: "Hybrid Conf"
 subtitle: null
 date: "August 27th, 2015"
+order: 31
 categories: []
 coverImage: "/photos/hybrid-conf/000-photo.jpg"
 photos:

@@ -2,6 +2,7 @@
 title: "Barks & Bows"
 subtitle: null
 date: "August 17th, 2019"
+order: 14
 categories: []
 coverImage: "/photos/barks-and-bows/000-photo.jpg"
 photos:

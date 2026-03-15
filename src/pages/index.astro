@@ -5,12 +5,8 @@ import { getCollection } from 'astro:content';
 const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
 const stories = await getCollection('stories');
 
-// Sort by date descending (stories with no date go last)
-const sorted = stories.sort((a, b) => {
-  const da = a.data.date ? new Date(a.data.date).getTime() : 0;
-  const db = b.data.date ? new Date(b.data.date).getTime() : 0;
-  return db - da;
-});
+// Sort by explicit order field (matches Exposure.co homepage order)
+const sorted = stories.sort((a, b) => a.data.order - b.data.order);
 ---
 
 <Layout>

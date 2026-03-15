@@ -2,6 +2,7 @@
 title: "The Salty-Dog Dog Show"
 subtitle: null
 date: "August 2nd, 2015"
+order: 32
 categories: []
 coverImage: "/photos/the-saltydog-dog-show/000-photo.jpg"
 photos:

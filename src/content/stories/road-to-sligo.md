@@ -2,6 +2,7 @@
 title: "Road to Sligo"
 subtitle: null
 date: "November 22nd, 2020"
+order: 5
 categories: []
 coverImage: "/photos/road-to-sligo/000-photo.jpg"
 photos:

@@ -2,6 +2,7 @@
 title: "Stablemates"
 subtitle: null
 date: "April 22nd, 2015"
+order: 33
 categories: []
 coverImage: "/photos/stablemates/000-photo.jpg"
 photos:

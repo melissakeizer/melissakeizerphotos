@@ -2,6 +2,7 @@
 title: "Lights"
 subtitle: null
 date: "September 7th, 2014"
+order: 37
 categories: []
 coverImage: "/photos/lights/000-photo.jpg"
 photos:

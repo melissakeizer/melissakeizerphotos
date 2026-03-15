@@ -2,6 +2,7 @@
 title: "Bring Your Dog to Work Day"
 subtitle: null
 date: null
+order: 24
 categories: []
 coverImage: "/photos/bring-your-dog-to-work-day/000-ph_big6jnsqf2s21u4y.jpg"
 photos:

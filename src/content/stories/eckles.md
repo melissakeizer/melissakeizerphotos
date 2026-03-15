@@ -2,6 +2,7 @@
 title: "Meet Eckles"
 subtitle: null
 date: "August 18th, 2019"
+order: 13
 categories: []
 coverImage: "/photos/eckles/000-photo.jpg"
 photos:
