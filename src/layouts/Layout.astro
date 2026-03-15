@@ -7,7 +7,7 @@ interface Props {
   image?: string;
 }
 
-const base = import.meta.env.BASE_URL;
+const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
 const { title = 'Photography by Melissa Keizer', description = 'Freelance pet & event photographer based in Bangor, Northern Ireland.', image } = Astro.props;
 const fullTitle = title === 'Photography by Melissa Keizer' ? title : `${title} — Melissa Keizer Photography`;
 ---
