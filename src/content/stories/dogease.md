@@ -3,6 +3,7 @@ title: "Dogease"
 subtitle: null
 date: null
 order: 22
+type: "gallery"
 categories: []
 coverImage: "/photos/dogease/000-ph_f9ux66noqfw3q7fw.jpg"
 photos:
@@ -20,6 +21,6 @@ photos:
   - "/photos/dogease/012-ph_8wkx4mym4ecrg7fo.jpg"
   - "/photos/dogease/013-ph_t0kibjy35mrtzirp.jpg"
   - "/photos/dogease/014-ph_hrcn9bo10we3sg4p.jpg"
-description: "Exposure gives you a beautiful website for your photos. It’s also a community of passionate photographers and storytellers. Join us."
+description: "Earlier this year I worked with a brand named Dogease to raise awareness for their new product - a medical suit for dogs. The suit is made from bamboo fibre so it is breathable and naturally anti-bacterial, making it a great alternative to the dreaded cone dogs are usually made to wear after an operation. I used my own little mutt Matisse and my neighbour's dog Buffy as models to illustrate how the suit lets them run, play and generally be themselves."
 footnotes: null
 ---

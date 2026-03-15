@@ -3,6 +3,7 @@ title: "Candy & Basil"
 subtitle: null
 date: null
 order: 27
+type: "gallery"
 categories: []
 coverImage: "/photos/candy-basil/000-ph_o1wlp3c7hch08c7h.jpg"
 photos:
@@ -22,6 +23,6 @@ photos:
   - "/photos/candy-basil/014-ph_eat8cgtzj9qswrpg.jpg"
   - "/photos/candy-basil/015-ph_ou95j4jbfdqdyw31.jpg"
   - "/photos/candy-basil/016-ph_dbcauku4jnadetbj.jpg"
-description: "photos, photography, stories, storytelling, photo essay, photo sharing, photo website, gallery, galleries"
+description: "A few photos my pet photo session with these two adorable faces. Meet Candy and Basil the Pembroke Corgis. I spent a couple of hours taking photos of them in Castle Park with their lovely owners, Kerry and James.. The autumnal colours in the park and the flowers in the Walled Garden made for some pretty pictures."
 footnotes: null
 ---

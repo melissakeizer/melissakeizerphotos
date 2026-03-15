@@ -8,6 +8,7 @@ const stories = defineCollection({
     subtitle: z.string().optional().nullable(),
     date: z.string().optional().nullable(),
     order: z.number().default(999),
+    type: z.enum(['story', 'gallery']).default('gallery'),
     categories: z.array(z.string()).default([]),
     coverImage: z.string().optional().nullable(),
     photos: z.array(z.string()).default([]),

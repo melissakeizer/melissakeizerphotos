@@ -3,6 +3,7 @@ title: "Sky & Odin"
 subtitle: null
 date: null
 order: 2
+type: "gallery"
 categories: []
 coverImage: "/photos/sky-odin/000-ph_log7wlnpvdpmhx0i.jpg"
 photos:
@@ -20,6 +21,6 @@ photos:
   - "/photos/sky-odin/012-ph_tmoey0miter1a5ml.jpg"
   - "/photos/sky-odin/013-ph_tbb1gbzl2o07tht9.jpg"
   - "/photos/sky-odin/014-ph_343n7u5pjyn1emdt.jpg"
-description: "photos, photography, stories, storytelling, photo essay, photo sharing, photo website, gallery, galleries"
+description: "My pet photoshoot with two adorable, fluffy clouds in Cairn Wood. These two Samoyed siblings were so fun work with — who doesn't love a big sammy smile? 😊"
 footnotes: null
 ---

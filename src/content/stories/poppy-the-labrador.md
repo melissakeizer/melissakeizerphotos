@@ -3,6 +3,7 @@ title: "Poppy the Labrador"
 subtitle: null
 date: null
 order: 18
+type: "gallery"
 categories: []
 coverImage: "/photos/poppy-the-labrador/000-ph_evixvkkr0692ofiz.jpg"
 photos:
@@ -21,6 +22,6 @@ photos:
   - "/photos/poppy-the-labrador/013-ph_9vmyoheudpb423wf.jpg"
   - "/photos/poppy-the-labrador/014-ph_9pob0gmnlgempraz.jpg"
   - "/photos/poppy-the-labrador/015-ph_39z8iid601gm9lny.jpg"
-description: "Exposure gives you a beautiful website for your photos. It’s also a community of passionate photographers and storytellers. Join us."
+description: "Earlier this year I photograhed, Poppy the Chocolate Labrador. She loved the water so was very keen to jump right into the streams and the sea at Crawfordsburn.  She definitely won me over with her sweet smile and the high fives she was throwing out when I offered her treats! 😁💙"
 footnotes: null
 ---

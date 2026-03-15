@@ -3,6 +3,7 @@ title: "My Crufts Experience 2017"
 subtitle: null
 date: null
 order: 20
+type: "gallery"
 categories: []
 coverImage: "/photos/my-crufts-experience-2017/000-ph_alyga55n2gr50wdk.jpg"
 photos:
@@ -47,6 +48,6 @@ photos:
   - "/photos/my-crufts-experience-2017/039-ph_7sfc52eusv2exqtv.jpg"
   - "/photos/my-crufts-experience-2017/040-ph_y6ek6o7skhefu364.jpg"
   - "/photos/my-crufts-experience-2017/041-ph_whqni08ibc27c0ej.jpg"
-description: "photos, photography, stories, storytelling, photo essay, photo sharing, photo website, gallery, galleries"
+description: "Last year I fulfilled a dream of mine by attending Crufts, the world's largest dog show, for the first time. It did not disappoint, never had I cuddled so many dogs and met such a wide variety of breeds. It was an absolute dream! I couldn't resist the opportunity to attend again this year, so I'll be there with a friend on Saturday and can't wait to meet (and photograph) even more dogs."
 footnotes: null
 ---

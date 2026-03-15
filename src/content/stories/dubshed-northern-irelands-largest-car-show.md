@@ -3,6 +3,7 @@ title: "Dubshed - Northern Ireland's Largest Car Show"
 subtitle: null
 date: null
 order: 1
+type: "gallery"
 categories: []
 coverImage: "/photos/dubshed-northern-irelands-largest-car-show/000-ph_jg9l8ba69uqazrny.jpg"
 photos:
@@ -30,6 +31,6 @@ photos:
   - "/photos/dubshed-northern-irelands-largest-car-show/022-ph_kktw3zobcna0077q.jpg"
   - "/photos/dubshed-northern-irelands-largest-car-show/023-ph_eih8baeo75ge38c1.jpg"
   - "/photos/dubshed-northern-irelands-largest-car-show/024-ph_oujzxr43d4z5u8y8.jpg"
-description: "Exposure gives you a beautiful website for your photos. It’s also a community of passionate photographers and storytellers. Join us."
+description: "Photos from my venture around GTNI's Dubshed held at Eikon Exhibition Centre in April 2023."
 footnotes: null
 ---

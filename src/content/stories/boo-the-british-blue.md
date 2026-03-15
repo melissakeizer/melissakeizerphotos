@@ -3,6 +3,7 @@ title: "Boo the British Blue"
 subtitle: null
 date: null
 order: 7
+type: "gallery"
 categories: []
 coverImage: "/photos/boo-the-british-blue/000-ph_ab10qrw26lgh1kte.jpg"
 photos:
@@ -18,6 +19,6 @@ photos:
   - "/photos/boo-the-british-blue/010-ph_fjys78onla99tpkq.jpg"
   - "/photos/boo-the-british-blue/011-ph_v29fviv1qqqqycac.jpg"
   - "/photos/boo-the-british-blue/012-ph_8a4a4ibpctti21h6.jpg"
-description: "photos, photography, stories, storytelling, photo essay, photo sharing, photo website, gallery, galleries"
+description: "A friend of mine adopted this gorgeous little British Shorthair kitten. At only 4 months old he's a little rascal and utterly adorable."
 footnotes: null
 ---

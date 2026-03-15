@@ -3,6 +3,7 @@ title: "The Lunatinks"
 subtitle: null
 date: null
 order: 25
+type: "gallery"
 categories: []
 coverImage: "/photos/the-lunatinks/000-ph_c7qen1f07jgcm13n.jpg"
 photos:
@@ -26,6 +27,6 @@ photos:
   - "/photos/the-lunatinks/018-ph_q1ik0pmrvsal8r3j.jpg"
   - "/photos/the-lunatinks/019-ph_22hsjs23xuzwj187.jpg"
   - "/photos/the-lunatinks/020-ph_8mnelu5bcns94yob.jpg"
-description: "Exposure gives you a beautiful website for your photos. It’s also a community of passionate photographers and storytellers. Join us."
+description: "Cuddling eight adorable puppies isn't a bad way to spend a Sunday afternoon... Meet the Lunatinks! Their collective nickname comes from their gorgeous Australian Shepherd parents, Luna and Tinker. They're only 4 weeks old and already have their own unique personalities and quirks!"
 footnotes: null
 ---

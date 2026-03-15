@@ -3,6 +3,7 @@ title: "World of Owls"
 subtitle: null
 date: null
 order: 9
+type: "gallery"
 categories: []
 coverImage: "/photos/world-of-owls/000-ph_cx6naxldchpn937x.jpg"
 photos:
@@ -27,6 +28,6 @@ photos:
   - "/photos/world-of-owls/019-ph_hzs20ofld3mn6hhm.jpg"
   - "/photos/world-of-owls/020-ph_sy00508dgjvmo5c2.jpg"
   - "/photos/world-of-owls/021-ph_glmdty8ywq5f1hu2.jpg"
-description: "photos, photography, stories, storytelling, photo essay, photo sharing, photo website, gallery, galleries"
+description: "A few photos from my recent trip to World of Owls with Mikey.  I was eager give my new lens (Sony 70-200 f/4) a proper go. The sanctuary is home to many birds of prey, including the Peregrine Falcon, Harris Hawk and Great Grey Owl pictured. 🦉🦅 It was also lovely to see a herd of Fallow Deer nestled under the trees nearby. 🦌"
 footnotes: null
 ---

@@ -3,6 +3,7 @@ title: "Buffy & Tess"
 subtitle: null
 date: "October 21st, 2017"
 order: 23
+type: "story"
 categories: []
 coverImage: "/photos/buffy-tess/000-photo.jpg"
 photos:
@@ -25,3 +26,4 @@ photos:
 description: "Pet photography session with Buffy and Tess"
 footnotes: null
 ---
+[{"title":null,"text":"<p>Meet Buffy and Tess., the photogenic pair I had fun photographing in the sunshine.</p>","photos":["/photos/buffy-tess/001-yxnonnsljvr1i4nzi66u8blg494q2qdino1z.jpg","/photos/buffy-tess/002-woqr3bv7uiid8p9l12zwneqyaxpwdcai112c.jpg"]},{"title":null,"text":"<p>I've known these two ever since their owner Julie adopted them. In fact, I was their neighbour until only last year. These two girls are not only special to their family, but to me as well, so it was great to get the opportunity to capture their happy faces on camera.</p>","photos":["/photos/buffy-tess/003-5k5a4v1yea5m5cw7xbgy3jwmco3dp1it264b.jpg"]},{"title":null,"text":"<p>Tess turned fifteen years old this year and still acts like a pup!</p>","photos":["/photos/buffy-tess/004-y85epb9vr1de37d1msdwv3mqhtkgcqhuocdu.jpg"]},{"title":null,"text":"<p>Buffy the Irish Terrier with those amazing ears is so loving and affectionate. </p>","photos":["/photos/buffy-tess/005-an1js9j9balpt08rsv730hwys9ndeemjmzda.jpg","/photos/buffy-tess/006-sjx86kpkaojovyn5138as44f1uqraeixnuhm.jpg","/photos/buffy-tess/007-3qao3apu210qq7u2kqv6jl6nwwtz0mu1m5ge.jpg"]},{"title":null,"text":"","photos":["/photos/buffy-tess/008-pd6eu2gnkdoxearc8r2h5lrqg0d9mkkjs04z.jpg","/photos/buffy-tess/009-4z2e0tk0mtmk5stq8gds0gsvazay3ux4npit.jpg"]},{"title":null,"text":"<p>We spent time together in Bangor's Castle Park and The Walled Garden to capture their personalities with so many lovely backdrops to frame them. </p>","photos":["/photos/buffy-tess/010-ofh3pcu78zqcvn31cgw2zrb73mupj9u7pz07.jpg","/photos/buffy-tess/011-yfxshdb1d3e1g5hra9kw5bp9tys26aars3zy.jpg","/photos/buffy-tess/012-77l97g1vwf81dfcgkf7osr63qtcg23az78vl.jpg","/photos/buffy-tess/013-fr8mr4mkecjlryr4qx8pphy7fcrfzpygomal.jpg"]},{"title":null,"text":"<p>I had a blast and I think they did too. </p>","photos":["/photos/buffy-tess/014-yng6opfnoykozxkd3t6pljbgm8nl9st9z4sv.jpg"]}]

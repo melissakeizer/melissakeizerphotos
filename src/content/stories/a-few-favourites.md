@@ -3,6 +3,7 @@ title: "A Few Favourites"
 subtitle: null
 date: null
 order: 11
+type: "gallery"
 categories: []
 coverImage: "/photos/a-few-favourites/000-ph_rqgkaj9pp8ai89rx.jpg"
 photos:
@@ -31,6 +32,6 @@ photos:
   - "/photos/a-few-favourites/023-ph_ccunyb9bhbylrpc9.jpg"
   - "/photos/a-few-favourites/024-ph_m2uni5saszfegpx5.jpg"
   - "/photos/a-few-favourites/025-ph_bl7hhtq3p94wtsef.jpg"
-description: "photos, photography, stories, storytelling, photo essay, photo sharing, photo website, gallery, galleries"
+description: "Here's a selection of photos I've taken over the last few years, some client work, some personal. A portfolio of sorts. While animal photography is my main passion, I've also loved shooting live concerts and delving into other areas of photography like landscapes and food. If you'd like to work with me on a photography project get in touch! You can send an email to hi@melissakeizer.com or tweet @KeizGoesBoom. ✌🏻"
 footnotes: null
 ---

@@ -16,23 +16,44 @@ interface Props {
   story: CollectionEntry<'stories'>;
 }
 
-const { story } = Astro.props;
-const { data } = story;
-const cover = data.coverImage || data.photos[0];
+interface Section {
+  title: string | null;
+  text: string;
+  photos: string[];
+}
 
-// All photos excluding the cover to avoid duplication in gallery
-const galleryPhotos = data.coverImage
-  ? data.photos
-  : data.photos.slice(1);
+const { story } = Astro.props;
+const { data, body } = story;
+const cover = data.coverImage || data.photos[0];
+const isStory = data.type === 'story';
+
+// Parse sections from markdown body for story type posts
+let sections: Section[] = [];
+if (isStory && body && body.trim()) {
+  try {
+    sections = JSON.parse(body.trim());
+  } catch {
+    sections = [];
+  }
+}
+
+// For gallery type: all photos excluding cover
+const galleryPhotos = data.coverImage ? data.photos : data.photos.slice(1);
+
+function photoUrl(path: string) {
+  return `${base}${path.replace(/^\//, '')}`;
+}
 ---
 
-<Layout title={data.title} description={data.description || undefined} image={cover ? `${base}${cover.replace(/^\//, '')}` : undefined}>
+<Layout title={data.title} description={data.description || undefined} image={cover ? photoUrl(cover) : undefined}>
   {cover && (
-    <img
-      class="story-hero"
-      src={`${base}${cover.replace(/^\//, '')}`}
-      alt={data.title}
-    />
+    <div class="story-hero-wrapper">
+      <img
+        class="story-hero"
+        src={photoUrl(cover)}
+        alt={data.title}
+      />
+    </div>
   )}
 
   <div class="story-page">
@@ -49,42 +70,117 @@ const galleryPhotos = data.coverImage
       <hr class="story-divider" />
     </header>
 
-    {data.description && (
-      <div class="story-body">
-        <p>{data.description}</p>
-      </div>
+    {/* ── GALLERY LAYOUT ──────────────────────────────────────────────── */}
+    {!isStory && (
+      <>
+        {data.description && (
+          <div class="story-intro">
+            <p>{data.description}</p>
+          </div>
+        )}
+
+        {galleryPhotos.length > 0 && (
+          <div class="masonry-gallery" id="gallery">
+            {galleryPhotos.map((photo, i) => (
+              <div
+                class="masonry-gallery__item"
+                data-index={i}
+                data-src={photoUrl(photo)}
+                role="button"
+                tabindex="0"
+                aria-label={`View photo ${i + 1}`}
+              >
+                <img
+                  src={photoUrl(photo)}
+                  alt={`${data.title} — photo ${i + 1}`}
+                  loading={i < 6 ? 'eager' : 'lazy'}
+                  decoding="async"
+                />
+              </div>
+            ))}
+          </div>
+        )}
+      </>
     )}
 
-    {galleryPhotos.length > 0 && (
-      <div class="photo-gallery" id="gallery">
-        {galleryPhotos.map((photo, i) => (
-          <div
-            class="photo-gallery__item"
-            data-index={i}
-            data-src={`${base}${photo.replace(/^\//, '')}`}
-            role="button"
-            tabindex="0"
-            aria-label={`View photo ${i + 1}`}
-          >
-            <img
-              src={`${base}${photo.replace(/^\//, '')}`}
-              alt={`${data.title} — photo ${i + 1}`}
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
-        ))}
-      </div>
+    {/* ── STORY LAYOUT ────────────────────────────────────────────────── */}
+    {isStory && (
+      <>
+        {sections.length > 0 ? (
+          <article class="story-article">
+            {sections.map((section) => (
+              <section class="story-section">
+                {section.title && (
+                  <h2 class="story-section__title">{section.title}</h2>
+                )}
+                {section.text && (
+                  <div class="story-section__text" set:html={section.text} />
+                )}
+                {section.photos && section.photos.length > 0 && (
+                  <div class={`story-section__photos story-section__photos--${section.photos.length > 1 ? 'pair' : 'single'}`}>
+                    {section.photos.map((photo, i) => (
+                      <div
+                        class="story-section__photo-item"
+                        data-src={photoUrl(photo)}
+                        role="button"
+                        tabindex="0"
+                        aria-label={`View photo`}
+                      >
+                        <img
+                          src={photoUrl(photo)}
+                          alt={section.title || data.title}
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </section>
+            ))}
+          </article>
+        ) : (
+          /* Fallback if sections not extracted */
+          <>
+            {data.description && (
+              <div class="story-intro"><p>{data.description}</p></div>
+            )}
+            {galleryPhotos.length > 0 && (
+              <div class="masonry-gallery" id="gallery">
+                {galleryPhotos.map((photo, i) => (
+                  <div
+                    class="masonry-gallery__item"
+                    data-index={i}
+                    data-src={photoUrl(photo)}
+                    role="button"
+                    tabindex="0"
+                    aria-label={`View photo ${i + 1}`}
+                  >
+                    <img
+                      src={photoUrl(photo)}
+                      alt={`${data.title} — photo ${i + 1}`}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
+        )}
+      </>
     )}
 
     {data.footnotes && (
       <aside class="story-footnotes">
+        <hr class="story-divider" />
+        <h4 class="story-footnotes__title">Footnotes</h4>
         <p>{data.footnotes}</p>
       </aside>
     )}
   </div>
 
-  <!-- Lightbox -->
+  <!-- Lightbox (shared by both layouts) -->
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
     <button class="lightbox__close" id="lightbox-close" aria-label="Close">&times;</button>
     <button class="lightbox__prev" id="lightbox-prev" aria-label="Previous photo">&#8249;</button>
@@ -94,50 +190,54 @@ const galleryPhotos = data.coverImage
 </Layout>
 
 <script>
-  const gallery = document.getElementById('gallery');
+  // Collect all clickable photo items regardless of layout
+  const allItems = Array.from(
+    document.querySelectorAll<HTMLElement>('.masonry-gallery__item, .story-section__photo-item')
+  );
+
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
   const closeBtn = document.getElementById('lightbox-close');
   const prevBtn = document.getElementById('lightbox-prev');
   const nextBtn = document.getElementById('lightbox-next');
 
-  if (!gallery || !lightbox || !lightboxImg) throw new Error('Missing elements');
+  if (!lightbox || !lightboxImg || allItems.length === 0) {
+    // nothing to wire up
+  } else {
+    let current = 0;
 
-  const items = Array.from(gallery.querySelectorAll<HTMLElement>('.photo-gallery__item'));
-  let current = 0;
+    function openAt(index: number) {
+      current = index;
+      const src = allItems[current].dataset.src || '';
+      lightboxImg.src = src;
+      lightboxImg.alt = allItems[current].querySelector('img')?.alt || '';
+      lightbox!.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
 
-  function openAt(index: number) {
-    current = index;
-    const src = items[current].dataset.src || '';
-    lightboxImg.src = src;
-    lightboxImg.alt = items[current].querySelector('img')?.alt || '';
-    lightbox!.classList.add('is-open');
-    document.body.style.overflow = 'hidden';
+    function close() {
+      lightbox!.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+
+    function prev() { openAt((current - 1 + allItems.length) % allItems.length); }
+    function next() { openAt((current + 1) % allItems.length); }
+
+    allItems.forEach((item, i) => {
+      item.addEventListener('click', () => openAt(i));
+      item.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') openAt(i); });
+    });
+
+    closeBtn?.addEventListener('click', close);
+    prevBtn?.addEventListener('click', prev);
+    nextBtn?.addEventListener('click', next);
+    lightbox.addEventListener('click', (e) => { if (e.target === lightbox) close(); });
+
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('is-open')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowLeft') prev();
+      if (e.key === 'ArrowRight') next();
+    });
   }
-
-  function close() {
-    lightbox!.classList.remove('is-open');
-    document.body.style.overflow = '';
-  }
-
-  function prev() { openAt((current - 1 + items.length) % items.length); }
-  function next() { openAt((current + 1) % items.length); }
-
-  items.forEach((item, i) => {
-    item.addEventListener('click', () => openAt(i));
-    item.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') openAt(i); });
-  });
-
-  closeBtn?.addEventListener('click', close);
-  prevBtn?.addEventListener('click', prev);
-  nextBtn?.addEventListener('click', next);
-
-  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) close(); });
-
-  document.addEventListener('keydown', (e) => {
-    if (!lightbox.classList.contains('is-open')) return;
-    if (e.key === 'Escape') close();
-    if (e.key === 'ArrowLeft') prev();
-    if (e.key === 'ArrowRight') next();
-  });
 </script>

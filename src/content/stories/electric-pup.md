@@ -3,6 +3,7 @@ title: "Electric Pup"
 subtitle: null
 date: null
 order: 19
+type: "gallery"
 categories: []
 coverImage: "/photos/electric-pup/000-ph_fljeuilmkre5rlsa.jpg"
 photos:
@@ -17,6 +18,6 @@ photos:
   - "/photos/electric-pup/009-ph_vpuut7b9y83o7a1z.jpg"
   - "/photos/electric-pup/010-ph_y0r26o4lyipcihnr.jpg"
   - "/photos/electric-pup/011-ph_et1oaqenykf3orb6.jpg"
-description: "photos, photography, stories, storytelling, photo essay, photo sharing, photo website, gallery, galleries"
+description: "This year I’ve been working with the lovely people behind local dog accessory company @electric_pup as they prepared to launch their online store. 🤗We got together to photograph a lot of dogs, many of which were French Bulldogs and Pugs who seem to have the whole modelling thing nailed. 🐕Check out the crew rocking their awesome harnesses, collars and hoodies!⚡️🐶 #squadgoals"
 footnotes: null
 ---
