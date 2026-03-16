@@ -33,6 +33,7 @@ const { story } = Astro.props;
 const { data, body } = story;
 const cover = data.coverImage || data.photos[0];
 const isStory = data.type === 'story';
+const coverStyle = data.coverStyle ?? 'full';
 
 // Parse sections from markdown body for story type posts
 let sections: Section[] = [];
@@ -54,11 +55,11 @@ async function getAspectRatio(photoPath: string): Promise<number> {
   return 1.5; // fallback: landscape 3:2
 }
 
-// Precompute ratios for all photos used in justified flex layouts (pair, trio)
+// Precompute ratios for all photos used in justified flex layouts (pair, trio, penta)
 const photoRatios = new Map<string, number>();
 for (const section of sections) {
   const count = section.photos.length;
-  if (count === 2 || count === 3) {
+  if (count === 2 || count === 3 || count === 5) {
     for (const photo of section.photos) {
       if (!photoRatios.has(photo)) {
         photoRatios.set(photo, await getAspectRatio(photo));
@@ -100,12 +101,16 @@ function photoLayoutClass(count: number) {
   if (count === 2) return 'pair';
   if (count === 3) return 'trio';
   if (count === 4) return 'quad';
+  if (count === 5) return 'penta';
   return 'multi';
 }
 ---
 
-<Layout title={data.title} description={data.description || undefined} image={cover ? photoUrl(cover) : undefined}>
-  {cover && (
+<Layout title={data.title} description={data.description || undefined} image={cover ? photoUrl(cover) : undefined} theme={data.theme ?? 'light'} hideNav={true}>
+  <a class="story-home-btn" href={base} aria-label="Home">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/><polyline points="9 21 9 12 15 12 15 21"/></svg>
+  </a>
+  {cover && coverStyle === 'full' && (
     <div class="story-hero-wrapper">
       <img
         class="story-hero"
@@ -123,6 +128,37 @@ function photoLayoutClass(count: number) {
               <a href={`${base}categories/${cat.toLowerCase().replace(/\s+/g, '-')}`}>{cat}</a>
             ))}
           </div>
+        </div>
+      </div>
+    </div>
+  )}
+
+  {cover && coverStyle === 'split' && (
+    <div class="story-hero-wrapper story-hero-wrapper--split">
+      <div class="story-hero-split__photo">
+        <img src={photoUrl(cover)} alt={data.title} />
+      </div>
+      <div class="story-hero-split__content">
+        <a class="story-hero__back" href={base}>← All Stories</a>
+        <div class="story-hero-split__body">
+          <h1 class="story-hero-split__title">{data.title}</h1>
+          {data.subtitle && <p class="story-hero-split__subtitle">{data.subtitle}</p>}
+          {(data.date || data.categories.length > 0) && (
+            <div class="story-hero__meta" style="justify-content: flex-start;">
+              {data.date && <span>{data.date}</span>}
+              {data.categories.map(cat => (
+                <a href={`${base}categories/${cat.toLowerCase().replace(/\s+/g, '-')}`}>{cat}</a>
+              ))}
+            </div>
+          )}
+        </div>
+        <div class="story-hero-split__author">
+          <img
+            class="story-hero-split__author-stamp"
+            src={`${base}melissa-keizer-logo-icon.svg`}
+            alt="Melissa Keizer Photography"
+          />
+          <span class="story-hero-split__author-label">By <strong>Melissa Keizer</strong></span>
         </div>
       </div>
     </div>
@@ -220,6 +256,36 @@ function photoLayoutClass(count: number) {
                 {section.photos && section.photos.length > 0 && (() => {
                   const layout = photoLayoutClass(section.photos.length);
                   const useFlexRatio = layout === 'pair' || layout === 'trio';
+
+                  if (layout === 'penta') {
+                    const rows = [section.photos.slice(0, 3), section.photos.slice(3)];
+                    return (
+                      <div class="story-section__photos story-section__photos--penta">
+                        {rows.map((row) => (
+                          <div class="penta-row">
+                            {row.map((photo) => (
+                              <div
+                                class="story-section__photo-item"
+                                data-src={photoUrl(photo)}
+                                role="button"
+                                tabindex="0"
+                                aria-label="View photo"
+                                style={`flex: ${photoRatios.get(photo) ?? 1.5} 1 0`}
+                              >
+                                <img
+                                  src={photoUrl(photo)}
+                                  alt={section.title || data.title}
+                                  loading="lazy"
+                                  decoding="async"
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  }
+
                   return (
                     <div class={`story-section__photos story-section__photos--${layout}`}>
                       {section.photos.map((photo) => (

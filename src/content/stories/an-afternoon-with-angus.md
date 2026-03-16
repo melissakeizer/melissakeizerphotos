@@ -6,6 +6,7 @@ order: 6
 type: "story"
 categories: []
 coverImage: "/photos/an-afternoon-with-angus/000-photo.jpg"
+coverStyle: split
 photos:
   - "/photos/an-afternoon-with-angus/001-ufa7n8rfjmg2bb25zu1y9d16jjc3ksx7taoq.jpg"
   - "/photos/an-afternoon-with-angus/002-4wks2klf1861o9r0itx79p5qu4xvs0samfkp.jpg"

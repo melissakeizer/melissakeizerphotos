@@ -14,6 +14,8 @@ const stories = defineCollection({
     photos: z.array(z.string()).default([]),
     description: z.string().optional().nullable(),
     footnotes: z.string().optional().nullable(),
+    coverStyle: z.enum(['full', 'split']).default('full'),
+    theme: z.enum(['light', 'dark']).default('light'),
   }),
 });
 
