@@ -219,7 +219,7 @@ img {
 .story-page {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 0 1.5rem 4rem;
+  padding: 2.5rem 1.5rem 4rem;
 }
 
 .story-page--has-hero {
@@ -442,6 +442,7 @@ img {
 
 .story-section__text p { margin-bottom: 1em; }
 .story-section__text p:last-child { margin-bottom: 0; }
+.story-section__text:not(:last-child) { margin-bottom: 2.5rem; }
 .story-section__text a { text-decoration: underline; color: var(--color-muted); }
 .story-section__text a:hover { color: var(--color-text); }
 
