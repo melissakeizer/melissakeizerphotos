@@ -162,36 +162,49 @@ function photoLayoutClass(count: number) {
     ) : (
       <div class:list={['story-page', { 'story-page--has-hero': cover && chunkIndex === 0 }]}>
         <article class="story-article">
-          {chunk.sections.map((section) => (
-            <section class="story-section">
-              {section.title && (
-                <h2 class="story-section__title">{section.title}</h2>
-              )}
-              {section.text && (
-                <div class="story-section__text" set:html={section.text} />
-              )}
-              {section.photos && section.photos.length > 0 && (
-                <div class={`story-section__photos story-section__photos--${photoLayoutClass(section.photos.length)}`}>
-                  {section.photos.map((photo) => (
-                    <div
-                      class="story-section__photo-item"
-                      data-src={photoUrl(photo)}
-                      role="button"
-                      tabindex="0"
-                      aria-label="View photo"
-                    >
-                      <img
-                        src={photoUrl(photo)}
-                        alt={section.title || data.title}
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    </div>
-                  ))}
+          {chunk.sections.map((section) => {
+            const isSplit = section.photos.length === 1 && !!section.text?.trim();
+            return isSplit ? (
+              <section class="story-section story-section--split">
+                <div class="story-section__photo-item" data-src={photoUrl(section.photos[0])} role="button" tabindex="0" aria-label="View photo">
+                  <img src={photoUrl(section.photos[0])} alt={section.title || data.title} loading="lazy" decoding="async" />
                 </div>
-              )}
-            </section>
-          ))}
+                <div class="story-section__content">
+                  {section.title && <h2 class="story-section__title">{section.title}</h2>}
+                  <div class="story-section__text" set:html={section.text} />
+                </div>
+              </section>
+            ) : (
+              <section class="story-section">
+                {section.title && (
+                  <h2 class="story-section__title">{section.title}</h2>
+                )}
+                {section.text && (
+                  <div class="story-section__text" set:html={section.text} />
+                )}
+                {section.photos && section.photos.length > 0 && (
+                  <div class={`story-section__photos story-section__photos--${photoLayoutClass(section.photos.length)}`}>
+                    {section.photos.map((photo) => (
+                      <div
+                        class="story-section__photo-item"
+                        data-src={photoUrl(photo)}
+                        role="button"
+                        tabindex="0"
+                        aria-label="View photo"
+                      >
+                        <img
+                          src={photoUrl(photo)}
+                          alt={section.title || data.title}
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </section>
+            );
+          })}
         </article>
         {data.footnotes && chunkIndex === chunks.length - 1 && (
           <aside class="story-footnotes">
