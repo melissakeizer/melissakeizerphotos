@@ -73,7 +73,8 @@ function photoLayoutClass(count: number) {
   if (count === 1) return 'single';
   if (count === 2) return 'pair';
   if (count === 3) return 'trio';
-  return 'quad';
+  if (count === 4) return 'quad';
+  return 'multi';
 }
 ---
 

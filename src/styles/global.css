@@ -368,8 +368,7 @@ img {
 
 /* ── STORY LAYOUT (blog sections with interspersed photos) ──────────── */
 .story-article {
-  max-width: 780px;
-  margin: 0 auto;
+  width: 100%;
 }
 
 .story-section {
@@ -385,6 +384,9 @@ img {
   margin-top: 1.5rem;
   margin-bottom: 1.25rem;
   color: var(--color-text);
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .story-section__text {
@@ -393,6 +395,9 @@ img {
   line-height: 1.85;
   color: var(--color-text);
   margin-bottom: 1.5rem;
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .story-section__text p { margin-bottom: 1em; }
@@ -441,12 +446,6 @@ img {
   }
 }
 
-/* Four+ photos in a 2×2 grid */
-.story-section__photos--quad {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.35rem;
-}
 
 /* Scroll-reveal animations (only active once JS adds .is-ready to body) */
 .is-ready .story-section {
@@ -460,19 +459,82 @@ img {
   transform: none;
 }
 
-/* Multi-photo grid items: force consistent height, no black space */
-.story-section__photos--pair .story-section__photo-item,
-.story-section__photos--trio .story-section__photo-item,
-.story-section__photos--quad .story-section__photo-item {
-  aspect-ratio: 3 / 2;
+/* Pair: natural height (portrait photos show tall, landscape fills via cover) */
+.story-section__photos--pair .story-section__photo-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.story-section__photos--pair .story-section__photo-item img,
-.story-section__photos--trio .story-section__photo-item img,
+/* Trio: consistent landscape rows */
+.story-section__photos--trio .story-section__photo-item {
+  aspect-ratio: 4 / 3;
+}
+
+.story-section__photos--trio .story-section__photo-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Quad (exactly 4 photos): 3 across + 1 full-width below */
+.story-section__photos--quad {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.35rem;
+}
+
+.story-section__photos--quad .story-section__photo-item {
+  aspect-ratio: 4 / 3;
+}
+
+.story-section__photos--quad .story-section__photo-item:nth-child(4) {
+  grid-column: 1 / -1;
+  aspect-ratio: 16 / 7;
+}
+
 .story-section__photos--quad .story-section__photo-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* Multi (5+ photos): 3-column grid */
+.story-section__photos--multi {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.35rem;
+}
+
+.story-section__photos--multi .story-section__photo-item {
+  aspect-ratio: 3 / 2;
+}
+
+.story-section__photos--multi .story-section__photo-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 700px) {
+  .story-section__photos--quad,
+  .story-section__photos--multi {
+    grid-template-columns: 1fr 1fr;
+  }
+  .story-section__photos--quad .story-section__photo-item:nth-child(4) {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 420px) {
+  .story-section__photos--quad,
+  .story-section__photos--multi {
+    grid-template-columns: 1fr;
+  }
+  .story-section__photos--quad .story-section__photo-item:nth-child(4) {
+    grid-column: auto;
+    aspect-ratio: 4 / 3;
+  }
 }
 
 .story-section__photo-item {
