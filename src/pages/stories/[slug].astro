@@ -22,6 +22,10 @@ interface Section {
   photos: string[];
 }
 
+type Chunk =
+  | { type: 'separator'; photo: string }
+  | { type: 'article'; sections: Section[] };
+
 const { story } = Astro.props;
 const { data, body } = story;
 const cover = data.coverImage || data.photos[0];
@@ -37,11 +41,39 @@ if (isStory && body && body.trim()) {
   }
 }
 
+// Split sections into article groups and full-bleed separators
+const chunks: Chunk[] = [];
+if (sections.length > 0) {
+  let currentArticle: Section[] = [];
+  for (const section of sections) {
+    const isSep = !section.title && !section.text?.trim() && section.photos.length === 1;
+    if (isSep) {
+      if (currentArticle.length > 0) {
+        chunks.push({ type: 'article', sections: currentArticle });
+        currentArticle = [];
+      }
+      chunks.push({ type: 'separator', photo: section.photos[0] });
+    } else {
+      currentArticle.push(section);
+    }
+  }
+  if (currentArticle.length > 0) {
+    chunks.push({ type: 'article', sections: currentArticle });
+  }
+}
+
 // For gallery type: all photos excluding cover
 const galleryPhotos = data.coverImage ? data.photos : data.photos.slice(1);
 
 function photoUrl(path: string) {
   return `${base}${path.replace(/^\//, '')}`;
+}
+
+function photoLayoutClass(count: number) {
+  if (count === 1) return 'single';
+  if (count === 2) return 'pair';
+  if (count === 3) return 'trio';
+  return 'quad';
 }
 ---
 
@@ -53,132 +85,139 @@ function photoUrl(path: string) {
         src={photoUrl(cover)}
         alt={data.title}
       />
+      <div class="story-hero__overlay">
+        <a class="story-hero__back" href={base}>← All Stories</a>
+        <div class="story-hero__content">
+          <h1 class="story-hero__title">{data.title}</h1>
+          {data.subtitle && <p class="story-hero__subtitle">{data.subtitle}</p>}
+          <div class="story-hero__meta">
+            {data.date && <span>{data.date}</span>}
+            {data.categories.map(cat => (
+              <a href={`${base}categories/${cat.toLowerCase().replace(/\s+/g, '-')}`}>{cat}</a>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   )}
 
-  <div class="story-page">
-    <header class="story-header">
-      <a class="story-header__back" href={base}>← All Stories</a>
-      <h1 class="story-header__title">{data.title}</h1>
-      {data.subtitle && <p class="story-header__subtitle">{data.subtitle}</p>}
-      <div class="story-header__meta">
-        {data.date && <span>{data.date}</span>}
-        {data.categories.map(cat => (
-          <a href={`${base}categories/${cat.toLowerCase().replace(/\s+/g, '-')}`}>{cat}</a>
-        ))}
+  {/* ── GALLERY LAYOUT ──────────────────────────────────────────────── */}
+  {!isStory && (
+    <div class="story-page">
+      {(!cover) && (
+        <header class="story-header">
+          <a class="story-header__back" href={base}>← All Stories</a>
+          <h1 class="story-header__title">{data.title}</h1>
+          {data.subtitle && <p class="story-header__subtitle">{data.subtitle}</p>}
+          <div class="story-header__meta">
+            {data.date && <span>{data.date}</span>}
+            {data.categories.map(cat => (
+              <a href={`${base}categories/${cat.toLowerCase().replace(/\s+/g, '-')}`}>{cat}</a>
+            ))}
+          </div>
+          <hr class="story-divider" />
+        </header>
+      )}
+      {data.description && (
+        <div class="story-intro">
+          <p>{data.description}</p>
+        </div>
+      )}
+      {galleryPhotos.length > 0 && (
+        <div class="masonry-gallery" id="gallery">
+          {galleryPhotos.map((photo, i) => (
+            <div
+              class="masonry-gallery__item"
+              data-index={i}
+              data-src={photoUrl(photo)}
+              role="button"
+              tabindex="0"
+              aria-label={`View photo ${i + 1}`}
+            >
+              <img
+                src={photoUrl(photo)}
+                alt={`${data.title} — photo ${i + 1}`}
+                loading={i < 6 ? 'eager' : 'lazy'}
+                decoding="async"
+              />
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )}
+
+  {/* ── STORY LAYOUT ────────────────────────────────────────────────── */}
+  {isStory && chunks.length > 0 && chunks.map((chunk, chunkIndex) => (
+    chunk.type === 'separator' ? (
+      <div class="story-separator">
+        <img
+          src={photoUrl(chunk.photo)}
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
       </div>
-      <hr class="story-divider" />
-    </header>
-
-    {/* ── GALLERY LAYOUT ──────────────────────────────────────────────── */}
-    {!isStory && (
-      <>
-        {data.description && (
-          <div class="story-intro">
-            <p>{data.description}</p>
-          </div>
+    ) : (
+      <div class:list={['story-page', { 'story-page--has-hero': cover && chunkIndex === 0 }]}>
+        <article class="story-article">
+          {chunk.sections.map((section) => (
+            <section class="story-section">
+              {section.title && (
+                <h2 class="story-section__title">{section.title}</h2>
+              )}
+              {section.text && (
+                <div class="story-section__text" set:html={section.text} />
+              )}
+              {section.photos && section.photos.length > 0 && (
+                <div class={`story-section__photos story-section__photos--${photoLayoutClass(section.photos.length)}`}>
+                  {section.photos.map((photo) => (
+                    <div
+                      class="story-section__photo-item"
+                      data-src={photoUrl(photo)}
+                      role="button"
+                      tabindex="0"
+                      aria-label="View photo"
+                    >
+                      <img
+                        src={photoUrl(photo)}
+                        alt={section.title || data.title}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </section>
+          ))}
+        </article>
+        {data.footnotes && chunkIndex === chunks.length - 1 && (
+          <aside class="story-footnotes">
+            <hr class="story-divider" />
+            <h4 class="story-footnotes__title">Footnotes</h4>
+            <p>{data.footnotes}</p>
+          </aside>
         )}
+      </div>
+    )
+  ))}
 
-        {galleryPhotos.length > 0 && (
-          <div class="masonry-gallery" id="gallery">
-            {galleryPhotos.map((photo, i) => (
-              <div
-                class="masonry-gallery__item"
-                data-index={i}
-                data-src={photoUrl(photo)}
-                role="button"
-                tabindex="0"
-                aria-label={`View photo ${i + 1}`}
-              >
-                <img
-                  src={photoUrl(photo)}
-                  alt={`${data.title} — photo ${i + 1}`}
-                  loading={i < 6 ? 'eager' : 'lazy'}
-                  decoding="async"
-                />
-              </div>
-            ))}
-          </div>
-        )}
-      </>
-    )}
-
-    {/* ── STORY LAYOUT ────────────────────────────────────────────────── */}
-    {isStory && (
-      <>
-        {sections.length > 0 ? (
-          <article class="story-article">
-            {sections.map((section) => (
-              <section class="story-section">
-                {section.title && (
-                  <h2 class="story-section__title">{section.title}</h2>
-                )}
-                {section.text && (
-                  <div class="story-section__text" set:html={section.text} />
-                )}
-                {section.photos && section.photos.length > 0 && (
-                  <div class={`story-section__photos story-section__photos--${section.photos.length > 1 ? 'pair' : 'single'}`}>
-                    {section.photos.map((photo, i) => (
-                      <div
-                        class="story-section__photo-item"
-                        data-src={photoUrl(photo)}
-                        role="button"
-                        tabindex="0"
-                        aria-label={`View photo`}
-                      >
-                        <img
-                          src={photoUrl(photo)}
-                          alt={section.title || data.title}
-                          loading="lazy"
-                          decoding="async"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </section>
-            ))}
-          </article>
-        ) : (
-          /* Fallback if sections not extracted */
-          <>
-            {data.description && (
-              <div class="story-intro"><p>{data.description}</p></div>
-            )}
-            {galleryPhotos.length > 0 && (
-              <div class="masonry-gallery" id="gallery">
-                {galleryPhotos.map((photo, i) => (
-                  <div
-                    class="masonry-gallery__item"
-                    data-index={i}
-                    data-src={photoUrl(photo)}
-                    role="button"
-                    tabindex="0"
-                    aria-label={`View photo ${i + 1}`}
-                  >
-                    <img
-                      src={photoUrl(photo)}
-                      alt={`${data.title} — photo ${i + 1}`}
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
-          </>
-        )}
-      </>
-    )}
-
-    {data.footnotes && (
-      <aside class="story-footnotes">
-        <hr class="story-divider" />
-        <h4 class="story-footnotes__title">Footnotes</h4>
-        <p>{data.footnotes}</p>
-      </aside>
-    )}
-  </div>
+  {/* Fallback: story with no sections parsed */}
+  {isStory && chunks.length === 0 && (
+    <div class="story-page story-page--has-hero">
+      {data.description && <div class="story-intro"><p>{data.description}</p></div>}
+      {galleryPhotos.length > 0 && (
+        <div class="masonry-gallery" id="gallery">
+          {galleryPhotos.map((photo, i) => (
+            <div class="masonry-gallery__item" data-index={i} data-src={photoUrl(photo)} role="button" tabindex="0" aria-label={`View photo ${i + 1}`}>
+              <img src={photoUrl(photo)} alt={`${data.title} — photo ${i + 1}`} loading="lazy" decoding="async" />
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )}
 
   <!-- Lightbox (shared by both layouts) -->
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
@@ -190,6 +229,21 @@ function photoUrl(path: string) {
 </Layout>
 
 <script>
+  // Scroll-reveal animations
+  document.body.classList.add('is-ready');
+  const storySections = document.querySelectorAll('.story-section');
+  if (storySections.length > 0) {
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    storySections.forEach(el => revealObserver.observe(el));
+  }
+
   // Collect all clickable photo items regardless of layout
   const allItems = Array.from(
     document.querySelectorAll<HTMLElement>('.masonry-gallery__item, .story-section__photo-item')

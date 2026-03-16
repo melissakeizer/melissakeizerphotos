@@ -221,19 +221,104 @@ img {
   padding: 0 1.5rem 4rem;
 }
 
+.story-page--has-hero {
+  padding-top: 3.5rem;
+}
+
+/* Full-bleed separator photo between story sections */
+.story-separator {
+  width: 100%;
+  max-height: 70vh;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.story-separator img {
+  width: 100%;
+  height: 70vh;
+  object-fit: cover;
+  display: block;
+}
+
 /* Story hero */
 .story-hero-wrapper {
   width: 100%;
-  max-height: 75vh;
+  height: calc(100vh - var(--nav-height));
+  position: relative;
   overflow: hidden;
 }
 
 .story-hero {
   width: 100%;
-  max-height: 75vh;
+  height: 100%;
   object-fit: cover;
   display: block;
 }
+
+.story-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.72) 0%,
+    rgba(0, 0, 0, 0.3) 50%,
+    rgba(0, 0, 0, 0.08) 100%
+  );
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2rem 2.5rem 3rem;
+  color: #fff;
+}
+
+.story-hero__back {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.75);
+  align-self: flex-start;
+  transition: color 0.15s;
+}
+
+.story-hero__back:hover { color: #fff; }
+
+.story-hero__content {
+  text-align: center;
+}
+
+.story-hero__title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.2rem, 5.5vw, 4.5rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  line-height: 1.1;
+  color: #fff;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.35);
+}
+
+.story-hero__subtitle {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(1rem, 2.2vw, 1.5rem);
+  color: rgba(255, 255, 255, 0.85);
+  margin-top: 0.75rem;
+}
+
+.story-hero__meta {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.story-hero__meta a { color: rgba(255, 255, 255, 0.6); }
+.story-hero__meta a:hover { color: #fff; }
 
 /* ── GALLERY LAYOUT (masonry, preserves aspect ratios) ──────────────── */
 .story-intro {
@@ -296,8 +381,9 @@ img {
   font-size: clamp(1.2rem, 2.5vw, 1.6rem);
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 1rem;
+  letter-spacing: 0.12em;
+  margin-top: 1.5rem;
+  margin-bottom: 1.25rem;
   color: var(--color-text);
 }
 
@@ -334,6 +420,59 @@ img {
   .story-section__photos--pair {
     grid-template-columns: 1fr;
   }
+}
+
+/* Three photos in a row */
+.story-section__photos--trio {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.35rem;
+}
+
+@media (max-width: 700px) {
+  .story-section__photos--trio {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 420px) {
+  .story-section__photos--trio {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Four+ photos in a 2×2 grid */
+.story-section__photos--quad {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.35rem;
+}
+
+/* Scroll-reveal animations (only active once JS adds .is-ready to body) */
+.is-ready .story-section {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.is-ready .story-section.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Multi-photo grid items: force consistent height, no black space */
+.story-section__photos--pair .story-section__photo-item,
+.story-section__photos--trio .story-section__photo-item,
+.story-section__photos--quad .story-section__photo-item {
+  aspect-ratio: 3 / 2;
+}
+
+.story-section__photos--pair .story-section__photo-item img,
+.story-section__photos--trio .story-section__photo-item img,
+.story-section__photos--quad .story-section__photo-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .story-section__photo-item {
