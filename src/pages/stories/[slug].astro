@@ -1,6 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
+import sharp from 'sharp';
+import nodePath from 'path';
 
 const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
 
@@ -20,6 +22,7 @@ interface Section {
   title: string | null;
   text: string;
   photos: string[];
+  layout?: string;
 }
 
 type Chunk =
@@ -38,6 +41,29 @@ if (isStory && body && body.trim()) {
     sections = JSON.parse(body.trim());
   } catch {
     sections = [];
+  }
+}
+
+// Read image aspect ratio at build time using sharp
+async function getAspectRatio(photoPath: string): Promise<number> {
+  try {
+    const abs = nodePath.join(process.cwd(), 'public', photoPath.replace(/^\//, ''));
+    const { width, height } = await sharp(abs).metadata();
+    if (width && height) return width / height;
+  } catch {}
+  return 1.5; // fallback: landscape 3:2
+}
+
+// Precompute ratios for all photos used in justified flex layouts (pair, trio)
+const photoRatios = new Map<string, number>();
+for (const section of sections) {
+  const count = section.photos.length;
+  if (count === 2 || count === 3) {
+    for (const photo of section.photos) {
+      if (!photoRatios.has(photo)) {
+        photoRatios.set(photo, await getAspectRatio(photo));
+      }
+    }
   }
 }
 
@@ -163,8 +189,17 @@ function photoLayoutClass(count: number) {
       <div class:list={['story-page', { 'story-page--has-hero': cover && chunkIndex === 0 }]}>
         <article class="story-article">
           {chunk.sections.map((section) => {
-            const isSplit = section.photos.length === 1 && !!section.text?.trim();
-            return isSplit ? (
+            const isSpotlight = section.photos.length === 1 && section.layout === 'spotlight';
+            const isSplit = section.photos.length === 1 && !!section.text?.trim() && !isSpotlight;
+            return isSpotlight ? (
+              <section class="story-section story-section--spotlight">
+                {section.title && <h2 class="story-section__title">{section.title}</h2>}
+                {section.text && <div class="story-section__text" set:html={section.text} />}
+                <div class="story-section__photo-item story-section__photo-item--spotlight" data-src={photoUrl(section.photos[0])} role="button" tabindex="0" aria-label="View photo">
+                  <img src={photoUrl(section.photos[0])} alt={section.title || data.title} loading="lazy" decoding="async" />
+                </div>
+              </section>
+            ) : isSplit ? (
               <section class="story-section story-section--split">
                 <div class="story-section__photo-item" data-src={photoUrl(section.photos[0])} role="button" tabindex="0" aria-label="View photo">
                   <img src={photoUrl(section.photos[0])} alt={section.title || data.title} loading="lazy" decoding="async" />
@@ -182,26 +217,31 @@ function photoLayoutClass(count: number) {
                 {section.text && (
                   <div class="story-section__text" set:html={section.text} />
                 )}
-                {section.photos && section.photos.length > 0 && (
-                  <div class={`story-section__photos story-section__photos--${photoLayoutClass(section.photos.length)}`}>
-                    {section.photos.map((photo) => (
-                      <div
-                        class="story-section__photo-item"
-                        data-src={photoUrl(photo)}
-                        role="button"
-                        tabindex="0"
-                        aria-label="View photo"
-                      >
-                        <img
-                          src={photoUrl(photo)}
-                          alt={section.title || data.title}
-                          loading="lazy"
-                          decoding="async"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                )}
+                {section.photos && section.photos.length > 0 && (() => {
+                  const layout = photoLayoutClass(section.photos.length);
+                  const useFlexRatio = layout === 'pair' || layout === 'trio';
+                  return (
+                    <div class={`story-section__photos story-section__photos--${layout}`}>
+                      {section.photos.map((photo) => (
+                        <div
+                          class="story-section__photo-item"
+                          data-src={photoUrl(photo)}
+                          role="button"
+                          tabindex="0"
+                          aria-label="View photo"
+                          style={useFlexRatio ? `flex: ${photoRatios.get(photo) ?? 1.5} 1 0` : undefined}
+                        >
+                          <img
+                            src={photoUrl(photo)}
+                            alt={section.title || data.title}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  );
+                })()}
               </section>
             );
           })}

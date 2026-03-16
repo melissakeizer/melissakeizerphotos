@@ -457,35 +457,82 @@ img {
   }
 }
 
-/* Two photos side-by-side */
+/* Spotlight layout: text above, full-width photo below */
+.story-section--spotlight {
+  margin-bottom: 3.5rem;
+}
+
+.story-section__photo-item--spotlight {
+  width: 100%;
+  overflow: hidden;
+  cursor: zoom-in;
+  margin-top: 2rem;
+}
+
+.story-section__photo-item--spotlight img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+.story-section__photo-item--spotlight:hover img {
+  transform: scale(1.01);
+  opacity: 0.9;
+}
+
+
+/* DIPTYCH — 2 photos, justified flex: same height, natural ratio, no crop, no gaps */
 .story-section__photos--pair {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
   gap: 0.35rem;
+}
+
+.story-section__photos--pair .story-section__photo-item {
+  flex-shrink: 1;
+  flex-basis: 0;
+  min-width: 0;
+}
+
+.story-section__photos--pair .story-section__photo-item img {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 @media (max-width: 560px) {
   .story-section__photos--pair {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+  }
+  .story-section__photos--pair .story-section__photo-item {
+    flex: none;
   }
 }
 
-/* Three photos in a row */
+/* TRIPTYCH — 3 photos, justified flex: same height, natural ratio, no crop, no gaps */
 .story-section__photos--trio {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  display: flex;
   gap: 0.35rem;
 }
 
-@media (max-width: 700px) {
-  .story-section__photos--trio {
-    grid-template-columns: 1fr 1fr;
-  }
+.story-section__photos--trio .story-section__photo-item {
+  flex-shrink: 1;
+  flex-basis: 0;
+  min-width: 0;
 }
 
-@media (max-width: 420px) {
+.story-section__photos--trio .story-section__photo-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media (max-width: 560px) {
   .story-section__photos--trio {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+  }
+  .story-section__photos--trio .story-section__photo-item {
+    flex: none;
   }
 }
 
@@ -502,40 +549,96 @@ img {
   transform: none;
 }
 
-/* All multi-photo grids: natural aspect ratios, no cropping.
-   align-items: start prevents cells from stretching taller than their image. */
-.story-section__photos--pair,
-.story-section__photos--trio,
-.story-section__photos--quad,
-.story-section__photos--multi {
-  align-items: start;
-}
+/* ═══════════════════════════════════════════════════════════════════════
+   LAYOUT PATTERNS — reference guide
+   ═══════════════════════════════════════════════════════════════════════
 
-.story-section__photos--pair .story-section__photo-item img,
-.story-section__photos--trio .story-section__photo-item img,
-.story-section__photos--quad .story-section__photo-item img,
-.story-section__photos--multi .story-section__photo-item img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
+   PANORAMA      Full-bleed separator photo edge-to-edge.
+                 Auto-applied: 1 photo, no title, no text.
+                 CSS: .story-separator
 
-/* Quad (exactly 4 photos): 3 across + 1 full-width below */
+   SPOTLIGHT     Single photo full-width, no text.
+                 Auto-applied: 1 photo, no text (but has title or is standalone).
+                 CSS: .story-section__photos--single
+
+   STORYLINE     Photo on the left, text vertically centred on the right.
+                 Auto-applied: 1 photo + text in the same section.
+                 CSS: .story-section--split
+
+   DIPTYCH       2 photos, justified flex row: same height, natural ratio, no crop.
+                 flex-grow per photo is set from image dimensions at build time.
+                 Auto-applied: 2 photos.
+                 CSS: .story-section__photos--pair
+
+   TRIPTYCH      3 photos, justified flex row: same height, natural ratio, no crop.
+                 flex-grow per photo is set from image dimensions at build time.
+                 Auto-applied: 3 photos.
+                 CSS: .story-section__photos--trio
+
+   HIGHLIGHT     3 photos across the top + 1 wide featured photo below.
+                 Auto-applied: exactly 4 photos.
+                 CSS: .story-section__photos--quad
+
+   GALLERY       5+ photos in a 3-column grid, consistent crop height.
+                 Auto-applied: 5 or more photos.
+                 CSS: .story-section__photos--multi
+
+   ═══════════════════════════════════════════════════════════════════════ */
+
+
+/* HIGHLIGHT — 3 photos (contained, no crop) + 1 wide hero below (natural ratio) */
 .story-section__photos--quad {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 0.35rem;
+  align-items: start;
+}
+
+.story-section__photos--quad .story-section__photo-item:not(:nth-child(4)) {
+  aspect-ratio: 4 / 3;
+  background: var(--color-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.story-section__photos--quad .story-section__photo-item:not(:nth-child(4)) img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 .story-section__photos--quad .story-section__photo-item:nth-child(4) {
   grid-column: 1 / -1;
 }
 
-/* Multi (5+ photos): 3-column grid */
+.story-section__photos--quad .story-section__photo-item:nth-child(4) img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* GALLERY — 5+ photos, consistent row height, full image visible (no crop) */
 .story-section__photos--multi {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 0.35rem;
+}
+
+.story-section__photos--multi .story-section__photo-item {
+  aspect-ratio: 3 / 2;
+  background: var(--color-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.story-section__photos--multi .story-section__photo-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 @media (max-width: 700px) {
@@ -555,6 +658,13 @@ img {
   }
   .story-section__photos--quad .story-section__photo-item:nth-child(4) {
     grid-column: auto;
+  }
+  .story-section__photos--quad .story-section__photo-item:not(:nth-child(4)) {
+    aspect-ratio: auto;
+  }
+  .story-section__photos--quad .story-section__photo-item:not(:nth-child(4)) img {
+    height: auto;
+    object-fit: unset;
   }
 }
 
