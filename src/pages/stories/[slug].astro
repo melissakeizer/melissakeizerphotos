@@ -73,7 +73,7 @@ const chunks: Chunk[] = [];
 if (sections.length > 0) {
   let currentArticle: Section[] = [];
   for (const section of sections) {
-    const isSep = !section.title && !section.text?.trim() && section.photos.length === 1;
+    const isSep = !section.title && !section.text?.trim() && section.photos.length === 1 && section.layout !== 'spotlight';
     if (isSep) {
       if (currentArticle.length > 0) {
         chunks.push({ type: 'article', sections: currentArticle });
@@ -122,12 +122,22 @@ function photoLayoutClass(count: number) {
         <div class="story-hero__content">
           <h1 class="story-hero__title">{data.title}</h1>
           {data.subtitle && <p class="story-hero__subtitle">{data.subtitle}</p>}
-          <div class="story-hero__meta">
-            {data.date && <span>{data.date}</span>}
-            {data.categories.map(cat => (
-              <a href={`${base}categories/${cat.toLowerCase().replace(/\s+/g, '-')}`}>{cat}</a>
-            ))}
-          </div>
+          {(data.date || data.categories.length > 0) && (
+            <div class="story-hero__meta">
+              {data.date && <span>{data.date}</span>}
+              {data.categories.map(cat => (
+                <a href={`${base}categories/${cat.toLowerCase().replace(/\s+/g, '-')}`}>{cat}</a>
+              ))}
+            </div>
+          )}
+        </div>
+        <div class="story-hero__author">
+          <img
+            class="story-hero__author-stamp"
+            src={`${base}melissa-keizer-logo-icon.svg`}
+            alt="Melissa Keizer Photography"
+          />
+          <span class="story-hero__author-label">By <strong>Melissa Keizer</strong></span>
         </div>
       </div>
     </div>
@@ -314,7 +324,6 @@ function photoLayoutClass(count: number) {
         </article>
         {data.footnotes && chunkIndex === chunks.length - 1 && (
           <aside class="story-footnotes">
-            <hr class="story-divider" />
             <h4 class="story-footnotes__title">Footnotes</h4>
             <p>{data.footnotes}</p>
           </aside>
