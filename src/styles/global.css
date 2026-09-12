@@ -219,7 +219,7 @@ img {
 .story-page {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 2.5rem 1.5rem 4rem;
+  padding: 2.5rem 5rem 4rem;
 }
 
 .story-page--has-hero {
@@ -229,15 +229,12 @@ img {
 /* Full-bleed separator photo between story sections */
 .story-separator {
   width: 100%;
-  max-height: 85vh;
-  overflow: hidden;
   line-height: 0;
 }
 
 .story-separator img {
   width: 100%;
-  height: 85vh;
-  object-fit: cover;
+  height: auto;
   display: block;
 }
 
@@ -406,6 +403,22 @@ img {
   opacity: 0.9;
 }
 
+/* Gallery posts declare their format in frontmatter. */
+.masonry-gallery--horizontal {
+  columns: unset;
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  padding-bottom: 0.75rem;
+  scroll-snap-type: x mandatory;
+}
+
+.masonry-gallery--horizontal .masonry-gallery__item {
+  flex: 0 0 min(82vw, 900px);
+  margin-bottom: 0;
+  scroll-snap-align: start;
+}
+
 /* ── STORY LAYOUT (blog sections with interspersed photos) ──────────── */
 .story-article {
   width: 100%;
@@ -455,46 +468,106 @@ img {
   width: 100%;
 }
 
-/* Split layout: photo left, text right */
-.story-section--split {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  align-items: center;
-  margin-bottom: 3.5rem;
-  max-width: 960px;
-  margin-left: auto;
-  margin-right: auto;
+/* Stacked editorial beat: text first, followed by its photo in the article column. */
+.story-section--stacked {
+  margin-bottom: clamp(3rem, 7vw, 7rem);
 }
 
-.story-section--split .story-section__photo-item {
+.story-section__photo-item--stacked {
+  margin-top: 2.5rem;
+}
+
+.story-section--stacked-centered .story-section__photo-item--stacked {
+  max-width: 700px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+/* Full-bleed story beat: editorial text followed by an edge-to-edge image. */
+.story-section--full-bleed {
+  margin-bottom: clamp(3rem, 7vw, 7rem);
+}
+
+.story-section--full-bleed .story-section__content {
+  margin-bottom: 3.5rem;
+}
+
+.story-section__full-bleed-photo {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
   overflow: hidden;
   cursor: zoom-in;
 }
 
-.story-section--split .story-section__photo-item img {
+.story-section__full-bleed-photo img {
   width: 100%;
   height: auto;
   display: block;
   transition: transform 0.3s ease, opacity 0.2s ease;
 }
 
-.story-section--split .story-section__photo-item:hover img {
+.story-section__full-bleed-photo:hover img {
   transform: scale(1.02);
   opacity: 0.9;
 }
 
-.story-section--split .story-section__title,
-.story-section--split .story-section__text {
-  max-width: none;
-  margin-left: 0;
-  margin-right: 0;
+/* Storyline: one image beside its narrative, matching Exposure's editorial layout. */
+.story-section--split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: center;
+  margin-bottom: clamp(3rem, 7vw, 7rem);
 }
 
-@media (max-width: 768px) {
+.story-section--split .story-section__content {
+  grid-column: 2;
+  grid-row: 1;
+  margin: 0;
+}
+
+.story-section--split-reverse .story-section__content {
+  grid-column: 1;
+}
+
+.story-section--split-reverse .story-section__split-photo {
+  grid-column: 2;
+}
+
+.story-section--split-photo {
+  grid-column: 1;
+  grid-row: 1;
+  overflow: hidden;
+  cursor: zoom-in;
+}
+
+.story-section__split-photo img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.3s ease, opacity 0.2s ease;
+}
+
+.story-section__split-photo:hover img {
+  transform: scale(1.02);
+  opacity: 0.9;
+}
+
+@media (max-width: 700px) {
+  .story-page {
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
+  }
+
   .story-section--split {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .story-section--split .story-section__content,
+  .story-section--split-photo {
+    width: 100%;
   }
 }
 
@@ -504,7 +577,8 @@ img {
 }
 
 .story-section__photo-item--spotlight {
-  width: 100%;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
   overflow: hidden;
   cursor: zoom-in;
   margin-top: 2.5rem;
@@ -618,7 +692,7 @@ img {
                  Auto-applied: 3 photos.
                  CSS: .story-section__photos--trio
 
-   HIGHLIGHT     3 photos across the top + 1 wide featured photo below.
+   HIGHLIGHT     4 photos in two justified rows of two; portraits remain proportionate.
                  Auto-applied: exactly 4 photos.
                  CSS: .story-section__photos--quad
 
@@ -629,34 +703,25 @@ img {
    ═══════════════════════════════════════════════════════════════════════ */
 
 
-/* HIGHLIGHT — 3 photos (contained, no crop) + 1 wide hero below (natural ratio) */
+/* HIGHLIGHT — two justified photo pairs, preserving every image's natural ratio */
 .story-section__photos--quad {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 0.35rem;
-  align-items: start;
-}
-
-.story-section__photos--quad .story-section__photo-item:not(:nth-child(4)) {
-  aspect-ratio: 4 / 3;
-  background: var(--color-bg);
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  gap: 0.35rem;
 }
 
-.story-section__photos--quad .story-section__photo-item:not(:nth-child(4)) img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
+.quad-row {
+  display: flex;
+  gap: 0.35rem;
 }
 
-.story-section__photos--quad .story-section__photo-item:nth-child(4) {
-  grid-column: 1 / -1;
+.quad-row .story-section__photo-item {
+  flex-shrink: 1;
+  flex-basis: 0;
+  min-width: 0;
 }
 
-.story-section__photos--quad .story-section__photo-item:nth-child(4) img {
+.quad-row .story-section__photo-item img {
   width: 100%;
   height: auto;
   display: block;
@@ -696,54 +761,32 @@ img {
   }
 }
 
-/* GALLERY — 6+ photos, consistent row height, full image visible (no crop) */
+/* GALLERY — 6+ photos, natural aspect ratios with consistent narrow gutters */
 .story-section__photos--multi {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  columns: 2;
   gap: 0.35rem;
 }
 
 .story-section__photos--multi .story-section__photo-item {
-  aspect-ratio: 3 / 2;
-  background: var(--color-bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  break-inside: avoid;
+  margin-bottom: 0.35rem;
 }
 
 .story-section__photos--multi .story-section__photo-item img {
   width: 100%;
-  height: 100%;
-  object-fit: contain;
+  height: auto;
   display: block;
 }
 
 @media (max-width: 700px) {
-  .story-section__photos--quad,
-  .story-section__photos--multi {
-    grid-template-columns: 1fr 1fr;
-  }
-  .story-section__photos--quad .story-section__photo-item:nth-child(4) {
-    grid-column: 1 / -1;
-  }
+  .story-section__photos--multi { columns: 2; }
 }
 
 @media (max-width: 600px) {
-  .story-section__photos--quad,
-  .story-section__photos--multi {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
-  .story-section__photos--quad .story-section__photo-item:nth-child(4) {
-    grid-column: auto;
-  }
-  .story-section__photos--quad .story-section__photo-item:not(:nth-child(4)) {
-    aspect-ratio: auto;
-  }
-  .story-section__photos--quad .story-section__photo-item:not(:nth-child(4)) img {
-    height: auto;
-    object-fit: unset;
-  }
+  .quad-row { flex-direction: column; gap: 0.75rem; }
+  .story-section__photos--quad { gap: 0.75rem; }
+  .story-section__photos--multi { columns: 1; gap: 0; }
+  .story-section__photos--multi .story-section__photo-item { margin-bottom: 0.75rem; }
 }
 
 .story-section__photo-item {

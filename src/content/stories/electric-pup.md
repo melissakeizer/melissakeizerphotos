@@ -4,6 +4,7 @@ subtitle: null
 date: null
 order: 19
 type: "gallery"
+galleryLayout: "fitted-grid"
 categories: []
 coverImage: "/photos/electric-pup/000-ph_fljeuilmkre5rlsa.jpg"
 photos:

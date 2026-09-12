@@ -8,7 +8,10 @@ const stories = defineCollection({
     subtitle: z.string().optional().nullable(),
     date: z.string().optional().nullable(),
     order: z.number().default(999),
+    // Every post declares its presentation: a narrative story or a photo gallery.
+    // Narrative stories can use a hero; galleries always open with metadata and photos.
     type: z.enum(['story', 'gallery']).default('gallery'),
+    galleryLayout: z.enum(['fitted-grid', 'horizontal']).optional(),
     categories: z.array(z.string()).default([]),
     coverImage: z.string().optional().nullable(),
     photos: z.array(z.string()).default([]),

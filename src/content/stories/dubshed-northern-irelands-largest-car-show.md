@@ -1,9 +1,10 @@
 ---
 title: "Dubshed - Northern Ireland's Largest Car Show"
 subtitle: null
-date: null
+date: "April 3rd, 2023"
 order: 1
 type: "gallery"
+galleryLayout: "fitted-grid"
 categories: []
 coverImage: "/photos/dubshed-northern-irelands-largest-car-show/000-ph_jg9l8ba69uqazrny.jpg"
 photos:

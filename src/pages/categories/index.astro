@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
+import { categoriesForStory } from '../../lib/story-metadata';
 
 const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
 const stories = await getCollection('stories');
@@ -8,7 +9,7 @@ const stories = await getCollection('stories');
 // Group by category
 const categoryMap = new Map<string, typeof stories>();
 for (const story of stories) {
-  for (const cat of story.data.categories) {
+  for (const cat of categoriesForStory(story.id, story.data.categories)) {
     if (!categoryMap.has(cat)) categoryMap.set(cat, []);
     categoryMap.get(cat)!.push(story);
   }

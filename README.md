@@ -1,5 +1,9 @@
 # Astro Starter Kit: Minimal
 
+## Content workflow
+
+See [the authoring guide](docs/ADDING-A-STORY.md) before adding a story or gallery. Run `npm run check:content` before `npm run build` to catch missing image paths and gallery layout metadata.
+
 ```sh
 npm create astro@latest -- --template minimal
 ```

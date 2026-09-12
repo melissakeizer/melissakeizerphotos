@@ -4,6 +4,7 @@ subtitle: null
 date: null
 order: 22
 type: "gallery"
+galleryLayout: "fitted-grid"
 categories: []
 coverImage: "/photos/dogease/000-ph_f9ux66noqfw3q7fw.jpg"
 photos:

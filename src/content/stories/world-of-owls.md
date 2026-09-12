@@ -4,6 +4,7 @@ subtitle: null
 date: null
 order: 9
 type: "gallery"
+galleryLayout: "fitted-grid"
 categories: []
 coverImage: "/photos/world-of-owls/000-ph_cx6naxldchpn937x.jpg"
 photos:

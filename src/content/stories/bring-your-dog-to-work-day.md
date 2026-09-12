@@ -4,6 +4,7 @@ subtitle: null
 date: null
 order: 24
 type: "gallery"
+galleryLayout: "fitted-grid"
 categories: []
 coverImage: "/photos/bring-your-dog-to-work-day/000-ph_big6jnsqf2s21u4y.jpg"
 photos:

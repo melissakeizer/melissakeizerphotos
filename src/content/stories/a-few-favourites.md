@@ -4,6 +4,7 @@ subtitle: null
 date: null
 order: 11
 type: "gallery"
+galleryLayout: "fitted-grid"
 categories: []
 coverImage: "/photos/a-few-favourites/000-ph_rqgkaj9pp8ai89rx.jpg"
 photos:

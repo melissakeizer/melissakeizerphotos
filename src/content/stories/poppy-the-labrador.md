@@ -4,6 +4,7 @@ subtitle: null
 date: null
 order: 18
 type: "gallery"
+galleryLayout: "fitted-grid"
 categories: []
 coverImage: "/photos/poppy-the-labrador/000-ph_evixvkkr0692ofiz.jpg"
 photos:

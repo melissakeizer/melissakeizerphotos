@@ -4,6 +4,7 @@ subtitle: null
 date: null
 order: 2
 type: "gallery"
+galleryLayout: "fitted-grid"
 categories: []
 coverImage: "/photos/sky-odin/000-ph_log7wlnpvdpmhx0i.jpg"
 photos:

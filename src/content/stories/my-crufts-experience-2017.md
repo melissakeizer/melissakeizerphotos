@@ -4,6 +4,7 @@ subtitle: null
 date: null
 order: 20
 type: "gallery"
+galleryLayout: "fitted-grid"
 categories: []
 coverImage: "/photos/my-crufts-experience-2017/000-ph_alyga55n2gr50wdk.jpg"
 photos:

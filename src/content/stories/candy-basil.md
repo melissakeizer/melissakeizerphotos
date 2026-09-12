@@ -4,6 +4,7 @@ subtitle: null
 date: null
 order: 27
 type: "gallery"
+galleryLayout: "fitted-grid"
 categories: []
 coverImage: "/photos/candy-basil/000-ph_o1wlp3c7hch08c7h.jpg"
 photos:
