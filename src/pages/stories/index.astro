@@ -1,0 +1,38 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { categoriesForStory, subtitleForStory } from '../../lib/story-metadata';
+
+const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
+const stories = await getCollection('stories');
+const sorted = stories.sort((a, b) => a.data.order - b.data.order);
+---
+
+<Layout title="All Posts">
+  <header class="site-header">
+    <p class="home-kicker">The archive</p>
+    <h1 class="site-header__name">All posts</h1>
+    <p class="site-header__bio">Stories and galleries from the archive.</p>
+  </header>
+  <main>
+    <div class="stories-grid" id="stories">
+      {sorted.map((story) => {
+        const cover = story.data.coverImage || story.data.photos[0];
+        const categories = categoriesForStory(story.id, story.data.categories);
+        const subtitle = subtitleForStory(story.id, story.data.subtitle);
+        return <article class="story-card">
+          {cover && <img class="story-card__img" src={`${base}${cover.replace(/^\//, '')}`} alt={story.data.title} loading="lazy" decoding="async" />}
+          <div class="story-card__overlay">
+            <h2 class="story-card__title">{story.data.title}</h2>
+            {subtitle && <p class="story-card__subtitle">{subtitle}</p>}
+            <div class="story-card__meta">
+              {story.data.date && <span>{story.data.date}</span>}
+              {categories.map((category) => <a href={`${base}categories/${category.toLowerCase().replace(/\s+/g, '-')}`}>{category}</a>)}
+            </div>
+          </div>
+          <a class="story-card__link" href={`${base}stories/${story.id}`} aria-label={`View ${story.data.title}`}></a>
+        </article>;
+      })}
+    </div>
+  </main>
+</Layout>
