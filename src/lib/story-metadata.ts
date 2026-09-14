@@ -57,7 +57,7 @@ export function subtitleForStory(id: string, subtitle: string | null | undefined
 
 // Exposure's original per-section editorial layouts. Keys are the source photo IDs,
 // which remain stable even when local filenames carry a numeric sequence prefix.
-export type StorySectionLayout = 'split' | 'split-reverse' | 'stacked' | 'stacked-centered' | 'full-bleed';
+export type StorySectionLayout = 'split' | 'split-reverse' | 'stacked' | 'stacked-centered' | 'full-bleed' | 'edge-to-edge' | 'parallax';
 
 export const storySectionLayouts: Record<string, Record<string, StorySectionLayout>> = {
   "a-story-of-ice-and-fire": {
@@ -74,14 +74,14 @@ export const storySectionLayouts: Record<string, Record<string, StorySectionLayo
   "aint-nothin-but-a-hound-dog": {
     "40et0gy0ko61f4gbbtw3tkycumqb68zvslk6": "split-reverse",
     "zmnqqtziqag4dfo22k6itkow1nh191ce5l4m": "stacked",
-    "kni0tiu897eekt3hfkjlgskoa36l3s7gdjc3": "full-bleed",
-    "kfh2ct2o67ethouobkpegd5wd0cbyex2cnby": "full-bleed",
+    "kni0tiu897eekt3hfkjlgskoa36l3s7gdjc3": "parallax",
+    "kfh2ct2o67ethouobkpegd5wd0cbyex2cnby": "parallax",
     "3cxs0sxlaheg5ep640bj6d0iruki47wws101": "stacked"
   },
   "an-afternoon-with-angus": {
     "yflf269i1m7lntz5ifzxfmetfgxo556c7qgz": "full-bleed",
     "sbdbytqbnz924hi5m4ss2no1flih8n9idu26": "stacked",
-    "ozt2fwsv5fo9dri189zqanlv9f7uc3svyzwt": "full-bleed",
+    "ozt2fwsv5fo9dri189zqanlv9f7uc3svyzwt": "stacked",
     "h8viz4azehp2ke6cjs76shfqax6quf456bs5": "stacked-centered"
   },
   "animals-afternoon-tea": {
@@ -140,9 +140,9 @@ export const storySectionLayouts: Record<string, Record<string, StorySectionLayo
   },
   "dubrovnik-and-cavtat": {
     "5ygtu7eulv784a0qvnwgkmdxt2lemh5h84o3": "stacked-centered",
-    "hml8620k5xiz6usubkpoml0rlo9i4x9anudz": "full-bleed",
+    "hml8620k5xiz6usubkpoml0rlo9i4x9anudz": "parallax",
     "dopfvhzng7onxbjh7ejiwa1p7y1ktd7msjoq": "stacked",
-    "baz5rqmlazktd4ccj4ej4k0xh1175einkhqd": "full-bleed",
+    "baz5rqmlazktd4ccj4ej4k0xh1175einkhqd": "edge-to-edge",
     "h97s4wcnx66r4u7l9gy7hjsjnwjacp6gr6h8": "full-bleed",
     "v8xhtgksgp3kih09it91fic7wxydk61dxeh0": "stacked",
     "yki1qlbi2n2onaep67qbik4gz9hhxhgoe10i": "full-bleed",
@@ -154,7 +154,7 @@ export const storySectionLayouts: Record<string, Record<string, StorySectionLayo
   },
   "fall": {
     "tgfrkn5ne63tmx6ran27gsex6u0x80k9g45l": "stacked",
-    "d88uihxi7jy8pvi13pe5uuf74vrhpvia7p7p": "full-bleed",
+    "d88uihxi7jy8pvi13pe5uuf74vrhpvia7p7p": "edge-to-edge",
     "sqpen81kyw2n8kt9zmrz73jz92ju4n29qaj9": "full-bleed"
   },
   "finn-pointer-puppy": {
@@ -202,14 +202,14 @@ export const storySectionLayouts: Record<string, Record<string, StorySectionLayo
     "d0ojqc7az6aqazpo45ruth1tgwa5y4353wc8": "split",
     "eb36hyq4g3nnh578o8nrtnw924drtj2fdz0s": "full-bleed",
     "msjnlj764hi1p7g9d0w2k8j9jnt1ap6y94v0": "full-bleed",
-    "7okefv553k6th8klegmfvjkeeje2zw65cyj3": "full-bleed",
-    "3ecmtbb6n4888kqjaqi6i0tf8n13lfencyc7": "stacked-centered",
+    "7okefv553k6th8klegmfvjkeeje2zw65cyj3": "edge-to-edge",
+    "3ecmtbb6n4888kqjaqi6i0tf8n13lfencyc7": "stacked",
     "568qwngu1wsvolhslerd1pp7zmxe1rzdhlck": "stacked-centered",
     "31vuxar2z14v1nwxu4v2kav3z547eo2dmvm6": "full-bleed",
     "ic99t4yizij85n6fiq0t0ogq66erz6c75sfk": "stacked",
     "10wmw6ecs92clwwn4df56fr507gd2hqkr7su": "full-bleed",
     "ycqs90s506b7g33lvzz8hffk67r85avehywk": "stacked-centered",
-    "rnckas3vlqhg0nr4gjckvetshtlkug6n8fjd": "full-bleed",
+    "rnckas3vlqhg0nr4gjckvetshtlkug6n8fjd": "edge-to-edge",
     "18ws24t1as3jk16geyp1vox1kmpqkdc7e28w": "full-bleed",
     "8f4cmpoupekmqc1ull6kapjt9e7m32erfjim": "stacked"
   },
@@ -233,10 +233,10 @@ export const storySectionLayouts: Record<string, Record<string, StorySectionLayo
     "ry3vv8qa5e7phkt9h9pckyysnm8qto6rvpfm": "full-bleed"
   },
   "the-ark": {
-    "97ltpb52c8xjq0k90ri38ty798k9be290bvzcogh": "full-bleed",
-    "q6igyjgyx0ztzkt9hzp0wupy470vygb9n5gossfy": "full-bleed",
-    "hg5p4w2sz7low298w1fqmh91azia4ippnlneg0tq": "full-bleed",
-    "kvrpsqjpmla6ecdigpe4qyvlyk6s9k9dy6o964hj": "full-bleed",
+    "97ltpb52c8xjq0k90ri38ty798k9be290bvzcogh": "edge-to-edge",
+    "q6igyjgyx0ztzkt9hzp0wupy470vygb9n5gossfy": "edge-to-edge",
+    "hg5p4w2sz7low298w1fqmh91azia4ippnlneg0tq": "edge-to-edge",
+    "kvrpsqjpmla6ecdigpe4qyvlyk6s9k9dy6o964hj": "edge-to-edge",
     "1c91rekge7lxflxrblvwwux0lq7rdx6roioqmfmx": "stacked"
   },
   "the-city-of-dublin": {
@@ -255,10 +255,10 @@ export const storySectionLayouts: Record<string, Record<string, StorySectionLayo
     "oi2nfaycufxkcsoriyz2rho10wfjemilblgb": "stacked"
   },
   "vegas-baby": {
-    "284n0su4ue686ddtxzsdkd2jwx4y2lfnxnbs": "full-bleed",
-    "5oinlu6qfyiwzpsqs5pvbev6izqk6wjbrjcj": "full-bleed",
-    "j7do936x3cf2irv84bqtxee1mzi2jal84x46": "stacked-centered",
-    "kc5hfu8r3udggs6ur5grzio2grecvhasz3xz": "stacked-centered"
+    "284n0su4ue686ddtxzsdkd2jwx4y2lfnxnbs": "edge-to-edge",
+    "5oinlu6qfyiwzpsqs5pvbev6izqk6wjbrjcj": "edge-to-edge",
+    "j7do936x3cf2irv84bqtxee1mzi2jal84x46": "full-bleed",
+    "kc5hfu8r3udggs6ur5grzio2grecvhasz3xz": "full-bleed"
   }
 };
 

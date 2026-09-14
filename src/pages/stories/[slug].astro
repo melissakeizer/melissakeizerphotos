@@ -67,11 +67,12 @@ async function getAspectRatio(photoPath: string): Promise<number> {
   return 1.5; // fallback: landscape 3:2
 }
 
-// Precompute ratios for all photos used in justified flex layouts (pair, trio, penta)
+// Precompute ratios for every multi-photo section so each justified row keeps
+// the originals' proportions rather than using a masonry fallback.
 const photoRatios = new Map<string, number>();
 for (const section of sections) {
   const count = section.photos.length;
-  if (count === 2 || count === 3 || count === 4 || count === 5) {
+  if (count >= 2) {
     for (const photo of section.photos) {
       if (!photoRatios.has(photo)) {
         photoRatios.set(photo, await getAspectRatio(photo));
@@ -85,7 +86,7 @@ const chunks: Chunk[] = [];
 if (sections.length > 0) {
   let currentArticle: Section[] = [];
   for (const section of sections) {
-    const isSep = !section.title && !section.text?.trim() && section.photos.length === 1 && (section.layout === 'full-bleed' || !section.layout);
+    const isSep = !section.title && !section.text?.trim() && section.photos.length === 1 && (section.layout === 'full-bleed' || section.layout === 'parallax' || !section.layout);
     if (isSep) {
       if (currentArticle.length > 0) {
         chunks.push({ type: 'article', sections: currentArticle });
@@ -238,7 +239,7 @@ function photoLayoutClass(count: number) {
   {/* ── STORY LAYOUT ────────────────────────────────────────────────── */}
   {isStory && chunks.length > 0 && chunks.map((chunk, chunkIndex) => (
     chunk.type === 'separator' ? (
-      <div class="story-separator">
+      <div class="story-separator story-separator--parallax" style={`--parallax-image: url("${photoUrl(chunk.photo)}")`}>
         <img
           src={photoUrl(chunk.photo)}
           alt=""
@@ -252,8 +253,10 @@ function photoLayoutClass(count: number) {
           {chunk.sections.map((section) => {
             const isSpotlight = section.photos.length === 1 && section.layout === 'spotlight';
             const isFullBleed = section.photos.length === 1 && section.layout === 'full-bleed';
+            const isEdgeToEdge = section.photos.length === 1 && section.layout === 'edge-to-edge';
+            const isParallax = section.photos.length === 1 && section.layout === 'parallax';
             const isStacked = section.photos.length === 1 && (section.layout === 'stacked' || section.layout === 'stacked-centered');
-            const isSplit = section.photos.length === 1 && !!section.text?.trim() && !isSpotlight && !isFullBleed && !isStacked;
+            const isSplit = section.photos.length === 1 && !!section.text?.trim() && !isSpotlight && !isFullBleed && !isEdgeToEdge && !isParallax && !isStacked;
             return isSpotlight ? (
               <section class="story-section story-section--spotlight">
                 {section.title && <h2 class="story-section__title">{section.title}</h2>}
@@ -280,6 +283,26 @@ function photoLayoutClass(count: number) {
                   <img src={photoUrl(section.photos[0])} alt={section.title || data.title} loading="lazy" decoding="async" />
                 </div>
               </section>
+            ) : isEdgeToEdge ? (
+              <section class="story-section story-section--edge-to-edge">
+                <div class="story-section__content">
+                  {section.title && <h2 class="story-section__title">{section.title}</h2>}
+                  {section.text && <div class="story-section__text" set:html={section.text} />}
+                </div>
+                <div class="story-section__edge-to-edge-photo" data-src={photoUrl(section.photos[0])} role="button" tabindex="0" aria-label="View photo">
+                  <img src={photoUrl(section.photos[0])} alt={section.title || data.title} loading="lazy" decoding="async" />
+                </div>
+              </section>
+            ) : isParallax ? (
+              <section class="story-section story-section--parallax">
+                <div class="story-section__content">
+                  {section.title && <h2 class="story-section__title">{section.title}</h2>}
+                  {section.text && <div class="story-section__text" set:html={section.text} />}
+                </div>
+                <div class="story-separator story-separator--parallax" style={`--parallax-image: url("${photoUrl(section.photos[0])}")`} data-src={photoUrl(section.photos[0])} role="button" tabindex="0" aria-label="View photo">
+                  <img src={photoUrl(section.photos[0])} alt={section.title || data.title} loading="lazy" decoding="async" />
+                </div>
+              </section>
             ) : isSplit ? (
               <section class:list={['story-section', 'story-section--split', { 'story-section--split-reverse': section.layout === 'split-reverse' }]}>
                 <div class="story-section__content">
@@ -301,6 +324,30 @@ function photoLayoutClass(count: number) {
                 {section.photos && section.photos.length > 0 && (() => {
                   const layout = photoLayoutClass(section.photos.length);
                   const useFlexRatio = layout === 'pair' || layout === 'trio';
+
+                  if (layout === 'multi') {
+                    const rows = Array.from({ length: Math.ceil(section.photos.length / 3) }, (_, index) => section.photos.slice(index * 3, index * 3 + 3));
+                    return (
+                      <div class="story-section__photos story-section__photos--multi">
+                        {rows.map((row) => (
+                          <div class="multi-row">
+                            {row.map((photo) => (
+                              <div
+                                class="story-section__photo-item"
+                                data-src={photoUrl(photo)}
+                                role="button"
+                                tabindex="0"
+                                aria-label="View photo"
+                                style={`flex: ${photoRatios.get(photo) ?? 1.5} 1 0`}
+                              >
+                                <img src={photoUrl(photo)} alt={section.title || data.title} loading="lazy" decoding="async" />
+                              </div>
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  }
 
                   if (layout === 'penta') {
                     const rows = [section.photos.slice(0, 3), section.photos.slice(3)];
@@ -419,6 +466,7 @@ function photoLayoutClass(count: number) {
 <script>
   // Scroll-reveal animations
   document.body.classList.add('is-ready');
+  requestAnimationFrame(() => document.body.classList.add('is-loaded'));
   const storySections = document.querySelectorAll('.story-section');
   if (storySections.length > 0) {
     const revealObserver = new IntersectionObserver((entries) => {
