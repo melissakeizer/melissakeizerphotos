@@ -2,95 +2,76 @@
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import { subtitleForStory } from '../lib/story-metadata';
+import { fieldNotes } from '../lib/field-notes';
 
 const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
 const stories = await getCollection('stories');
-const sorted = stories.sort((a, b) => a.data.order - b.data.order);
-const featured = sorted.find((story) => story.id === 'dubshed-northern-irelands-largest-car-show') ?? sorted[0];
-const recentWork = sorted.filter((story) => story.id !== featured.id).slice(0, 3);
-const fieldNotes = [
-  { image: 'sparrowhawk.jpg', title: 'Sparrowhawk', note: 'A quiet garden visitor' },
-  { image: 'castle-espie-5-2.jpg', title: 'Field note', note: 'Castle Espie' },
-  { image: 'IMG_8478.jpg', title: 'Field note', note: 'A moment worth keeping' },
-  { image: 'IMG_2136.jpg', title: 'Field note', note: 'From the archive' },
-  { image: 'IMG_2691.jpg', title: 'Field note', note: 'A small encounter' },
-  { image: 'auditt.jpg', title: 'Field note', note: 'Seen along the way' },
+
+// This is the curated homepage shelf: change the order or IDs here whenever
+// a different set of work deserves prominence.
+const selectedProjectIds = [
+  'dubshed-northern-irelands-largest-car-show',
+  'sky-odin',
+  'finn-pointer-puppy',
+  'vegas-baby',
+  'road-to-sligo',
+  'dogs-of-dubrovnik',
 ];
+const selectedProjects = selectedProjectIds
+  .map((id) => stories.find((story) => story.id === id))
+  .filter((story): story is NonNullable<typeof story> => Boolean(story));
 
 function photoUrl(path: string) {
   return `${base}${path.replace(/^\//, '')}`;
 }
 ---
 
-<Layout>
-  <main class="home-page">
-    <section class="home-intro" aria-labelledby="home-intro-title">
-      <p class="home-kicker">Photography by Melissa Keizer</p>
-      <h1 id="home-intro-title">Stories from the field, the road, and closer to home.</h1>
-      <p class="home-intro__copy">Animal, pet and travel photography from Northern Ireland and beyond.</p>
+<Layout brandImage="melissa-keizer-sticker.png">
+  <main class="home-page home-page--quiet">
+    <section class="home-intro home-intro--compact" aria-labelledby="home-intro-title">
+      <h1 id="home-intro-title">Animals, places and the moments between.</h1>
+      <p class="home-intro__copy">I’m Melissa, a photographer in Northern Ireland. This is a home for considered stories, wandering galleries and the smaller encounters I want to remember.</p>
     </section>
 
-    {featured && (() => {
-      const cover = featured.data.coverImage || featured.data.photos[0];
-      const subtitle = subtitleForStory(featured.id, featured.data.subtitle);
-      return <section class="home-feature" aria-labelledby="featured-title">
-        <a class="home-feature__image" href={`${base}stories/${featured.id}`}>
-          {cover && <img src={photoUrl(cover)} alt={featured.data.title} />}
-        </a>
-        <div class="home-feature__content">
-          <p class="home-kicker">Featured {featured.data.type === 'gallery' ? 'gallery' : 'story'}</p>
-          <h2 id="featured-title">{featured.data.title}</h2>
-          {subtitle && <p class="home-feature__subtitle">{subtitle}</p>}
-          <p class="home-feature__copy">A considered collection of images, made to be explored at your own pace.</p>
-          <a class="home-text-link" href={`${base}stories/${featured.id}`}>View {featured.data.type === 'gallery' ? 'gallery' : 'story'} <span aria-hidden="true">→</span></a>
-        </div>
-      </section>;
-    })()}
-
-    <section class="home-section" aria-labelledby="recent-work-title">
-      <div class="home-section__heading">
-        <div>
-          <p class="home-kicker">Selected projects</p>
-          <h2 id="recent-work-title">Recent work</h2>
-        </div>
-        <a class="home-text-link" href={`${base}stories/`}>See all posts <span aria-hidden="true">→</span></a>
-      </div>
-      <div class="home-project-grid">
-        {recentWork.map((story) => {
+    <section class="home-section home-section--projects" aria-label="Selected photography projects">
+      <div class="home-project-grid home-project-grid--six">
+        {selectedProjects.map((story) => {
           const cover = story.data.coverImage || story.data.photos[0];
           const subtitle = subtitleForStory(story.id, story.data.subtitle);
           return <article class="home-project-card">
             <a href={`${base}stories/${story.id}`}>
-              {cover && <img src={photoUrl(cover)} alt={story.data.title} loading="lazy" decoding="async" />}
-              <p class="home-project-card__type">{story.data.type}</p>
-              <h3>{story.data.title}</h3>
-              {subtitle && <p>{subtitle}</p>}
+              <div class="home-project-card__image">
+                {cover && <img src={photoUrl(cover)} alt={story.data.title} loading="lazy" decoding="async" />}
+              </div>
+              <h2>{story.data.title}</h2>
+              <div class="home-project-card__meta">
+                <p><strong>Type.</strong><span>{story.data.type}</span></p>
+                {subtitle && <p><strong>Caption.</strong><span>{subtitle}</span></p>}
+              </div>
             </a>
           </article>;
         })}
       </div>
+      <div class="home-section__more">
+        <a class="home-text-link" href={`${base}stories/`}>See all posts <span aria-hidden="true">→</span></a>
+      </div>
     </section>
 
-    <section class="home-field-notes" aria-labelledby="field-notes-title">
+    <section class="home-field-notes home-field-notes--preview" id="field-notes" aria-labelledby="field-notes-title">
       <div class="home-field-notes__intro">
         <p class="home-kicker">Small moments, kept</p>
-        <h2 id="field-notes-title">Field notes</h2>
-        <p>Single images and passing encounters that do not need a full story to deserve a place here.</p>
-        <a class="home-text-link" href="#field-notes">Browse field notes <span aria-hidden="true">→</span></a>
+        <h2 id="field-notes-title">PhotoStream</h2>
+        <p>One-off photographs, passing visitors and things seen along the way—with the camera details left intact.</p>
+        <a class="home-text-link" href={`${base}field-notes/`}>Browse PhotoStream <span aria-hidden="true">→</span></a>
       </div>
-      <div class="home-field-notes__grid" id="field-notes">
-        {fieldNotes.map((fieldNote) => <figure class="field-note-card">
+      <div class="home-field-notes__grid">
+        {fieldNotes.slice(0, 6).map((fieldNote) => <figure class="field-note-card">
           <img src={photoUrl(`/photos/00-field-notes/${fieldNote.image}`)} alt={fieldNote.title} loading="lazy" decoding="async" />
-          <figcaption><strong>{fieldNote.title}</strong><span>{fieldNote.note}</span></figcaption>
+          <figcaption>
+            <strong>{fieldNote.title}</strong>
+            <span>{fieldNote.camera ? `${fieldNote.camera}${fieldNote.lens ? ` · ${fieldNote.lens}` : ''}` : fieldNote.date}</span>
+          </figcaption>
         </figure>)}
-      </div>
-    </section>
-
-    <section class="home-explore" aria-labelledby="explore-title">
-      <p class="home-kicker">Explore the archive</p>
-      <h2 id="explore-title">Find a story by subject.</h2>
-      <div class="home-explore__links">
-        {['Animals', 'Pet Sessions', 'Travel', 'Adventures', 'Live Music'].map((category) => <a href={`${base}categories/${category.toLowerCase().replace(/\s+/g, '-')}`}>{category} <span aria-hidden="true">↗</span></a>)}
       </div>
     </section>
   </main>

@@ -1,0 +1,61 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { fieldNotes } from '../lib/field-notes';
+
+const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
+
+function photoUrl(path: string) {
+  return `${base}${path.replace(/^\//, '')}`;
+}
+
+const landscapeNotes = new Set([
+  'CD559E27-A3B6-4847-88F3-23600E312AA5_1_105_c.jpeg',
+  '419ED7E6-DFC6-4CFD-B55B-94D4ABA16A06_1_105_c.jpeg',
+  '7E90570A-F874-440A-BB64-F94C7D66A52B_1_102_o.jpeg',
+]);
+---
+
+<Layout title="PhotoStream" description="A stream of single photographs, passing encounters and camera notes by Melissa Keizer." theme="dark">
+  <nav class="photostream-versions" aria-label="PhotoStream layout versions">
+    <a class="is-active" href={`${base}field-notes/`} aria-current="page">Version A</a>
+    <a href={`${base}field-notes-b/`}>Version B</a>
+  </nav>
+  <main class="field-notes-page">
+    <header class="field-notes-header">
+      <h1>PhotoStream</h1>
+      <p>For a girl who misses the simplicity of Flickr.</p>
+    </header>
+
+    <div class="field-notes-feed" data-field-notes-feed>
+      {fieldNotes.map((note, index) => (
+        <article class:list={['field-notes-entry', { 'field-notes-entry--landscape': landscapeNotes.has(note.image), 'is-deferred': index >= 15 }]}> 
+          <figure>
+            <img src={photoUrl(`/photos/00-field-notes/${note.image}`)} alt={note.title} loading={index < 3 ? 'eager' : 'lazy'} decoding="async" />
+          </figure>
+          <div class="field-notes-entry__details">
+            <div class="field-notes-entry__caption">
+              <h2>{note.title}</h2>
+              <p class="field-notes-entry__date">{note.date}{note.place ? ` · ${note.place}` : ''}</p>
+            </div>
+            {(note.camera || note.lens || note.settings) && <div class="field-notes-entry__exif">
+              {(note.camera || note.lens) && <p>{[note.camera, note.lens].filter(Boolean).join(' · ')}</p>}
+              {note.settings && <p>{note.settings}</p>}
+            </div>}
+          </div>
+        </article>
+      ))}
+    </div>
+
+    {fieldNotes.length > 15 && <button class="field-notes-load" type="button" data-load-more>Load more notes</button>}
+  </main>
+</Layout>
+
+<script>
+  const loadButton = document.querySelector<HTMLButtonElement>('[data-load-more]');
+  loadButton?.addEventListener('click', () => {
+    document.querySelectorAll<HTMLElement>('.field-notes-entry.is-deferred').forEach((entry, index) => {
+      if (index < 15) entry.classList.remove('is-deferred');
+    });
+    if (!document.querySelector('.field-notes-entry.is-deferred')) loadButton.remove();
+  });
+</script>

@@ -6,29 +6,31 @@ import { categoriesForStory, subtitleForStory } from '../../lib/story-metadata';
 const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
 const stories = await getCollection('stories');
 const sorted = stories.sort((a, b) => a.data.order - b.data.order);
+const categoryOrder = ['animals', 'pet sessions', 'travel', 'adventures', 'live music'];
 ---
 
 <Layout title="All Posts">
-  <header class="site-header">
+  <header class="archive-header">
     <p class="home-kicker">The archive</p>
-    <h1 class="site-header__name">All posts</h1>
-    <p class="site-header__bio">Stories and galleries from the archive.</p>
+    <h1>All posts</h1>
+    <p>Stories and galleries from Northern Ireland and further afield.</p>
+    <div class="archive-filters" aria-label="Filter posts">
+      <button class="is-active" type="button" data-filter="all" aria-pressed="true">All</button>
+      {categoryOrder.map((category) => <button type="button" data-filter={category} aria-pressed="false">{category}</button>)}
+    </div>
   </header>
   <main>
-    <div class="stories-grid" id="stories">
+    <div class="stories-grid stories-grid--archive" id="stories">
       {sorted.map((story) => {
         const cover = story.data.coverImage || story.data.photos[0];
         const categories = categoriesForStory(story.id, story.data.categories);
         const subtitle = subtitleForStory(story.id, story.data.subtitle);
-        return <article class="story-card">
+        return <article class="story-card" data-categories={categories.join('|')}>
           {cover && <img class="story-card__img" src={`${base}${cover.replace(/^\//, '')}`} alt={story.data.title} loading="lazy" decoding="async" />}
           <div class="story-card__overlay">
+            <p class="story-card__kind">{story.data.type}</p>
             <h2 class="story-card__title">{story.data.title}</h2>
             {subtitle && <p class="story-card__subtitle">{subtitle}</p>}
-            <div class="story-card__meta">
-              {story.data.date && <span>{story.data.date}</span>}
-              {categories.map((category) => <a href={`${base}categories/${category.toLowerCase().replace(/\s+/g, '-')}`}>{category}</a>)}
-            </div>
           </div>
           <a class="story-card__link" href={`${base}stories/${story.id}`} aria-label={`View ${story.data.title}`}></a>
         </article>;
@@ -36,3 +38,21 @@ const sorted = stories.sort((a, b) => a.data.order - b.data.order);
     </div>
   </main>
 </Layout>
+
+<script>
+  const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-filter]'));
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('.story-card[data-categories]'));
+
+  buttons.forEach((button) => button.addEventListener('click', () => {
+    const filter = button.dataset.filter || 'all';
+    buttons.forEach((item) => {
+      const active = item === button;
+      item.classList.toggle('is-active', active);
+      item.setAttribute('aria-pressed', String(active));
+    });
+    cards.forEach((card) => {
+      const categories = card.dataset.categories?.split('|') || [];
+      card.hidden = filter !== 'all' && !categories.includes(filter);
+    });
+  }));
+</script>

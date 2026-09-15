@@ -7,10 +7,11 @@ interface Props {
   image?: string;
   theme?: 'light' | 'dark';
   hideNav?: boolean;
+  brandImage?: string;
 }
 
 const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
-const { title = 'Photography by Melissa Keizer', description = 'Freelance pet & event photographer based in Bangor, Northern Ireland.', image, theme = 'light', hideNav = false } = Astro.props;
+const { title = 'Photography by Melissa Keizer', description = 'Freelance pet & event photographer based in Bangor, Northern Ireland.', image, theme = 'light', hideNav = false, brandImage = 'melissa-keizer-sticker.png' } = Astro.props;
 const fullTitle = title === 'Photography by Melissa Keizer' ? title : `${title} — Melissa Keizer Photography`;
 ---
 
@@ -29,26 +30,40 @@ const fullTitle = title === 'Photography by Melissa Keizer' ? title : `${title} 
   </head>
   <body>
     <nav class="site-nav" class:list={[{ 'site-nav--hidden': hideNav }]} aria-label="Primary navigation">
-      <a class="site-nav__brand" href={base} aria-label="Melissa Keizer Photography home">
-        <img src={`${base}melissa-keizer-logo-icon.svg`} alt="" />
+      <a class:list={['site-nav__brand', { 'site-nav__brand--sticker': brandImage }]} href={base} aria-label="Melissa Keizer Photography home">
+        <img src={`${base}${brandImage}`} alt="" />
       </a>
     </nav>
     <slot />
-    <footer class="site-footer">
-      <div class="site-footer__cta">
-        <p class="home-kicker">Work together</p>
-        <h2>Have an animal, place or moment worth remembering?</h2>
-        <p>I occasionally take on pet, animal and event photography projects across Northern Ireland.</p>
-        <a class="site-footer__email" href="mailto:hi@melissakeizer.com">Get in touch <span aria-hidden="true">→</span></a>
-      </div>
-      <div class="site-footer__bottom">
-        <p>&copy; {new Date().getFullYear()} Melissa Keizer.</p>
-        <nav aria-label="Footer navigation">
-          <a href={`${base}stories/`}>All posts</a>
-          <a href={`${base}categories/`}>Categories</a>
-          <a href="https://instagram.com/keizgoesboom" target="_blank" rel="noopener">Instagram</a>
-          <a href="mailto:hi@melissakeizer.com">Email</a>
+    <footer class="site-footer" style={`--footer-photo: url('${base}photos/road-to-sligo/058-18ws24t1as3jk16geyp1vox1kmpqkdc7e28w.jpg')`}>
+      <div class="site-footer__panel">
+        <div class="site-footer__portrait">
+          <img src={`${base}melissa-keizer-avatar.jpeg`} alt="Melissa Keizer" />
+        </div>
+        <div class="site-footer__introduction">
+          <p class="home-kicker">A little about me</p>
+          <h2>Hi, I’m Melissa Keizer.</h2>
+          <p>I’m a photographer and designer in Northern Ireland, with a soft spot for animals, honest moments and taking the scenic route.</p>
+        </div>
+        <nav class="site-footer__links" aria-label="Explore">
+          <p class="site-footer__label">Explore</p>
+          <a href={base}>Home <span aria-hidden="true">↗</span></a>
+          <a href={`${base}stories/`}>All posts <span aria-hidden="true">↗</span></a>
+          <a href={`${base}field-notes/`}>PhotoStream <span aria-hidden="true">↗</span></a>
         </nav>
+        <div class="site-footer__contact">
+          <p class="site-footer__label">Elsewhere</p>
+          <a href="https://instagram.com/keizgoesboom" target="_blank" rel="noopener">Instagram <span aria-hidden="true">↗</span></a>
+          <a href="mailto:hi@melissakeizer.com">Email me <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="site-footer__colophon">
+          <p class="site-footer__label">Colophon</p>
+          <p>Photographed, written and designed by Melissa. Built as a permanent home for stories, galleries and passing observations.</p>
+        </div>
+        <div class="site-footer__bottom">
+          <p>&copy; {new Date().getFullYear()} Melissa Keizer.</p>
+          <p>Made in Bangor, Northern Ireland.</p>
+        </div>
       </div>
     </footer>
   </body>

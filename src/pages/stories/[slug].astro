@@ -33,6 +33,8 @@ type Chunk =
 
 const { story } = Astro.props;
 const { data, body } = story;
+const exposurePlaceholder = 'Write your story here. (Optional)';
+const description = data.description?.trim() === exposurePlaceholder ? null : data.description;
 const categories = categoriesForStory(story.id, data.categories);
 const subtitle = subtitleForStory(story.id, data.subtitle);
 const cover = data.coverImage || data.photos[0];
@@ -54,6 +56,9 @@ if (isStory && body && body.trim()) {
 // solely from the number of photos. Prefer the recovered source layout.
 sections = sections.map((section) => ({
   ...section,
+  text: section.text
+    ?.replace(/<p>\s*Write your story here\. \(Optional\)\s*<\/p>/gi, '')
+    .trim() ?? '',
   layout: layoutForStorySection(story.id, section.photos) ?? section.layout,
 }));
 
@@ -122,9 +127,9 @@ function photoLayoutClass(count: number) {
 }
 ---
 
-<Layout title={data.title} description={data.description || undefined} image={cover ? photoUrl(cover) : undefined} theme={data.theme ?? 'light'} hideNav={true}>
+<Layout title={data.title} description={description || undefined} image={cover ? photoUrl(cover) : undefined} theme={data.theme ?? 'light'} hideNav={true}>
   <a class="story-home-btn" href={base} aria-label="Home">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/><polyline points="9 21 9 12 15 12 15 21"/></svg>
+    <img src={`${base}melissa-keizer-sticker.png`} alt="" />
   </a>
   {isStory && cover && coverStyle === 'full' && (
     <div class="story-hero-wrapper">
@@ -207,9 +212,9 @@ function photoLayoutClass(count: number) {
           <hr class="story-divider" />
         </header>
       }
-      {data.description && (
+      {description && (
         <div class="story-intro">
-          <p>{data.description}</p>
+          <p>{description}</p>
         </div>
       )}
       {galleryPhotos.length > 0 && (
@@ -441,7 +446,7 @@ function photoLayoutClass(count: number) {
   {/* Fallback: story with no sections parsed */}
   {isStory && chunks.length === 0 && (
     <div class="story-page story-page--has-hero">
-      {data.description && <div class="story-intro"><p>{data.description}</p></div>}
+      {description && <div class="story-intro"><p>{description}</p></div>}
       {galleryPhotos.length > 0 && (
         <div class="masonry-gallery" id="gallery">
           {galleryPhotos.map((photo, i) => (

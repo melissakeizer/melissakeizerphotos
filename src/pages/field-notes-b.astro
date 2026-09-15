@@ -1,0 +1,69 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { fieldNotes } from '../lib/field-notes';
+
+const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
+const landscapeNotes = new Set([
+  'CD559E27-A3B6-4847-88F3-23600E312AA5_1_105_c.jpeg',
+  '419ED7E6-DFC6-4CFD-B55B-94D4ABA16A06_1_105_c.jpeg',
+  '7E90570A-F874-440A-BB64-F94C7D66A52B_1_102_o.jpeg',
+]);
+
+function photoUrl(path: string) {
+  return `${base}${path.replace(/^\//, '')}`;
+}
+---
+
+<Layout title="PhotoStream — Version B" description="An editorial stream of photographs and camera notes by Melissa Keizer." theme="dark">
+  <nav class="photostream-versions" aria-label="PhotoStream layout versions">
+    <a href={`${base}field-notes/`}>Version A</a>
+    <a class="is-active" href={`${base}field-notes-b/`} aria-current="page">Version B</a>
+  </nav>
+
+  <main class="photostream-b">
+    <header class="photostream-b__header">
+      <h1>PhotoStream</h1>
+      <p>For a girl who misses the simplicity of Flickr.</p>
+    </header>
+
+    <div class="photostream-b__feed">
+      {fieldNotes.map((note, index) => (
+        <>
+          {index === 4 && (
+            <aside class="photostream-qa" aria-labelledby="photostream-qa-title">
+              <div class="photostream-qa__heading">
+                <p class="home-kicker">A quick-fire Q&amp;A</p>
+                <h2 id="photostream-qa-title">Behind the camera.</h2>
+              </div>
+              <div class="photostream-qa__item photostream-qa__item--one">
+                <h3>Which lens do you reach for most?</h3>
+                <p>My Sony 55mm f/1.8. It’s gorgeously sharp, gives me beautiful depth of field and I like the constraint of zooming with my feet.</p>
+              </div>
+              <div class="photostream-qa__item photostream-qa__item--two">
+                <h3>What do you most enjoy photographing now?</h3>
+                <p>Animals, always—but I’m also enjoying exploring automotive photography and finding a new visual language for it.</p>
+              </div>
+              <div class="photostream-qa__item photostream-qa__item--three">
+                <h3>What makes a photograph worth keeping?</h3>
+                <p>Usually the feeling attached to it. Technical perfection is lovely, but recognition, humour or surprise is what makes me return to a frame.</p>
+              </div>
+            </aside>
+          )}
+          <article class:list={['photostream-b__entry', { 'photostream-b__entry--landscape': landscapeNotes.has(note.image) }]}>
+            <div class="photostream-b__caption">
+              <h2>{note.title}</h2>
+              <p>{note.date}{note.place ? ` · ${note.place}` : ''}</p>
+            </div>
+            <figure>
+              <img src={photoUrl(`/photos/00-field-notes/${note.image}`)} alt={note.title} loading={index < 3 ? 'eager' : 'lazy'} decoding="async" />
+            </figure>
+            {(note.camera || note.lens || note.settings) && <div class="photostream-b__exif">
+              {(note.camera || note.lens) && <p>{[note.camera, note.lens].filter(Boolean).join(' · ')}</p>}
+              {note.settings && <p>{note.settings}</p>}
+            </div>}
+          </article>
+        </>
+      ))}
+    </div>
+  </main>
+</Layout>
