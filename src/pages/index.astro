@@ -10,12 +10,14 @@ const stories = await getCollection('stories');
 // This is the curated homepage shelf: change the order or IDs here whenever
 // a different set of work deserves prominence.
 const selectedProjectIds = [
+  'wild-ireland',
   'dubshed-northern-irelands-largest-car-show',
   'sky-odin',
   'finn-pointer-puppy',
   'vegas-baby',
   'road-to-sligo',
   'dogs-of-dubrovnik',
+  'animals-afternoon-tea',
 ];
 const selectedProjects = selectedProjectIds
   .map((id) => stories.find((story) => story.id === id))
@@ -34,7 +36,7 @@ function photoUrl(path: string) {
     </section>
 
     <section class="home-section home-section--projects" aria-label="Selected photography projects">
-      <div class="home-project-grid home-project-grid--six">
+      <div class="home-project-grid home-project-grid--eight">
         {selectedProjects.map((story) => {
           const cover = story.data.coverImage || story.data.photos[0];
           const subtitle = subtitleForStory(story.id, story.data.subtitle);
@@ -53,7 +55,7 @@ function photoUrl(path: string) {
         })}
       </div>
       <div class="home-section__more">
-        <a class="home-text-link" href={`${base}stories/`}>See all posts <span aria-hidden="true">→</span></a>
+        <a class="home-text-link home-text-link--button" href={`${base}stories/`}>See all posts <span aria-hidden="true">→</span></a>
       </div>
     </section>
 
