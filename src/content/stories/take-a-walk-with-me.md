@@ -1,5 +1,5 @@
 ---
-title: "TAKE A WALK WITH ME"
+title: "Take a Walk with Me"
 subtitle: null
 date: "November 24th, 2014"
 order: 35

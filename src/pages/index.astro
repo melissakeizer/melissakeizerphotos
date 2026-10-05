@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import { subtitleForStory } from '../lib/story-metadata';
 import { fieldNotes } from '../lib/field-notes';
+import ProjectCard from '../components/ProjectCard.astro';
 
 const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
 const stories = await getCollection('stories');
@@ -13,11 +14,11 @@ const selectedProjectIds = [
   'wild-ireland',
   'dubshed-northern-irelands-largest-car-show',
   'sky-odin',
-  'finn-pointer-puppy',
   'vegas-baby',
   'road-to-sligo',
-  'dogs-of-dubrovnik',
-  'animals-afternoon-tea',
+  'an-afternoon-with-angus',
+  'dubrovnik-and-cavtat',
+  'eckles',
 ];
 const selectedProjects = selectedProjectIds
   .map((id) => stories.find((story) => story.id === id))
@@ -31,7 +32,7 @@ function photoUrl(path: string) {
 <Layout brandImage="melissa-keizer-sticker.png">
   <main class="home-page home-page--quiet">
     <section class="home-intro home-intro--compact" aria-labelledby="home-intro-title">
-      <h1 id="home-intro-title">Animals, places and the moments between.</h1>
+      <h1 id="home-intro-title">Things I stopped to photograph.</h1>
       <p class="home-intro__copy">I’m Melissa, a photographer in Northern Ireland. This is a home for considered stories, wandering galleries and the smaller encounters I want to remember.</p>
     </section>
 
@@ -40,18 +41,13 @@ function photoUrl(path: string) {
         {selectedProjects.map((story) => {
           const cover = story.data.coverImage || story.data.photos[0];
           const subtitle = subtitleForStory(story.id, story.data.subtitle);
-          return <article class="home-project-card">
-            <a href={`${base}stories/${story.id}`}>
-              <div class="home-project-card__image">
-                {cover && <img src={photoUrl(cover)} alt={story.data.title} loading="lazy" decoding="async" />}
-              </div>
-              <h2>{story.data.title}</h2>
-              <div class="home-project-card__meta">
-                <p><strong>Type.</strong><span>{story.data.type}</span></p>
-                {subtitle && <p><strong>Caption.</strong><span>{subtitle}</span></p>}
-              </div>
-            </a>
-          </article>;
+          return <ProjectCard
+            href={`${base}stories/${story.id}`}
+            image={cover ? photoUrl(cover) : undefined}
+            title={story.data.title}
+            type={story.data.type}
+            caption={subtitle}
+          />;
         })}
       </div>
       <div class="home-section__more">
@@ -67,7 +63,7 @@ function photoUrl(path: string) {
         <a class="home-text-link" href={`${base}field-notes/`}>Browse PhotoStream <span aria-hidden="true">→</span></a>
       </div>
       <div class="home-field-notes__grid">
-        {fieldNotes.slice(0, 6).map((fieldNote) => <figure class="field-note-card">
+        {fieldNotes.slice(0, 4).map((fieldNote) => <figure class="field-note-card">
           <img src={photoUrl(`/photos/00-field-notes/${fieldNote.image}`)} alt={fieldNote.title} loading="lazy" decoding="async" />
           <figcaption>
             <strong>{fieldNote.title}</strong>

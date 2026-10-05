@@ -1,5 +1,5 @@
 ---
-title: "DESIGNERS/EXPLORERS"
+title: "Designers/Explorers"
 subtitle: null
 date: "December 11th, 2014"
 order: 34

@@ -1,5 +1,5 @@
 ---
-title: "Dubshed - Northern Ireland's Largest Car Show"
+title: "Dubshed"
 subtitle: null
 date: "April 3rd, 2023"
 order: 1

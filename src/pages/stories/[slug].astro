@@ -23,12 +23,13 @@ interface Section {
   title: string | null;
   text: string;
   photos: string[];
+  caption?: string;
   // Optional source-of-truth editorial override: spotlight, stacked, etc.
   layout?: string;
 }
 
 type Chunk =
-  | { type: 'separator'; photo: string }
+  | { type: 'separator'; photo: string; sectionIndex: number }
   | { type: 'article'; sections: Section[] };
 
 const { story } = Astro.props;
@@ -41,6 +42,8 @@ const cover = data.coverImage || data.photos[0];
 const isStory = data.type === 'story';
 const coverStyle = coverStyleForStory(story.id, data.coverStyle ?? 'full');
 const galleryLayout = data.galleryLayout ?? 'fitted-grid';
+const editorEnabled = import.meta.env.DEV && isStory;
+const StoryEditor = editorEnabled ? (await import('../../components/StoryEditor.astro')).default : null;
 
 // Parse sections from markdown body for story type posts
 let sections: Section[] = [];
@@ -51,6 +54,7 @@ if (isStory && body && body.trim()) {
     sections = [];
   }
 }
+const sourceSections: Section[] = JSON.parse(JSON.stringify(sections));
 
 // Original Exposure layouts are specific to each editorial beat, not inferred
 // solely from the number of photos. Prefer the recovered source layout.
@@ -59,7 +63,9 @@ sections = sections.map((section) => ({
   text: section.text
     ?.replace(/<p>\s*Write your story here\. \(Optional\)\s*<\/p>/gi, '')
     .trim() ?? '',
-  layout: layoutForStorySection(story.id, section.photos) ?? section.layout,
+  // A layout explicitly saved from the local editor takes precedence over the
+  // recovered Exposure default. Untouched sections still inherit that default.
+  layout: section.layout ?? layoutForStorySection(story.id, section.photos),
 }));
 
 // Read image aspect ratio at build time using sharp
@@ -90,14 +96,14 @@ for (const section of sections) {
 const chunks: Chunk[] = [];
 if (sections.length > 0) {
   let currentArticle: Section[] = [];
-  for (const section of sections) {
+  for (const [sectionIndex, section] of sections.entries()) {
     const isSep = !section.title && !section.text?.trim() && section.photos.length === 1 && (section.layout === 'full-bleed' || section.layout === 'parallax' || !section.layout);
     if (isSep) {
       if (currentArticle.length > 0) {
         chunks.push({ type: 'article', sections: currentArticle });
         currentArticle = [];
       }
-      chunks.push({ type: 'separator', photo: section.photos[0] });
+      chunks.push({ type: 'separator', photo: section.photos[0], sectionIndex });
     } else {
       currentArticle.push(section);
     }
@@ -131,6 +137,7 @@ function photoLayoutClass(count: number) {
   <a class="story-home-btn" href={base} aria-label="Home">
     <img src={`${base}melissa-keizer-sticker.png`} alt="" />
   </a>
+  {StoryEditor && <StoryEditor slug={story.id} sections={sourceSections} effectiveLayouts={sections.map((section) => section.layout || '')} />}
   {isStory && cover && coverStyle === 'full' && (
     <div class="story-hero-wrapper">
       <img
@@ -244,7 +251,7 @@ function photoLayoutClass(count: number) {
   {/* ── STORY LAYOUT ────────────────────────────────────────────────── */}
   {isStory && chunks.length > 0 && chunks.map((chunk, chunkIndex) => (
     chunk.type === 'separator' ? (
-      <div class="story-separator story-separator--parallax" style={`--parallax-image: url("${photoUrl(chunk.photo)}")`}>
+      <div class="story-separator story-separator--parallax" style={`--parallax-image: url("${photoUrl(chunk.photo)}")`} data-editor-section={editorEnabled ? chunk.sectionIndex : undefined} data-editor-layout="parallax" data-editor-photos="1">
         <img
           src={photoUrl(chunk.photo)}
           alt=""
@@ -263,23 +270,25 @@ function photoLayoutClass(count: number) {
             const isStacked = section.photos.length === 1 && (section.layout === 'stacked' || section.layout === 'stacked-centered');
             const isSplit = section.photos.length === 1 && !!section.text?.trim() && !isSpotlight && !isFullBleed && !isEdgeToEdge && !isParallax && !isStacked;
             return isSpotlight ? (
-              <section class="story-section story-section--spotlight">
+              <section class="story-section story-section--spotlight" data-editor-section={editorEnabled ? sections.indexOf(section) : undefined} data-editor-layout={section.layout || ''} data-editor-photos={section.photos.length}>
                 {section.title && <h2 class="story-section__title">{section.title}</h2>}
                 {section.text && <div class="story-section__text" set:html={section.text} />}
                 <div class="story-section__photo-item story-section__photo-item--spotlight" data-src={photoUrl(section.photos[0])} role="button" tabindex="0" aria-label="View photo">
                   <img src={photoUrl(section.photos[0])} alt={section.title || data.title} loading="lazy" decoding="async" />
                 </div>
+                {section.caption && <p class="story-photo-caption">{section.caption}</p>}
               </section>
             ) : isStacked ? (
-              <section class:list={['story-section', 'story-section--stacked', { 'story-section--stacked-centered': section.layout === 'stacked-centered' }]}>
+              <section class:list={['story-section', 'story-section--stacked', { 'story-section--stacked-centered': section.layout === 'stacked-centered' }]} data-editor-section={editorEnabled ? sections.indexOf(section) : undefined} data-editor-layout={section.layout || ''} data-editor-photos={section.photos.length}>
                 {section.title && <h2 class="story-section__title">{section.title}</h2>}
                 {section.text && <div class="story-section__text" set:html={section.text} />}
                 <div class="story-section__photo-item story-section__photo-item--stacked" data-src={photoUrl(section.photos[0])} role="button" tabindex="0" aria-label="View photo">
                   <img src={photoUrl(section.photos[0])} alt={section.title || data.title} loading="lazy" decoding="async" />
                 </div>
+                {section.caption && <p class="story-photo-caption">{section.caption}</p>}
               </section>
             ) : isFullBleed ? (
-              <section class="story-section story-section--full-bleed">
+              <section class="story-section story-section--full-bleed" data-editor-section={editorEnabled ? sections.indexOf(section) : undefined} data-editor-layout={section.layout || ''} data-editor-photos={section.photos.length}>
                 <div class="story-section__content">
                   {section.title && <h2 class="story-section__title">{section.title}</h2>}
                   {section.text && <div class="story-section__text" set:html={section.text} />}
@@ -287,9 +296,10 @@ function photoLayoutClass(count: number) {
                 <div class="story-section__full-bleed-photo" data-src={photoUrl(section.photos[0])} role="button" tabindex="0" aria-label="View photo">
                   <img src={photoUrl(section.photos[0])} alt={section.title || data.title} loading="lazy" decoding="async" />
                 </div>
+                {section.caption && <p class="story-photo-caption">{section.caption}</p>}
               </section>
             ) : isEdgeToEdge ? (
-              <section class="story-section story-section--edge-to-edge">
+              <section class="story-section story-section--edge-to-edge" data-editor-section={editorEnabled ? sections.indexOf(section) : undefined} data-editor-layout={section.layout || ''} data-editor-photos={section.photos.length}>
                 <div class="story-section__content">
                   {section.title && <h2 class="story-section__title">{section.title}</h2>}
                   {section.text && <div class="story-section__text" set:html={section.text} />}
@@ -297,9 +307,10 @@ function photoLayoutClass(count: number) {
                 <div class="story-section__edge-to-edge-photo" data-src={photoUrl(section.photos[0])} role="button" tabindex="0" aria-label="View photo">
                   <img src={photoUrl(section.photos[0])} alt={section.title || data.title} loading="lazy" decoding="async" />
                 </div>
+                {section.caption && <p class="story-photo-caption">{section.caption}</p>}
               </section>
             ) : isParallax ? (
-              <section class="story-section story-section--parallax">
+              <section class="story-section story-section--parallax" data-editor-section={editorEnabled ? sections.indexOf(section) : undefined} data-editor-layout={section.layout || ''} data-editor-photos={section.photos.length}>
                 <div class="story-section__content">
                   {section.title && <h2 class="story-section__title">{section.title}</h2>}
                   {section.text && <div class="story-section__text" set:html={section.text} />}
@@ -307,9 +318,10 @@ function photoLayoutClass(count: number) {
                 <div class="story-separator story-separator--parallax" style={`--parallax-image: url("${photoUrl(section.photos[0])}")`} data-src={photoUrl(section.photos[0])} role="button" tabindex="0" aria-label="View photo">
                   <img src={photoUrl(section.photos[0])} alt={section.title || data.title} loading="lazy" decoding="async" />
                 </div>
+                {section.caption && <p class="story-photo-caption">{section.caption}</p>}
               </section>
             ) : isSplit ? (
-              <section class:list={['story-section', 'story-section--split', { 'story-section--split-reverse': section.layout === 'split-reverse' }]}>
+              <section class:list={['story-section', 'story-section--split', { 'story-section--split-reverse': section.layout === 'split-reverse' }]} data-editor-section={editorEnabled ? sections.indexOf(section) : undefined} data-editor-layout={section.layout || ''} data-editor-photos={section.photos.length}>
                 <div class="story-section__content">
                   {section.title && <h2 class="story-section__title">{section.title}</h2>}
                   <div class="story-section__text" set:html={section.text} />
@@ -317,9 +329,10 @@ function photoLayoutClass(count: number) {
                 <div class="story-section__split-photo" data-src={photoUrl(section.photos[0])} role="button" tabindex="0" aria-label="View photo">
                   <img src={photoUrl(section.photos[0])} alt={section.title || data.title} loading="lazy" decoding="async" />
                 </div>
+                {section.caption && <p class="story-photo-caption">{section.caption}</p>}
               </section>
             ) : (
-              <section class="story-section">
+              <section class="story-section" data-editor-section={editorEnabled ? sections.indexOf(section) : undefined} data-editor-layout={section.layout || ''} data-editor-photos={section.photos.length}>
                 {section.title && (
                   <h2 class="story-section__title">{section.title}</h2>
                 )}
@@ -429,6 +442,7 @@ function photoLayoutClass(count: number) {
                     </div>
                   );
                 })()}
+                {section.caption && <p class="story-photo-caption">{section.caption}</p>}
               </section>
             );
           })}
@@ -519,7 +533,7 @@ function photoLayoutClass(count: number) {
     function next() { openAt((current + 1) % allItems.length); }
 
     allItems.forEach((item, i) => {
-      item.addEventListener('click', () => openAt(i));
+      item.addEventListener('click', () => { if (!document.body.classList.contains('is-story-editing')) openAt(i); });
       item.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') openAt(i); });
     });
 

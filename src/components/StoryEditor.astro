@@ -1,0 +1,267 @@
+---
+interface EditorSection {
+  title: string | null;
+  text: string;
+  photos: string[];
+  layout?: string;
+  caption?: string;
+}
+
+interface Props {
+  slug: string;
+  sections: EditorSection[];
+  effectiveLayouts: string[];
+}
+
+const { slug, sections, effectiveLayouts } = Astro.props;
+const serialized = JSON.stringify({ slug, sections, effectiveLayouts }).replace(/</g, '\\u003c');
+---
+
+<div class="story-editor" data-story-editor>
+  <button class="story-editor__toggle" type="button" data-editor-toggle>Edit story</button>
+  <div class="story-editor__panel" data-editor-panel hidden>
+    <div>
+      <strong>Local edit mode</strong>
+      <span data-editor-status>Click text to rewrite it, or use the controls on each section.</span>
+    </div>
+    <details class="story-editor__changes">
+      <summary><span data-editor-count>0</span> changes</summary>
+      <ul data-editor-changes><li>No changes yet.</li></ul>
+    </details>
+    <div class="story-editor__actions">
+      <button type="button" data-editor-discard>Discard</button>
+      <button class="story-editor__save" type="button" data-editor-save disabled>Save changes</button>
+    </div>
+  </div>
+</div>
+
+<script type="application/json" id="story-editor-data" set:html={serialized}></script>
+
+<script is:inline>
+  (() => {
+    const root = document.querySelector('[data-story-editor]');
+    const dataNode = document.getElementById('story-editor-data');
+    if (!root || !dataNode) return;
+
+    const original = JSON.parse(dataNode.textContent || '{}');
+    const toggle = root.querySelector('[data-editor-toggle]');
+    const panel = root.querySelector('[data-editor-panel]');
+    const save = root.querySelector('[data-editor-save]');
+    const discard = root.querySelector('[data-editor-discard]');
+    const status = root.querySelector('[data-editor-status]');
+    const count = root.querySelector('[data-editor-count]');
+    const list = root.querySelector('[data-editor-changes]');
+    let editing = false;
+
+    const layoutOptions = [
+      ['', 'Automatic / text beside photo'],
+      ['split', 'Photo right · text left'],
+      ['split-reverse', 'Photo left · text right'],
+      ['stacked', 'Full container width'],
+      ['stacked-centered', 'Contained and centred'],
+      ['spotlight', 'Narrow spotlight'],
+      ['full-bleed', 'Full width'],
+      ['edge-to-edge', 'Edge to edge'],
+      ['parallax', 'Fixed-image window'],
+    ];
+
+    function sectionElement(index) {
+      return document.querySelector(`[data-editor-section="${index}"]`);
+    }
+
+    function ensureTextNodes(section, index) {
+      let heading = section.querySelector('.story-section__title');
+      let text = section.querySelector('.story-section__text');
+      const content = section.querySelector('.story-section__content') || section;
+      const firstMedia = content.querySelector('[data-src], .story-section__photos');
+
+      if (!heading && original.sections[index]?.title) {
+        heading = document.createElement('h2');
+        heading.className = 'story-section__title';
+        heading.textContent = original.sections[index].title;
+        content.insertBefore(heading, firstMedia);
+      }
+      if (!text && original.sections[index]?.text) {
+        text = document.createElement('div');
+        text.className = 'story-section__text';
+        text.innerHTML = original.sections[index].text;
+        content.insertBefore(text, firstMedia);
+      }
+      return { heading, text, content, firstMedia };
+    }
+
+    function addSectionTools(section, index) {
+      if (section.querySelector(':scope > .story-editor__section-tools')) return;
+      const tools = document.createElement('div');
+      tools.className = 'story-editor__section-tools';
+      tools.innerHTML = `<span>Section ${index + 1}</span>`;
+
+      const addHeading = document.createElement('button');
+      addHeading.type = 'button';
+      addHeading.textContent = '+ heading';
+      addHeading.addEventListener('click', () => {
+        const { heading, content, firstMedia } = ensureTextNodes(section, index);
+        if (!heading) {
+          const nextHeading = document.createElement('h2');
+          nextHeading.className = 'story-section__title';
+          nextHeading.textContent = 'New heading';
+          nextHeading.contentEditable = 'true';
+          content.insertBefore(nextHeading, firstMedia);
+          nextHeading.focus();
+        }
+        updateChanges();
+      });
+      tools.append(addHeading);
+
+      const addParagraph = document.createElement('button');
+      addParagraph.type = 'button';
+      addParagraph.textContent = '+ paragraph';
+      addParagraph.addEventListener('click', () => {
+        let { text, content, firstMedia } = ensureTextNodes(section, index);
+        if (!text) {
+          text = document.createElement('div');
+          text.className = 'story-section__text';
+          content.insertBefore(text, firstMedia);
+        }
+        const paragraph = document.createElement('p');
+        paragraph.textContent = 'Write your paragraph here.';
+        paragraph.contentEditable = 'true';
+        text.append(paragraph);
+        paragraph.focus();
+        updateChanges();
+      });
+      tools.append(addParagraph);
+
+      if (Number(section.dataset.editorPhotos) === 1) {
+        const select = document.createElement('select');
+        select.setAttribute('aria-label', `Layout for section ${index + 1}`);
+        select.dataset.editorLayout = '';
+        layoutOptions.forEach(([value, label]) => {
+          const option = document.createElement('option');
+          option.value = value;
+          option.textContent = label;
+          option.selected = value === (original.effectiveLayouts[index] || section.dataset.editorLayout || '');
+          select.append(option);
+        });
+        select.dataset.initialLayout = original.effectiveLayouts[index] || '';
+        select.addEventListener('change', updateChanges);
+        tools.append(select);
+      }
+
+      if (!section.classList.contains('story-separator')) {
+        const caption = document.createElement('input');
+        caption.type = 'text';
+        caption.placeholder = 'Optional image caption';
+        caption.value = original.sections[index]?.caption || '';
+        caption.dataset.editorCaption = '';
+        caption.addEventListener('input', () => {
+          let preview = section.querySelector('.story-photo-caption');
+          if (caption.value.trim() && !preview) {
+            preview = document.createElement('p');
+            preview.className = 'story-photo-caption';
+            section.append(preview);
+          }
+          if (preview) preview.textContent = caption.value;
+          updateChanges();
+        });
+        tools.append(caption);
+      }
+
+      section.prepend(tools);
+    }
+
+    function setEditable(enabled) {
+      document.body.classList.toggle('is-story-editing', enabled);
+      original.sections.forEach((_, index) => {
+        const section = sectionElement(index);
+        if (!section) return;
+        if (enabled) addSectionTools(section, index);
+        section.querySelectorAll('.story-section__title, .story-section__text p').forEach((node) => {
+          node.contentEditable = enabled ? 'true' : 'false';
+          node.spellcheck = true;
+        });
+      });
+    }
+
+    function collectSections() {
+      return original.sections.map((source, index) => {
+        const section = sectionElement(index);
+        if (!section) return source;
+        const title = section.querySelector('.story-section__title')?.textContent?.trim() || null;
+        const textElement = section.querySelector('.story-section__text');
+        const textClone = textElement?.cloneNode(true);
+        textClone?.querySelectorAll('[contenteditable], [spellcheck]').forEach((node) => {
+          node.removeAttribute('contenteditable');
+          node.removeAttribute('spellcheck');
+        });
+        const text = textClone?.innerHTML.trim() || '';
+        const layoutSelect = section.querySelector('[data-editor-layout]');
+        const captionInput = section.querySelector('[data-editor-caption]');
+        const next = { title, text, photos: source.photos };
+        const layout = layoutSelect
+          ? (layoutSelect.value === layoutSelect.dataset.initialLayout ? (source.layout || '') : layoutSelect.value)
+          : (source.layout || '');
+        const caption = captionInput ? captionInput.value.trim() : (source.caption || '');
+        if (layout) next.layout = layout;
+        if (caption) next.caption = caption;
+        return next;
+      });
+    }
+
+    function describeChanges(nextSections) {
+      const changes = [];
+      nextSections.forEach((section, index) => {
+        const before = original.sections[index];
+        if ((section.title || null) !== (before.title || null)) changes.push(`Section ${index + 1}: heading edited`);
+        if (section.text !== (before.text || '')) changes.push(`Section ${index + 1}: text edited`);
+        if ((section.layout || '') !== (before.layout || '')) changes.push(`Section ${index + 1}: layout → ${section.layout || 'automatic'}`);
+        if ((section.caption || '') !== (before.caption || '')) changes.push(`Section ${index + 1}: caption edited`);
+      });
+      return changes;
+    }
+
+    function updateChanges() {
+      if (!editing) return;
+      const changes = describeChanges(collectSections());
+      count.textContent = String(changes.length);
+      list.innerHTML = changes.length ? changes.map((change) => `<li>${change}</li>`).join('') : '<li>No changes yet.</li>';
+      save.disabled = changes.length === 0;
+    }
+
+    toggle.addEventListener('click', () => {
+      editing = !editing;
+      panel.hidden = !editing;
+      toggle.textContent = editing ? 'Close editor' : 'Edit story';
+      setEditable(editing);
+      updateChanges();
+    });
+
+    document.addEventListener('input', (event) => {
+      if (editing && event.target.closest('[data-editor-section]')) updateChanges();
+    });
+
+    discard.addEventListener('click', () => window.location.reload());
+
+    save.addEventListener('click', async () => {
+      const nextSections = collectSections();
+      const changes = describeChanges(nextSections);
+      if (!changes.length) return;
+      save.disabled = true;
+      status.textContent = 'Saving to the local story file…';
+      try {
+        const response = await fetch('/melissakeizerphotos/__story-editor/save', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ slug: original.slug, sections: nextSections }),
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || 'Save failed.');
+        status.textContent = 'Saved. Reloading the story…';
+        window.setTimeout(() => window.location.reload(), 450);
+      } catch (error) {
+        status.textContent = error instanceof Error ? error.message : 'Could not save changes.';
+        save.disabled = false;
+      }
+    });
+  })();
+</script>

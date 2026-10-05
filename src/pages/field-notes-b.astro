@@ -52,7 +52,7 @@ function photoUrl(path: string) {
           <article class:list={['photostream-b__entry', { 'photostream-b__entry--landscape': landscapeNotes.has(note.image) }]}>
             <div class="photostream-b__caption">
               <h2>{note.title}</h2>
-              <p>{note.date}{note.place ? ` · ${note.place}` : ''}</p>
+              <p class="field-notes-entry__date"><span>{note.date}</span>{note.place && <span class="field-note-location"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.1 7-12A7 7 0 0 0 5 9c0 5.9 7 12 7 12Z"/><circle cx="12" cy="9" r="2.25"/></svg>{note.place}</span>}</p>
             </div>
             <figure>
               <img src={photoUrl(`/photos/00-field-notes/${note.image}`)} alt={note.title} loading={index < 3 ? 'eager' : 'lazy'} decoding="async" />

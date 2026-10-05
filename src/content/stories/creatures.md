@@ -1,5 +1,5 @@
 ---
-title: "creatures"
+title: "Creatures"
 subtitle: null
 date: "November 29th, 2018"
 order: 17

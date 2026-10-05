@@ -1,5 +1,5 @@
 ---
-title: "BORN THIS WAY, BABY"
+title: "Born This Way, Baby"
 subtitle: null
 date: "October 19th, 2014"
 order: 36

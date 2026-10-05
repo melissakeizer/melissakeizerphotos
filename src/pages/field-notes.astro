@@ -35,7 +35,7 @@ const landscapeNotes = new Set([
           <div class="field-notes-entry__details">
             <div class="field-notes-entry__caption">
               <h2>{note.title}</h2>
-              <p class="field-notes-entry__date">{note.date}{note.place ? ` · ${note.place}` : ''}</p>
+              <p class="field-notes-entry__date"><span>{note.date}</span>{note.place && <span class="field-note-location"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.1 7-12A7 7 0 0 0 5 9c0 5.9 7 12 7 12Z"/><circle cx="12" cy="9" r="2.25"/></svg>{note.place}</span>}</p>
             </div>
             {(note.camera || note.lens || note.settings) && <div class="field-notes-entry__exif">
               {(note.camera || note.lens) && <p>{[note.camera, note.lens].filter(Boolean).join(' · ')}</p>}

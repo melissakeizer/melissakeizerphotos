@@ -2,38 +2,50 @@
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import { categoriesForStory, subtitleForStory } from '../../lib/story-metadata';
+import ProjectCard from '../../components/ProjectCard.astro';
 
 const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
 const stories = await getCollection('stories');
 const sorted = stories.sort((a, b) => a.data.order - b.data.order);
-const categoryOrder = ['animals', 'pet sessions', 'travel', 'adventures', 'live music'];
+const [featured, ...archiveStories] = sorted;
+const categoryOrder = ['animals', 'pet sessions', 'adventures', 'live music'];
+const featuredCover = featured?.data.coverImage || featured?.data.photos[0];
+const featuredSubtitle = featured ? subtitleForStory(featured.id, featured.data.subtitle) : '';
 ---
 
 <Layout title="All Posts">
   <header class="archive-header">
-    <p class="home-kicker">The archive</p>
-    <h1>All posts</h1>
-    <p>Stories and galleries from Northern Ireland and further afield.</p>
+    <h1>All Posts</h1>
     <div class="archive-filters" aria-label="Filter posts">
       <button class="is-active" type="button" data-filter="all" aria-pressed="true">All</button>
       {categoryOrder.map((category) => <button type="button" data-filter={category} aria-pressed="false">{category}</button>)}
     </div>
   </header>
   <main>
+    {featured && <article class="archive-feature" data-categories={categoriesForStory(featured.id, featured.data.categories).join('|')}>
+      <div class="archive-feature__copy">
+        <p class="home-kicker">Latest {featured.data.type}</p>
+        <h2>{featured.data.title}</h2>
+        {featuredSubtitle && <p>{featuredSubtitle}</p>}
+        <a href={`${base}stories/${featured.id}`}>Read this post <span aria-hidden="true">→</span></a>
+      </div>
+      {featuredCover && <a class="archive-feature__image" href={`${base}stories/${featured.id}`} aria-label={`Read ${featured.data.title}`}>
+        <img src={`${base}${featuredCover.replace(/^\//, '')}`} alt="" />
+      </a>}
+    </article>}
     <div class="stories-grid stories-grid--archive" id="stories">
-      {sorted.map((story) => {
+      {archiveStories.map((story) => {
         const cover = story.data.coverImage || story.data.photos[0];
         const categories = categoriesForStory(story.id, story.data.categories);
         const subtitle = subtitleForStory(story.id, story.data.subtitle);
-        return <article class="story-card" data-categories={categories.join('|')}>
-          {cover && <img class="story-card__img" src={`${base}${cover.replace(/^\//, '')}`} alt={story.data.title} loading="lazy" decoding="async" />}
-          <div class="story-card__overlay">
-            <p class="story-card__kind">{story.data.type}</p>
-            <h2 class="story-card__title">{story.data.title}</h2>
-            {subtitle && <p class="story-card__subtitle">{subtitle}</p>}
-          </div>
-          <a class="story-card__link" href={`${base}stories/${story.id}`} aria-label={`View ${story.data.title}`}></a>
-        </article>;
+        return <ProjectCard
+          href={`${base}stories/${story.id}`}
+          image={cover ? `${base}${cover.replace(/^\//, '')}` : undefined}
+          title={story.data.title}
+          type={story.data.type}
+          caption={subtitle}
+          categories={categories}
+        />;
       })}
     </div>
   </main>
@@ -41,7 +53,7 @@ const categoryOrder = ['animals', 'pet sessions', 'travel', 'adventures', 'live 
 
 <script>
   const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-filter]'));
-  const cards = Array.from(document.querySelectorAll<HTMLElement>('.story-card[data-categories]'));
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-categories]'));
 
   buttons.forEach((button) => button.addEventListener('click', () => {
     const filter = button.dataset.filter || 'all';

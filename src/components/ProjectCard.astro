@@ -1,0 +1,25 @@
+---
+interface Props {
+  href: string;
+  image?: string;
+  title: string;
+  type: string;
+  caption?: string | null;
+  categories?: string[];
+}
+
+const { href, image, title, type, caption, categories } = Astro.props;
+---
+
+<article class="project-card" data-categories={categories?.join('|')}>
+  <a href={href}>
+    <div class="project-card__image">
+      {image && <img src={image} alt={title} loading="lazy" decoding="async" />}
+    </div>
+    <div class="project-card__content">
+      <h2>{title}</h2>
+      {caption && <p class="project-card__caption">{caption}</p>}
+      <p class="project-card__type">{type}</p>
+    </div>
+  </a>
+</article>
