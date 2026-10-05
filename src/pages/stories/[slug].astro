@@ -146,24 +146,15 @@ function photoLayoutClass(count: number) {
         alt={data.title}
       />
       <div class="story-hero__overlay">
-        <a class="story-hero__back" href={base}>← All Stories</a>
         <div class="story-hero__content">
           <h1 class="story-hero__title">{data.title}</h1>
           {subtitle && <p class="story-hero__subtitle">{subtitle}</p>}
-          {(data.date || categories.length > 0) && (
-            <div class="story-hero__meta">
-              {data.date && <span>{data.date}</span>}
-              {categories.map(cat => (
-                <a href={`${base}categories/${cat.toLowerCase().replace(/\s+/g, '-')}`}>{cat}</a>
-              ))}
-            </div>
-          )}
         </div>
         <div class="story-hero__author">
           <img
             class="story-hero__author-stamp"
-            src={`${base}melissa-keizer-logo-icon.svg`}
-            alt="Melissa Keizer Photography"
+            src={`${base}melissa-keizer-avatar.jpeg`}
+            alt="Melissa Keizer"
           />
           <span class="story-hero__author-label">By <strong>Melissa Keizer</strong></span>
         </div>
@@ -177,24 +168,15 @@ function photoLayoutClass(count: number) {
         <img src={photoUrl(cover)} alt={data.title} />
       </div>
       <div class="story-hero-split__content">
-        <a class="story-hero__back" href={base}>← All Stories</a>
         <div class="story-hero-split__body">
           <h1 class="story-hero-split__title">{data.title}</h1>
           {subtitle && <p class="story-hero-split__subtitle">{subtitle}</p>}
-          {(data.date || categories.length > 0) && (
-            <div class="story-hero__meta" style="justify-content: flex-start;">
-              {data.date && <span>{data.date}</span>}
-              {categories.map(cat => (
-                <a href={`${base}categories/${cat.toLowerCase().replace(/\s+/g, '-')}`}>{cat}</a>
-              ))}
-            </div>
-          )}
         </div>
         <div class="story-hero-split__author">
           <img
             class="story-hero-split__author-stamp"
-            src={`${base}melissa-keizer-logo-icon.svg`}
-            alt="Melissa Keizer Photography"
+            src={`${base}melissa-keizer-avatar.jpeg`}
+            alt="Melissa Keizer"
           />
           <span class="story-hero-split__author-label">By <strong>Melissa Keizer</strong></span>
         </div>
@@ -447,10 +429,22 @@ function photoLayoutClass(count: number) {
             );
           })}
         </article>
-        {data.footnotes && chunkIndex === chunks.length - 1 && (
+        {chunkIndex === chunks.length - 1 && (data.footnotes || data.date || categories.length > 0) && (
           <aside class="story-footnotes">
-            <h4 class="story-footnotes__title">Footnotes</h4>
-            <p>{data.footnotes}</p>
+            {data.footnotes && (
+              <>
+                <h4 class="story-footnotes__title">Footnotes</h4>
+                <p>{data.footnotes}</p>
+              </>
+            )}
+            {(data.date || categories.length > 0) && (
+              <div class="story-footnotes__meta">
+                {data.date && <span>{data.date}</span>}
+                {categories.map(cat => (
+                  <a href={`${base}categories/${cat.toLowerCase().replace(/\s+/g, '-')}`}>{cat}</a>
+                ))}
+              </div>
+            )}
           </aside>
         )}
       </div>

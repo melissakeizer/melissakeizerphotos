@@ -3472,3 +3472,116 @@ html[data-theme="dark"] body,
 .home-feature-story__byline {
   margin-top: 1rem;
 }
+
+/* October review pass: tighter shelves, clearer story hierarchy and balanced footer insets. */
+@media (min-width: 701px) {
+  .home-feature-story > a,
+  .home-featured-posts__grid--a .home-feature-story:not(.home-feature-story--primary) > a {
+    height: clamp(28rem, 38.5vw, 35.35rem);
+  }
+}
+
+.home-page--selected .home-featured-posts {
+  padding-top: 0.75rem;
+  padding-bottom: clamp(3rem, 4vw, 3.5rem);
+}
+
+.home-field-notes--preview {
+  padding-top: clamp(3rem, 4vw, 3.5rem);
+  padding-bottom: clamp(3rem, 4vw, 3.5rem);
+}
+
+.home-field-notes__phone {
+  left: -1.25rem;
+  transform: translateY(18%);
+}
+
+.site-footer__portrait {
+  margin-right: 1rem;
+  margin-left: 1rem;
+}
+
+.site-footer__panel {
+  min-height: 0;
+}
+
+.site-footer__introduction-copy strong,
+.site-footer__introduction-copy span {
+  display: block;
+}
+
+.site-footer__introduction-copy span {
+  margin-top: 0.55rem;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.site-footer__equipment-space {
+  grid-column: 10 / span 2;
+  padding-right: 0;
+}
+
+.story-home-btn {
+  top: 1.5rem;
+  left: clamp(1.5rem, 2.6vw, 3rem);
+}
+
+.story-hero__overlay {
+  padding-right: clamp(1.5rem, 2.6vw, 3rem);
+  padding-bottom: clamp(2.5rem, 5vw, 4.5rem);
+  padding-left: clamp(1.5rem, 2.6vw, 3rem);
+}
+
+.story-hero__content {
+  justify-content: flex-end;
+  flex: 1;
+}
+
+.story-hero__author {
+  margin-top: 1.35rem;
+}
+
+.story-hero__author-stamp,
+.story-hero-split__author-stamp {
+  border: 1px solid rgba(255, 255, 255, 0.62);
+}
+
+.story-section__text {
+  font-family: var(--font-sans);
+  font-size: clamp(1.02rem, 1.08vw, 1.16rem);
+  line-height: 1.72;
+}
+
+.story-footnotes__meta {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.65rem 1.1rem;
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-border);
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.story-footnotes__meta a {
+  color: inherit;
+}
+
+.story-footnotes__meta a:hover {
+  color: var(--color-text);
+}
+
+@media (max-width: 700px) {
+  .home-field-notes__phone {
+    left: -1.25rem;
+    transform: translateY(24%);
+  }
+
+  .story-home-btn {
+    top: 0.85rem;
+    left: 0.85rem;
+  }
+}
