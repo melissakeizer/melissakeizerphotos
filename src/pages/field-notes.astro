@@ -16,10 +16,6 @@ const landscapeNotes = new Set([
 ---
 
 <Layout title="PhotoStream" description="A stream of single photographs, passing encounters and camera notes by Melissa Keizer." theme="dark">
-  <nav class="photostream-versions" aria-label="PhotoStream layout versions">
-    <a class="is-active" href={`${base}field-notes/`} aria-current="page">Version A</a>
-    <a href={`${base}field-notes-b/`}>Version B</a>
-  </nav>
   <main class="field-notes-page">
     <header class="field-notes-header">
       <h1>PhotoStream</h1>
@@ -28,21 +24,49 @@ const landscapeNotes = new Set([
 
     <div class="field-notes-feed" data-field-notes-feed>
       {fieldNotes.map((note, index) => (
-        <article class:list={['field-notes-entry', { 'field-notes-entry--landscape': landscapeNotes.has(note.image), 'is-deferred': index >= 15 }]}> 
-          <figure>
-            <img src={photoUrl(`/photos/00-field-notes/${note.image}`)} alt={note.title} loading={index < 3 ? 'eager' : 'lazy'} decoding="async" />
-          </figure>
-          <div class="field-notes-entry__details">
-            <div class="field-notes-entry__caption">
-              <h2>{note.title}</h2>
-              <p class="field-notes-entry__date"><span>{note.date}</span>{note.place && <span class="field-note-location"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.1 7-12A7 7 0 0 0 5 9c0 5.9 7 12 7 12Z"/><circle cx="12" cy="9" r="2.25"/></svg>{note.place}</span>}</p>
+        <>
+          {index === 4 && (
+            <aside class="field-notes-interlude field-notes-interlude--qa" aria-labelledby="photostream-qa-title">
+              <div class="field-notes-interlude__heading">
+                <p class="home-kicker">A quick-fire Q&amp;A</p>
+                <h2 id="photostream-qa-title">Behind the camera.</h2>
+              </div>
+              <div class="field-notes-interlude__item">
+                <h3>Which lens do you reach for most?</h3>
+                <p>My Sony 55mm f/1.8. It’s gorgeously sharp, gives me beautiful depth of field and I like the constraint of zooming with my feet.</p>
+              </div>
+              <div class="field-notes-interlude__item">
+                <h3>What do you most enjoy photographing now?</h3>
+                <p>Animals, always—but I’m also enjoying exploring automotive photography and finding a new visual language for it.</p>
+              </div>
+              <div class="field-notes-interlude__item">
+                <h3>What got you into photography?</h3>
+                <p>Wanting to hold onto the small details: live music, animals, journeys and the ordinary scenes that become meaningful later.</p>
+              </div>
+            </aside>
+          )}
+          {index === 10 && (
+            <blockquote class="field-notes-interlude field-notes-interlude--quote">
+              <p>“Usually, the photograph I keep is the one that brings the whole moment back.”</p>
+              <cite>Melissa, on choosing a frame</cite>
+            </blockquote>
+          )}
+          <article class:list={['field-notes-entry', { 'field-notes-entry--landscape': landscapeNotes.has(note.image), 'is-deferred': index >= 15 }]}>
+            <figure>
+              <img src={photoUrl(`/photos/00-field-notes/${note.image}`)} alt={note.title} loading={index < 3 ? 'eager' : 'lazy'} decoding="async" />
+            </figure>
+            <div class="field-notes-entry__details">
+              <div class="field-notes-entry__caption">
+                <h2>{note.title}</h2>
+                <p class="field-notes-entry__date"><span>{note.date}</span>{note.place && <span class="field-note-location"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.1 7-12A7 7 0 0 0 5 9c0 5.9 7 12 7 12Z"/><circle cx="12" cy="9" r="2.25"/></svg>{note.place}</span>}</p>
+              </div>
+              {(note.camera || note.lens || note.settings) && <div class="field-notes-entry__exif">
+                {(note.camera || note.lens) && <p>{[note.camera, note.lens].filter(Boolean).join(' · ')}</p>}
+                {note.settings && <p>{note.settings}</p>}
+              </div>}
             </div>
-            {(note.camera || note.lens || note.settings) && <div class="field-notes-entry__exif">
-              {(note.camera || note.lens) && <p>{[note.camera, note.lens].filter(Boolean).join(' · ')}</p>}
-              {note.settings && <p>{note.settings}</p>}
-            </div>}
-          </div>
-        </article>
+          </article>
+        </>
       ))}
     </div>
 

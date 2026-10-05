@@ -1,16 +1,13 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
-import { categoriesForStory, subtitleForStory } from '../../lib/story-metadata';
+import { categoriesForStory, subtitleForStory, thumbnailForStory } from '../../lib/story-metadata';
 import ProjectCard from '../../components/ProjectCard.astro';
 
 const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
 const stories = await getCollection('stories');
 const sorted = stories.sort((a, b) => a.data.order - b.data.order);
-const [featured, ...archiveStories] = sorted;
 const categoryOrder = ['animals', 'pet sessions', 'adventures', 'live music'];
-const featuredCover = featured?.data.coverImage || featured?.data.photos[0];
-const featuredSubtitle = featured ? subtitleForStory(featured.id, featured.data.subtitle) : '';
 ---
 
 <Layout title="All Posts">
@@ -22,20 +19,9 @@ const featuredSubtitle = featured ? subtitleForStory(featured.id, featured.data.
     </div>
   </header>
   <main>
-    {featured && <article class="archive-feature" data-categories={categoriesForStory(featured.id, featured.data.categories).join('|')}>
-      <div class="archive-feature__copy">
-        <p class="home-kicker">Latest {featured.data.type}</p>
-        <h2>{featured.data.title}</h2>
-        {featuredSubtitle && <p>{featuredSubtitle}</p>}
-        <a href={`${base}stories/${featured.id}`}>Read this post <span aria-hidden="true">→</span></a>
-      </div>
-      {featuredCover && <a class="archive-feature__image" href={`${base}stories/${featured.id}`} aria-label={`Read ${featured.data.title}`}>
-        <img src={`${base}${featuredCover.replace(/^\//, '')}`} alt="" />
-      </a>}
-    </article>}
     <div class="stories-grid stories-grid--archive" id="stories">
-      {archiveStories.map((story) => {
-        const cover = story.data.coverImage || story.data.photos[0];
+      {sorted.map((story) => {
+        const cover = thumbnailForStory(story.id, story.data.coverImage || story.data.photos[0]);
         const categories = categoriesForStory(story.id, story.data.categories);
         const subtitle = subtitleForStory(story.id, story.data.subtitle);
         return <ProjectCard

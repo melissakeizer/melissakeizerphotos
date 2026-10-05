@@ -1,11 +1,13 @@
 export interface StoryMetadata {
   categories?: string[];
   subtitle?: string;
+  thumbnailImage?: string;
 }
 
 // Recovered from the original Exposure archive. Story prose remains in its
 // Markdown file; this holds archive-level metadata that was missing locally.
 export const storyMetadata: Record<string, StoryMetadata> = {
+  'wild-ireland': { categories: ['animals', 'adventures'], subtitle: 'Wild Ireland, County Donegal', thumbnailImage: '/photos/wild-ireland/000-cover.jpg' },
   '746862776d2576268afc65758bbab369': { categories: ['animals'], subtitle: 'A closer look at the characters of a local cat show' },
   'a-few-favourites': { categories: ['animals'], subtitle: 'A portfolio of some of my favourite images' },
   'a-story-of-ice-and-fire': { categories: ['adventures'], subtitle: 'A Game of Thrones themed adventure' },
@@ -56,6 +58,10 @@ export function categoriesForStory(id: string, categories: string[]): string[] {
 
 export function subtitleForStory(id: string, subtitle: string | null | undefined): string | null | undefined {
   return storyMetadata[id]?.subtitle ?? subtitle;
+}
+
+export function thumbnailForStory(id: string, coverImage: string | null | undefined): string | null | undefined {
+  return storyMetadata[id]?.thumbnailImage ?? coverImage;
 }
 
 // Exposure's original per-section editorial layouts. Keys are the source photo IDs,

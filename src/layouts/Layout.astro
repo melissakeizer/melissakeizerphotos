@@ -16,6 +16,7 @@ const fullTitle = title === 'Photography by Melissa Keizer' ? title : `${title} 
 const pathname = Astro.url.pathname;
 const storiesActive = pathname.includes('/stories');
 const photoStreamActive = pathname.includes('/field-notes');
+const isDev = import.meta.env.DEV;
 ---
 
 <!doctype html>
@@ -42,6 +43,14 @@ const photoStreamActive = pathname.includes('/field-notes');
         <a href="#contact">Contact</a>
       </div>
     </nav>
+    {isDev && (
+      <>
+        <button class="debug-grid-toggle" type="button" aria-pressed="true" data-debug-grid-toggle>Hide grid</button>
+        <div class="debug-grid" aria-hidden="true" data-debug-grid>
+          {Array.from({ length: 12 }, (_, index) => <span>{index + 1}</span>)}
+        </div>
+      </>
+    )}
     <slot />
     <footer class="site-footer" id="contact" style={`--footer-photo: url('${base}photos/road-to-sligo/000-photo.jpg')`}>
       <div class="site-footer__panel">
@@ -50,24 +59,48 @@ const photoStreamActive = pathname.includes('/field-notes');
         </div>
         <div class="site-footer__introduction">
           <p class="site-footer__label">About me</p>
-          <p><strong>Hi, I’m Melissa Keizer.</strong> I’m a photographer and designer in Northern Ireland, with a soft spot for animals, honest moments and taking the scenic route. Usually found following dogs into good light.</p>
+          <p><strong>Hi, I’m Melissa Keizer.</strong> I’m a photographer and designer in Northern Ireland, with a soft spot for animals, honest moments and taking the scenic route. This is where I keep the stories, single frames and smaller observations I want to remember—usually made while following dogs into good light.</p>
         </div>
         <nav class="site-footer__links" aria-label="Explore">
           <p class="site-footer__label">Explore</p>
-          <a href={base}>Home <span aria-hidden="true">↗</span></a>
-          <a href={`${base}stories/`}>All posts <span aria-hidden="true">↗</span></a>
-          <a href={`${base}field-notes/`}>PhotoStream <span aria-hidden="true">↗</span></a>
+          <a href={base}>Home</a>
+          <a href={`${base}stories/`}>All posts</a>
+          <a href={`${base}field-notes/`}>PhotoStream</a>
+          <a href="mailto:hi@melissakeizer.com">Email</a>
         </nav>
-        <div class="site-footer__contact">
-          <p class="site-footer__label">Elsewhere</p>
-          <a href="https://instagram.com/keizgoesboom" target="_blank" rel="noopener">Instagram <span aria-hidden="true">↗</span></a>
-          <a href="mailto:hi@melissakeizer.com">Email me <span aria-hidden="true">↗</span></a>
-        </div>
-        <div class="site-footer__colophon">
-          <p class="site-footer__label">Colophon</p>
-          <p>Photographed, written and designed by Melissa. Built as a permanent home for stories, galleries and passing observations.</p>
+        <nav class="site-footer__social-links" aria-label="Social media">
+          <a href="https://www.linkedin.com/in/melissakeizer/" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href="https://www.instagram.com/KeizGoesBoom/" target="_blank" rel="noreferrer">Instagram</a>
+          <a href="https://unsplash.com/@KeizGoesBoom" target="_blank" rel="noreferrer">Unsplash</a>
+        </nav>
+        <div class="site-footer__equipment-space" aria-hidden="true">
+          <img src={`${base}lens-sketch-zeiss-55mm-v3.png`} alt="" />
         </div>
       </div>
     </footer>
+    {isDev && (
+      <script is:inline>
+        (() => {
+          const button = document.querySelector('[data-debug-grid-toggle]');
+          const grid = document.querySelector('[data-debug-grid]');
+          if (!(button instanceof HTMLButtonElement) || !(grid instanceof HTMLElement)) return;
+
+          const stored = localStorage.getItem('mk-debug-grid');
+          let visible = stored !== 'hidden';
+          const render = () => {
+            grid.hidden = !visible;
+            button.textContent = visible ? 'Hide grid' : 'Show grid';
+            button.setAttribute('aria-pressed', String(visible));
+          };
+
+          button.addEventListener('click', () => {
+            visible = !visible;
+            localStorage.setItem('mk-debug-grid', visible ? 'visible' : 'hidden');
+            render();
+          });
+          render();
+        })();
+      </script>
+    )}
   </body>
 </html>

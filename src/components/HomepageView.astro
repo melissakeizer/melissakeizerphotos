@@ -1,0 +1,118 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import ProjectCard from './ProjectCard.astro';
+import { fieldNotes } from '../lib/field-notes';
+import { subtitleForStory } from '../lib/story-metadata';
+
+const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
+const stories = await getCollection('stories');
+
+const selectedProjectIds = [
+  'wild-ireland',
+  'dubshed-northern-irelands-largest-car-show',
+  'sky-odin',
+  'vegas-baby',
+  'road-to-sligo',
+  'an-afternoon-with-angus',
+];
+
+const selectedProjects = selectedProjectIds
+  .map((id) => stories.find((story) => story.id === id))
+  .filter((story): story is NonNullable<typeof story> => Boolean(story));
+
+const featuredProjects = selectedProjects.slice(0, 2);
+const supportingProjects = selectedProjects.slice(2, 5);
+
+function photoUrl(path: string) {
+  return `${base}${path.replace(/^\//, '')}`;
+}
+---
+
+<Layout brandImage="melissa-keizer-sticker.png">
+  <main class="home-page home-page--concept home-page--selected">
+    <div
+      class="home-story-stage"
+      style={`--camera-blueprint: url("${base}camera-blueprint-handdrawn-v4.png")`}
+    >
+      <section class="home-concept-hero" aria-labelledby="home-intro-title">
+        <div class="home-concept-hero__copy">
+          <h1 id="home-intro-title">I’m Melissa, this is my photo journal</h1>
+          <p>A home for little adventures, wet noses, beautiful places and moments worth remembering — from Northern Ireland and beyond.</p>
+        </div>
+      </section>
+
+      <section class="home-featured-posts" aria-label="Featured photography stories">
+      <div class="home-featured-posts__grid home-featured-posts__grid--a">
+        {featuredProjects.map((story, index) => {
+          const cover = story.data.coverImage || story.data.photos[0];
+          const subtitle = subtitleForStory(story.id, story.data.subtitle);
+          return (
+            <article class:list={['home-feature-story', { 'home-feature-story--primary': index === 0 }]}>
+              <a href={`${base}stories/${story.id}`}>
+                {cover && <img src={photoUrl(cover)} alt="" decoding="async" />}
+                <div class="home-feature-story__shade"></div>
+                <div class="home-feature-story__content">
+                  <p class="home-feature-story__kind">{story.data.type}</p>
+                  <h2>{story.data.title}</h2>
+                  {subtitle && <p class="home-feature-story__caption">{subtitle}</p>}
+                  {index === 0 && (
+                    <p class="home-feature-story__byline">
+                      <img src={`${base}melissa-keizer-avatar.jpeg`} alt="" />
+                      <span class="home-feature-story__byline-copy">
+                        <span class="home-feature-story__by">By</span>
+                        <span class="home-feature-story__author">Melissa Keizer</span>
+                      </span>
+                    </p>
+                  )}
+                </div>
+              </a>
+            </article>
+          );
+        })}
+      </div>
+
+      <div class="home-supporting-grid home-supporting-grid--a">
+        {supportingProjects.map((story) => {
+          const cover = story.data.coverImage || story.data.photos[0];
+          return (
+            <ProjectCard
+              href={`${base}stories/${story.id}`}
+              image={cover ? photoUrl(cover) : undefined}
+              title={story.data.title}
+              type={story.data.type}
+              caption={subtitleForStory(story.id, story.data.subtitle)}
+            />
+          );
+        })}
+      </div>
+
+      <div class="home-section__more">
+        <a class="home-text-link home-text-link--button" href={`${base}stories/`}>See all stories <span aria-hidden="true">→</span></a>
+      </div>
+      </section>
+    </div>
+
+    <section class="home-field-notes home-field-notes--preview home-field-notes--light-preview" id="field-notes" aria-labelledby="field-notes-title">
+      <div class="home-field-notes__phone" aria-hidden="true">
+        <img src={`${base}iphone-17-pro-sketch-v1.png`} alt="" />
+      </div>
+      <div class="home-field-notes__intro">
+        <h2 id="field-notes-title">PhotoStream</h2>
+        <p>One-off photographs, passing visitors and things seen along the way—with the camera details left intact.</p>
+        <a class="home-text-link" href={`${base}field-notes/`}>Browse PhotoStream <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="home-field-notes__grid">
+        {fieldNotes.slice(0, 4).map((fieldNote) => (
+          <figure class="field-note-card">
+            <img src={photoUrl(`/photos/00-field-notes/${fieldNote.image}`)} alt={fieldNote.title} loading="lazy" decoding="async" />
+            <figcaption>
+              <strong>{fieldNote.title}</strong>
+              <span>{fieldNote.camera ? `${fieldNote.camera}${fieldNote.lens ? ` · ${fieldNote.lens}` : ''}` : fieldNote.date}</span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+  </main>
+</Layout>
