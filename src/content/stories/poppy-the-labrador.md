@@ -23,6 +23,6 @@ photos:
   - "/photos/poppy-the-labrador/013-ph_9vmyoheudpb423wf.jpg"
   - "/photos/poppy-the-labrador/014-ph_9pob0gmnlgempraz.jpg"
   - "/photos/poppy-the-labrador/015-ph_39z8iid601gm9lny.jpg"
-description: "Earlier this year I photograhed, Poppy the Chocolate Labrador. She loved the water so was very keen to jump right into the streams and the sea at Crawfordsburn.  She definitely won me over with her sweet smile and the high fives she was throwing out when I offered her treats! 😁💙"
+description: "Earlier this year I photographed Poppy the Chocolate Labrador. She loved the water so was very keen to jump right into the streams and the sea at Crawfordsburn.  She definitely won me over with her sweet smile and the high fives she was throwing out when I offered her treats! 😁💙"
 footnotes: null
 ---

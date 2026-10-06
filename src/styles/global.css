@@ -4265,8 +4265,23 @@ html[data-theme="dark"] body,
 .home-field-notes__grid .field-note-card figcaption strong { font-weight: 400; }
 .archive-filters button { padding-right: 0; padding-left: 0; border-radius: 0; }
 
+.site-footer__navigation {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(1.5rem, 3vw, 4rem);
+}
+.site-footer__navigation .site-footer__label {
+  flex: 0 0 auto;
+  margin: 0;
+  padding-top: 0.08rem;
+}
+.site-footer__navigation .site-footer__links {
+  flex: 1 1 auto;
+}
+
 .story-hero__subtitle { margin-top: 1rem; }
 .story-hero__author { margin-top: 1.75rem; }
+.story-hero-wrapper--split { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .story-hero-split__title {
   margin-bottom: 1rem;
   font-family: var(--font-serif);
@@ -4292,6 +4307,26 @@ html[data-theme="dark"] body,
 .story-section__photo-item--spotlight { margin-top: var(--story-beat-gap); }
 .story-section__content { margin-bottom: var(--story-beat-gap); }
 
+.story-footnotes__meta--standalone {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.story-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 0;
+}
+.story-divider { margin-bottom: 0; }
+
+.related-stories { padding-right: 0; }
+.related-stories__header {
+  padding-right: max(var(--site-margin), calc((100vw - var(--grid-max)) / 2));
+}
+.related-stories__header h2 {
+  font-size: clamp(1.75rem, 2.6vw, 2.75rem);
+}
+
 @media (max-width: 700px) {
   .display-heading,
   .home-page--selected .home-concept-hero__copy .display-heading,
@@ -4316,6 +4351,7 @@ html[data-theme="dark"] body,
   .story-hero__subtitle { margin-top: 0.85rem; }
   .story-hero__author { margin-top: 1.4rem; }
   .story-hero-wrapper--split {
+    grid-template-columns: 1fr;
     grid-template-rows: min(76vw, 27rem) auto;
     height: auto;
     min-height: 0;
@@ -4363,4 +4399,21 @@ html[data-theme="dark"] body,
   .story-section--edge-to-edge,
   .story-section--parallax,
   .story-section--split { margin-bottom: 2rem; }
+  .site-footer__navigation {
+    gap: 1rem;
+  }
+  .related-stories {
+    padding-right: 0;
+  }
+  .related-stories__header {
+    padding-right: 1rem;
+  }
+  .related-stories__header h2 {
+    font-size: 1.9rem;
+  }
+  .story-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 0;
+  }
+  .story-divider { margin-bottom: 0; }
 }

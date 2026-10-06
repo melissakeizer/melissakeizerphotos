@@ -68,10 +68,17 @@ if (isStory && body && body.trim()) {
 }
 const sourceSections: Section[] = JSON.parse(JSON.stringify(sections));
 
+function toTitleCase(value: string) {
+  return value
+    .toLocaleLowerCase('en-GB')
+    .replace(/(^|[\s\-–—/])([\p{L}\p{N}])/gu, (_, separator, character) => `${separator}${character.toLocaleUpperCase('en-GB')}`);
+}
+
 // Original Exposure layouts are specific to each editorial beat, not inferred
 // solely from the number of photos. Prefer the recovered source layout.
 sections = sections.map((section) => ({
   ...section,
+  title: section.title ? toTitleCase(section.title) : null,
   text: section.text
     ?.replace(/<p>\s*Write your story here\. \(Optional\)\s*<\/p>/gi, '')
     .trim() ?? '',
@@ -450,7 +457,7 @@ function photoLayoutClass(count: number) {
               </>
             )}
             {(data.date || categories.length > 0) && (
-              <div class="story-footnotes__meta">
+              <div class:list={['story-footnotes__meta', { 'story-footnotes__meta--standalone': !data.footnotes }]}>
                 {data.date && <span>{data.date}</span>}
                 {categories.map(cat => (
                   <a href={`${base}posts/?category=${cat.toLowerCase().replace(/\s+/g, '-')}`}>{cat}</a>
