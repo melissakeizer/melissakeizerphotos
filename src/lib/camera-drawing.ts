@@ -1,0 +1,74 @@
+// Invisible pen paths reveal the approved SVG texture in its original 1536×1024
+// coordinate space. These are masks, never replacement artwork.
+export type PencilStroke = { d: string; start: number; duration: number; width: number; phase: string };
+const strokes: PencilStroke[] = [];
+function pen(phase: string, d: string, start: number, duration: number, width = 12) {
+  strokes.push({ phase, d, start, duration, width });
+}
+
+// Long, faint drafting guides: a little overlap feels like a sped-up replay.
+[
+  'M38 312H1536', 'M203 184V601', 'M0 405H1536', 'M394 216V776',
+  'M666 203H1536', 'M968 127V934', 'M32 760H1500', 'M1259 34V996',
+  'M490 879H1536', 'M423 585V902', 'M1395 132V943', 'M589 430H1515',
+  'M724 430V977', 'M658 594H1536', 'M810 264V895', 'M1095 109V979',
+  'M217 811H1528', 'M1032 87V901', 'M623 782H1536', 'M1514 316V915',
+].forEach((d, i) => pen('Construction lines', d, i * .095, .65 + (i % 3) * .1, 6));
+
+pen('Camera silhouette', 'M807 399Q795 407 801 466L803 728Q800 782 839 783L988 781', 1.85, 1.35, 16);
+pen('Camera silhouette', 'M842 782L1473 779Q1518 780 1515 743L1515 403Q1512 389 1475 390L1397 390', 2.6, 1.4, 16);
+pen('Camera silhouette', 'M810 395Q843 381 891 393M981 394L1110 391', 2.8, .65, 15);
+pen('Grip outline', 'M811 401Q849 389 887 398Q951 389 994 399Q1023 399 1021 422L1020 469Q1000 506 1003 548L1002 748Q1002 774 977 779L837 782', 3.05, 1.4, 15);
+pen('Body seam', 'M782 449Q857 459 1009 454L1101 453M1407 451L1535 451', 3.9, .6, 10);
+pen('Strap eyelets', 'M810 403L787 408Q766 421 785 437L807 453M788 411C775 413 775 432 788 431C800 430 800 412 788 411', 4.12, .65, 12);
+pen('Strap eyelets', 'M1517 402L1535 405M1534 405Q1518 419 1535 433L1518 447', 4.3, .45, 12);
+
+pen('Viewfinder', 'M1105 416L1147 306Q1157 286 1170 279L1338 278Q1354 282 1368 314L1404 416', 3.6, 1.1, 15);
+pen('Viewfinder', 'M1110 364L1386 362M1106 415H1403', 4.2, .7, 10);
+pen('Hot shoe', 'M1170 278L1183 255L1339 256L1347 278M1182 258L1185 244H1336L1341 271', 4.48, .75, 13);
+pen('Pencil overshoots', 'M1189 232L1160 288M1333 232L1357 290M780 739L850 820M766 782L840 723', 4.9, .65, 8);
+
+pen('Mode dial', 'M989 361L989 331L1113 331L1113 364Z', 5.02, .65, 11);
+pen('Shutter dial', 'M894 379C899 360 967 355 978 379C983 390 903 398 894 379M894 379L890 401Q934 427 986 403L978 379', 5.27, .9, 12);
+pen('Shutter rim', 'M906 374Q938 360 965 374Q971 386 939 387Q911 387 906 374', 5.65, .6, 8);
+pen('Top wheel', 'M812 389V373L894 372M818 381H895M870 370V362H901L906 370', 5.87, .7, 10);
+pen('Front dial', 'M845 462L850 435Q901 414 949 436L952 462M849 458Q897 444 951 460', 6.12, .7, 11);
+pen('Control switch', 'M1061 386V362Q1074 350 1090 361V386Z', 6.32, .5, 10);
+pen('Body buttons', 'M1060 403H1090Q1108 404 1106 420Q1105 434 1090 433H1058Q1042 432 1043 417Q1044 403 1060 403', 6.55, .65, 9);
+pen('Body buttons', 'M1059 410C1046 410 1047 430 1059 429C1070 428 1070 410 1059 410M1092 411C1080 411 1081 428 1092 428C1103 427 1103 411 1092 411', 6.95, .6, 7);
+
+// Follow the original imperfect, incomplete rings rather than perfect circles.
+pen('Outer lens', 'M1259 390C1369 386 1455 478 1459 593C1464 708 1378 799 1265 803C1150 809 1057 724 1053 614C1045 504 1140 393 1259 390', 7.05, 1.12, 13);
+pen('Lens rim', 'M1257 407C1366 402 1443 491 1444 599C1446 704 1361 788 1260 790C1147 791 1065 715 1066 605C1065 497 1147 413 1257 407', 7.72, 1.05, 10);
+pen('Lens rim', 'M1260 421C1363 423 1428 497 1429 603C1430 694 1365 771 1280 779M1238 779C1138 767 1077 693 1084 595C1089 500 1161 425 1247 422', 8.28, 1, 10);
+pen('Lens glass', 'M1260 446C1356 446 1406 511 1410 602C1415 682 1345 744 1271 746C1194 748 1126 704 1107 626C1088 545 1143 459 1220 449', 8.88, .98, 10);
+pen('Incomplete lens glass', 'M1178 489C1138 523 1120 573 1124 620M1129 649C1141 688 1177 716 1217 724M1300 722C1361 700 1395 650 1393 592C1393 526 1348 480 1284 477C1230 471 1200 489 1178 511C1136 555 1126 598 1137 647', 9.5, 1.05, 9);
+pen('Fine glass edge', 'M1369 580C1382 630 1353 676 1301 698M1191 692Q1220 717 1258 720', 10.25, .75, 9);
+pen('Lens release', 'M1065 680Q1038 695 1045 722L1060 744Q1086 767 1106 742M1059 694Q1049 706 1059 725Q1072 746 1087 742', 10.65, .65, 13);
+
+// Short pen movements for the actual traced logo; no font substitution.
+pen('Sony lettering', 'M1210 320Q1180 308 1182 325Q1191 331 1207 330Q1222 342 1183 333', 11.1, .5, 9);
+pen('Sony lettering', 'M1236 317C1212 313 1213 338 1237 337C1263 337 1262 314 1236 317', 11.52, .5, 8);
+pen('Sony lettering', 'M1265 316L1276 317L1294 335V316M1267 336V317M1294 336H1306', 11.94, .45, 9);
+pen('Sony lettering', 'M1310 316L1327 328L1340 316M1327 327V336L1316 337', 12.32, .4, 9);
+pen('Alpha and model', 'M1476 418Q1448 407 1440 431Q1441 452 1460 437L1476 416M1467 425Q1463 446 1478 441M1434 455H1483V479H1433ZM1451 460H1467L1454 474', 12.68, .8, 8);
+
+// Partial hatching, scribbled a small cluster at a time.
+for (let i = 0; i < 10; i++) {
+  const x = 992 + i * 11;
+  pen('Dial pencil hatching', `M${x} 359l17 -25m-16 -1l18 26`, 12.8 + i * .065, .3, 8);
+}
+for (let i = 0; i < 9; i++) {
+  const x = 852 + i * 11;
+  pen('Wheel pencil hatching', `M${x} 439v14`, 13.1 + i * .06, .23, 7);
+}
+pen('Dial edge texture', 'M902 390L905 406M921 394L923 412M945 394V412M966 389L969 405M1068 359V383M1077 359V383M1085 360V382', 13.45, .65, 8);
+pen('Grip pencil shading', 'M812 544L839 509M811 565L842 521M811 586L840 540M811 608L833 566M814 641L831 604M986 557Q979 635 986 714', 13.65, .65, 13);
+
+export const cameraStrokes = strokes;
+export const cameraAccents: PencilStroke[] = [
+  { phase: 'Yellow button', d: 'M1060 405Q1044 405 1045 419Q1044 433 1061 432L1095 431M1061 405H1092', start: 14.1, duration: .6, width: 17 },
+  { phase: 'Yellow lens edge', d: 'M1221 405Q1329 400 1398 461', start: 14.45, duration: .85, width: 18 },
+];
+export const cameraDrawingDuration = 8.5;
+export const cameraDrawingTimeScale = cameraDrawingDuration / 16.2;

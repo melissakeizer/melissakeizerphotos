@@ -1,0 +1,96 @@
+---
+import source from '../../public/camera-pencil-traced.svg?raw';
+import { cameraStrokes, cameraAccents, cameraDrawingDuration, cameraDrawingTimeScale } from '../lib/camera-drawing';
+
+interface Props { id?: string; }
+const { id = 'home-camera-pencil' } = Astro.props;
+const graphite = source.match(/<g id="graphite"[\s\S]*?<\/g>/)?.[0] ?? '';
+const yellow = source.match(/<g id="yellow-accents"[\s\S]*?<\/g>/)?.[0] ?? '';
+if (!graphite || !yellow) throw new Error('Camera pencil SVG is missing its artwork layers.');
+---
+<svg
+  class="pencil-camera"
+  viewBox="0 0 1536 1024"
+  aria-hidden="true"
+  focusable="false"
+  data-pencil-camera
+  data-duration={cameraDrawingDuration}
+  style={`--drawing-speed:${cameraDrawingTimeScale}`}
+>
+  <defs>
+    <mask id={`${id}-graphite`} maskUnits="userSpaceOnUse" x="0" y="0" width="1536" height="1024" style="mask-type: luminance">
+      {cameraStrokes.map(stroke => (
+        <path class="pencil-camera__pen" d={stroke.d} pathLength="1" fill="none" stroke="white" stroke-width={stroke.width} stroke-linecap="round" stroke-linejoin="round" data-phase={stroke.phase} style={`--pen-start:${stroke.start}s;--pen-time:${stroke.duration}s`} />
+      ))}
+      {/* Only the faint residual grain fills at the end; this is the same SVG,
+          never a crossfade to a different drawing or a replacement PNG. */}
+      <rect class="pencil-camera__finish" width="1536" height="1024" fill="white" />
+    </mask>
+    <mask id={`${id}-yellow`} maskUnits="userSpaceOnUse" x="0" y="0" width="1536" height="1024" style="mask-type: luminance">
+      {cameraAccents.map(stroke => (
+        <path class="pencil-camera__pen" d={stroke.d} pathLength="1" fill="none" stroke="white" stroke-width={stroke.width} stroke-linecap="round" stroke-linejoin="round" data-phase={stroke.phase} style={`--pen-start:${stroke.start}s;--pen-time:${stroke.duration}s`} />
+      ))}
+      <rect class="pencil-camera__finish" width="1536" height="1024" fill="white" />
+    </mask>
+  </defs>
+  <g class="pencil-camera__art" mask={`url(#${id}-graphite)`} set:html={graphite} />
+  <g class="pencil-camera__art" mask={`url(#${id}-yellow)`} set:html={yellow} />
+</svg>
+
+<style>
+  .pencil-camera { display: block; width: 100%; height: auto; }
+  .pencil-camera__pen { stroke-dasharray: 1; stroke-dashoffset: 0; }
+  /* Without JS the fully drawn vector stays visible. JS enables the replay
+     only after the component is in view. */
+  :global(.camera-draw-enabled) .pencil-camera__pen {
+    stroke-dashoffset: 1;
+    animation: pencil-stroke calc(var(--pen-time) * var(--drawing-speed)) linear calc(var(--pen-start) * var(--drawing-speed)) both;
+    animation-play-state: paused;
+  }
+  :global(.camera-draw-enabled) .pencil-camera__finish {
+    opacity: 0;
+    animation: pencil-finish calc(.9s * var(--drawing-speed)) ease-in calc(15.3s * var(--drawing-speed)) both;
+    animation-play-state: paused;
+  }
+  :global(.camera-draw-enabled) .pencil-camera.is-playing .pencil-camera__pen,
+  :global(.camera-draw-enabled) .pencil-camera.is-playing .pencil-camera__finish {
+    animation-play-state: running;
+  }
+  .pencil-camera.is-complete .pencil-camera__art { mask: none; }
+  @keyframes pencil-stroke { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+  @keyframes pencil-finish { from { opacity: 0; } to { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) {
+    :global(.camera-draw-enabled) .pencil-camera__pen,
+    :global(.camera-draw-enabled) .pencil-camera__finish { animation: none; }
+    .pencil-camera .pencil-camera__art { mask: none; }
+  }
+</style>
+
+<script>
+  const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function setupCamera(svg: SVGSVGElement) {
+    if (svg.dataset.ready) return;
+    svg.dataset.ready = 'true';
+    let observer: IntersectionObserver | undefined;
+    const finish = () => {
+      svg.classList.add('is-complete');
+      // Completed mask animations no longer need to remain in the render tree.
+      svg.querySelectorAll<SVGElement>('mask').forEach(mask => { mask.style.display = 'none'; });
+    };
+    const play = () => {
+      if (motion.matches) return finish();
+      svg.classList.add('is-playing');
+      observer?.disconnect();
+    };
+    svg.querySelector('.pencil-camera__finish')?.addEventListener('animationend', finish, { once: true });
+    if (motion.matches) finish();
+    else {
+      observer = new IntersectionObserver(entries => {
+        if (entries.some(entry => entry.isIntersecting)) play();
+      });
+      observer.observe(svg);
+    }
+    motion.addEventListener('change', event => { if (event.matches) { observer?.disconnect(); finish(); } });
+  }
+  document.querySelectorAll<SVGSVGElement>('[data-pencil-camera]').forEach(setupCamera);
+</script>

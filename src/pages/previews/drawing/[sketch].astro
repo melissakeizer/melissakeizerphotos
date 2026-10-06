@@ -1,0 +1,58 @@
+---
+import CameraDrawing from '../../../components/CameraDrawing.astro';
+export function getStaticPaths() {
+  return import.meta.env.DEV ? [{ params: { sketch: 'camera' } }] : [];
+}
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Camera pencil replay</title>
+    <script is:inline>document.documentElement.classList.add('camera-draw-enabled');</script>
+  </head>
+  <body>
+    <header>
+      <div><p class="eyebrow">Pencil replay</p><h1>From construction lines to finishing touches.</h1>
+      <p>The approved SVG, drawn over eight and a half seconds. Its faded pencil texture remains throughout.</p></div>
+      <button type="button" id="replay">Replay drawing ↻</button>
+    </header>
+    <main>
+      <div class="controls">
+        <a href={`${base}`}>View on the homepage ↗</a>
+        <label><input id="brighten" type="checkbox" /> Brighten for inspection</label>
+      </div>
+      <div class="drawing"><CameraDrawing id="preview-camera-pencil" /></div>
+      <p class="caption">Grid → camera outline → viewfinder and controls → lens rings → lettering and pencil shading → yellow accents.</p>
+      <a href={`${base}previews/camera-svg/`}>Compare the static artwork with the original PNG</a>
+    </main>
+    <script>
+      document.querySelector('#replay')?.addEventListener('click', () => window.location.reload());
+      document.querySelector<HTMLInputElement>('#brighten')?.addEventListener('change', event => {
+        document.body.classList.toggle('bright', (event.target as HTMLInputElement).checked);
+      });
+    </script>
+    <style>
+      :global(*) { box-sizing: border-box; }
+      :global(body) { margin: 0; background: #11110f; color: #e7e4dc; font: 15px/1.5 system-ui, sans-serif; }
+      header, main { max-width: 1400px; margin: auto; padding: 32px; }
+      header { display: flex; justify-content: space-between; gap: 24px; align-items: center; }
+      h1 { font: 32px/1.2 Georgia, serif; font-weight: normal; margin: 8px 0 12px; }
+      p { color: #aaa79f; margin: 0; }
+      .eyebrow { color: #d3b847; text-transform: uppercase; letter-spacing: .12em; font-size: 11px; }
+      a { color: #e8ce52; }
+      main { padding-top: 0; }
+      .controls { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: center; padding: 18px 0; border-top: 1px solid #33332e; }
+      button { background: #e8ce52; border: 0; padding: 12px 18px; color: #11110f; cursor: pointer; font: inherit; white-space: nowrap; }
+      input { accent-color: #e8ce52; }
+      .drawing { filter: brightness(1.9) contrast(1.03); opacity: .68; }
+      .drawing :global(svg) { max-height: calc(100svh - 300px); min-height: 240px; }
+      :global(.bright) .drawing { filter: brightness(4); opacity: 1; }
+      .caption { margin: 12px 0 24px; }
+      @media (max-width: 700px) { header { display: block; } button { margin-top: 16px; } header, main { padding: 20px; } h1 { font-size: 26px; } }
+    </style>
+  </body>
+</html>

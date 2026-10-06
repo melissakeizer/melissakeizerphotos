@@ -1,0 +1,77 @@
+---
+export function getStaticPaths() {
+  return import.meta.env.DEV ? [{ params: { study: 'camera-svg' } }] : [];
+}
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Camera sketch — PNG / SVG comparison</title>
+  </head>
+  <body>
+    <header>
+      <div><p class="eyebrow">Camera sketch study</p><h1>The original pencil marks, as vectors.</h1>
+      <p>A static comparison before animation. Both use the same scale and display treatment.</p></div>
+      <a href={`${base}camera-pencil-traced.svg`} download>Download SVG ↓</a>
+    </header>
+    <main>
+      <div class="toolbar">
+        <div class="tabs" role="group" aria-label="Artwork selection">
+          <button type="button" data-view="svg" aria-pressed="true">New SVG</button>
+          <button type="button" data-view="png" aria-pressed="false">Original PNG</button>
+        </div>
+        <label><input type="checkbox" id="detail" /> Brighten for inspection</label>
+      </div>
+      <figure class="stage" data-selected="svg">
+        <img class="original" src={`${base}camera-blueprint-handdrawn-v4.png`} width="1536" height="1024" alt="Original faint pencil camera sketch" />
+        <img class="traced" src={`${base}camera-pencil-traced.svg`} width="1536" height="1024" alt="Vector recreation preserving the camera’s rough pencil lines" />
+      </figure>
+      <p class="caption">Switch between the images to compare the silhouette, incomplete lens rings, lettering and fading grid lines. The background and camera body are transparent.</p>
+      <section class="detail-grid" aria-label="Enlarged details">
+        <figure><div><img src={`${base}camera-blueprint-handdrawn-v4.png`} alt="Original camera close-up" /></div><figcaption>Original PNG · enlarged camera detail</figcaption></figure>
+        <figure><div><img src={`${base}camera-pencil-traced.svg`} alt="Traced vector camera close-up" /></div><figcaption>New SVG · enlarged camera detail</figcaption></figure>
+      </section>
+    </main>
+    <script>
+      const stage = document.querySelector<HTMLElement>('.stage');
+      const buttons = document.querySelectorAll<HTMLButtonElement>('[data-view]');
+      buttons.forEach(button => button.addEventListener('click', () => {
+        if (stage) stage.dataset.selected = button.dataset.view;
+        buttons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+      }));
+      document.querySelector<HTMLInputElement>('#detail')?.addEventListener('change', event => {
+        document.body.classList.toggle('bright', (event.target as HTMLInputElement).checked);
+      });
+    </script>
+    <style>
+      :global(*) { box-sizing: border-box; }
+      :global(body) { margin: 0; background: #11110f; color: #e7e4dc; font: 15px/1.5 system-ui, sans-serif; }
+      header, main { max-width: 1400px; margin: auto; padding: 32px; }
+      header { display: flex; justify-content: space-between; gap: 24px; align-items: center; }
+      h1 { font: 32px/1.2 Georgia, serif; font-weight: normal; margin: 8px 0 12px; }
+      p { color: #aaa79f; margin: 0; }
+      .eyebrow { color: #d3b847; text-transform: uppercase; letter-spacing: .12em; font-size: 11px; }
+      a { color: #e8ce52; white-space: nowrap; }
+      main { padding-top: 0; }
+      .toolbar { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; align-items: center; padding: 18px 0; border-top: 1px solid #33332e; }
+      button { background: transparent; border: 1px solid #45453c; padding: 10px 18px; color: inherit; cursor: pointer; font: inherit; }
+      button[aria-pressed="true"] { background: #e8ce52; color: #11110f; border-color: #e8ce52; }
+      input { accent-color: #e8ce52; }
+      figure { margin: 0; }
+      .stage { position: relative; aspect-ratio: 3 / 2; overflow: hidden; }
+      .stage img { position: absolute; inset: 0; width: 100%; height: 100%; filter: brightness(1.9) contrast(1.03); opacity: .68; }
+      .stage[data-selected="svg"] .original, .stage[data-selected="png"] .traced { visibility: hidden; }
+      :global(.bright) .stage img { filter: brightness(4); opacity: 1; }
+      .caption { max-width: 780px; margin: 12px 0 40px; }
+      .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+      .detail-grid figure > div { position: relative; aspect-ratio: 1.4; overflow: hidden; border: 1px solid #292925; }
+      .detail-grid img { position: absolute; width: 210%; max-width: none; right: 0; top: -28%; filter: brightness(3); }
+      figcaption { padding-top: 12px; color: #aaa79f; font-size: 13px; }
+      @media (max-width: 700px) { header { display: block; } header a { display: inline-block; margin-top: 16px; } header, main { padding: 20px; } .detail-grid { grid-template-columns: 1fr; } h1 { font-size: 26px; } }
+    </style>
+  </body>
+</html>

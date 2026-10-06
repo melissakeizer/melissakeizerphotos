@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import ProjectCard from './ProjectCard.astro';
 import DisplayHeading from './DisplayHeading.astro';
+import CameraDrawing from './CameraDrawing.astro';
 import { fieldNotes } from '../lib/field-notes';
 import { subtitleForStory } from '../lib/story-metadata';
 
@@ -32,12 +33,19 @@ function photoUrl(path: string) {
 }
 ---
 
+<script is:inline>
+  document.documentElement.classList.add('camera-draw-enabled');
+</script>
+
 <Layout brandImage="melissa-keizer-sticker.png">
   <main class="home-page home-page--concept home-page--selected">
     <div
       class="home-story-stage"
       style={`--camera-blueprint: url("${base}camera-blueprint-handdrawn-v4.png")`}
     >
+      <div class="home-camera-drawing" aria-hidden="true">
+        <CameraDrawing />
+      </div>
       <section class="home-concept-hero" aria-labelledby="home-intro-title">
         <div class="home-concept-hero__copy">
           <DisplayHeading id="home-intro-title" class="display-heading--home">I’m Melissa, this is<br class="home-title-break" /> my photo journal</DisplayHeading>
@@ -146,4 +154,5 @@ function photoUrl(path: string) {
     const selected = new Set(shuffled.slice(0, 4));
     rotatingCards.forEach((card, index) => { card.hidden = !selected.has(index); });
   }
+
 </script>
