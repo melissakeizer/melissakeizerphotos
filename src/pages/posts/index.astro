@@ -1,0 +1,82 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { categoriesForStory, subtitleForStory, thumbnailForStory } from '../../lib/story-metadata';
+import ProjectCard from '../../components/ProjectCard.astro';
+
+const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
+const stories = await getCollection('stories');
+const sorted = stories.sort((a, b) => a.data.order - b.data.order);
+const categoryOrder = ['animals', 'pet sessions', 'adventures', 'live music'];
+const categorySlug = (category: string) => category.toLowerCase().replace(/\s+/g, '-');
+---
+
+<Layout title="All Posts">
+  <header class="archive-header">
+    <h1>All Posts</h1>
+    <div class="archive-filters" aria-label="Filter posts">
+      <button class="is-active" type="button" data-filter="all" aria-pressed="true">All</button>
+      {categoryOrder.map((category) => (
+        <button type="button" data-filter={categorySlug(category)} aria-pressed="false">{category}</button>
+      ))}
+    </div>
+  </header>
+  <main>
+    <div class="stories-grid stories-grid--archive" id="posts">
+      {sorted.map((story) => {
+        const cover = thumbnailForStory(story.id, story.data.coverImage || story.data.photos[0]);
+        const categories = categoriesForStory(story.id, story.data.categories);
+        const subtitle = subtitleForStory(story.id, story.data.subtitle);
+        return <ProjectCard
+          href={`${base}stories/${story.id}`}
+          image={cover ? `${base}${cover.replace(/^\//, '')}` : undefined}
+          title={story.data.title}
+          type={story.data.type}
+          caption={subtitle}
+          categories={categories}
+        />;
+      })}
+    </div>
+  </main>
+</Layout>
+
+<script>
+  const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-filter]'));
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-categories]'));
+  const validFilters = new Set(buttons.map((button) => button.dataset.filter || 'all'));
+  const slugify = (value: string) => value.toLowerCase().trim().replace(/\s+/g, '-');
+
+  const filterFromUrl = () => {
+    const requested = new URLSearchParams(window.location.search).get('category') || 'all';
+    return validFilters.has(requested) ? requested : 'all';
+  };
+
+  const showFilter = (filter: string) => {
+    buttons.forEach((button) => {
+      const active = button.dataset.filter === filter;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-pressed', String(active));
+    });
+
+    cards.forEach((card) => {
+      const categories = (card.dataset.categories || '').split('|').map(slugify);
+      card.hidden = filter !== 'all' && !categories.includes(filter);
+    });
+  };
+
+  const updateUrl = (filter: string) => {
+    const url = new URL(window.location.href);
+    if (filter === 'all') url.searchParams.delete('category');
+    else url.searchParams.set('category', filter);
+    window.history.pushState({ filter }, '', url);
+  };
+
+  buttons.forEach((button) => button.addEventListener('click', () => {
+    const filter = button.dataset.filter || 'all';
+    showFilter(filter);
+    updateUrl(filter);
+  }));
+
+  window.addEventListener('popstate', () => showFilter(filterFromUrl()));
+  showFilter(filterFromUrl());
+</script>

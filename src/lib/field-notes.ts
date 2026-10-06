@@ -6,6 +6,8 @@ export interface FieldNote {
   camera?: string;
   lens?: string;
   settings?: string;
+  caption?: string;
+  metadataNote?: string;
 }
 
 // New notes belong at the top. This small data file keeps captions and camera
@@ -16,6 +18,8 @@ export const fieldNotes: FieldNote[] = [
     title: 'Good genes.',
     place: 'Cairn Wood, County Down',
     date: '6 September 2026',
+    caption: 'Orca bumped into her full brother, Harper, and nephew, Ned at Cairn Wood. We couldn’t resist a family portrait.',
+    metadataNote: 'EXIF missing',
   },
   {
     image: 'auditt.jpg',

@@ -189,13 +189,13 @@ function photoLayoutClass(count: number) {
     <div class="story-page">
       {
         <header class="story-header">
-          <a class="story-header__back" href={base}>← All Stories</a>
+          <a class="story-header__back" href={`${base}posts/`}>← All Posts</a>
           <h1 class="story-header__title">{data.title}</h1>
           {subtitle && <p class="story-header__subtitle">{subtitle}</p>}
           <div class="story-header__meta">
             {data.date && <span>{data.date}</span>}
             {categories.map(cat => (
-              <a href={`${base}categories/${cat.toLowerCase().replace(/\s+/g, '-')}`}>{cat}</a>
+              <a href={`${base}posts/?category=${cat.toLowerCase().replace(/\s+/g, '-')}`}>{cat}</a>
             ))}
           </div>
           <hr class="story-divider" />
@@ -441,7 +441,7 @@ function photoLayoutClass(count: number) {
               <div class="story-footnotes__meta">
                 {data.date && <span>{data.date}</span>}
                 {categories.map(cat => (
-                  <a href={`${base}categories/${cat.toLowerCase().replace(/\s+/g, '-')}`}>{cat}</a>
+                  <a href={`${base}posts/?category=${cat.toLowerCase().replace(/\s+/g, '-')}`}>{cat}</a>
                 ))}
               </div>
             )}

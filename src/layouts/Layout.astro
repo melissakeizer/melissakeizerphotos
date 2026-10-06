@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import SiteFooter from '../components/SiteFooter.astro';
 
 interface Props {
   title?: string;
@@ -14,7 +15,7 @@ const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
 const { title = 'Photography by Melissa Keizer', description = 'Freelance pet & event photographer based in Bangor, Northern Ireland.', image, theme = 'light', hideNav = false, brandImage = 'melissa-keizer-sticker.png' } = Astro.props;
 const fullTitle = title === 'Photography by Melissa Keizer' ? title : `${title} — Melissa Keizer Photography`;
 const pathname = Astro.url.pathname;
-const storiesActive = pathname.includes('/stories');
+const storiesActive = pathname.includes('/stories') || pathname.includes('/posts');
 const photoStreamActive = pathname.includes('/field-notes');
 const isDev = import.meta.env.DEV;
 ---
@@ -38,7 +39,7 @@ const isDev = import.meta.env.DEV;
         <img src={`${base}${brandImage}`} alt="" />
       </a>
       <div class="site-nav__links">
-        <a class:list={{ 'is-active': storiesActive }} href={`${base}stories/`} aria-current={storiesActive ? 'page' : undefined}>Stories</a>
+        <a class:list={{ 'is-active': storiesActive }} href={`${base}posts/`} aria-current={storiesActive ? 'page' : undefined}>Stories</a>
         <a class:list={{ 'is-active': photoStreamActive }} href={`${base}field-notes/`} aria-current={photoStreamActive ? 'page' : undefined}>PhotoStream</a>
         <a href="#contact">Contact</a>
       </div>
@@ -52,35 +53,7 @@ const isDev = import.meta.env.DEV;
       </>
     )}
     <slot />
-    <footer class="site-footer" id="contact" style={`--footer-photo: url('${base}photos/road-to-sligo/000-photo.jpg')`}>
-      <div class="site-footer__panel">
-        <div class="site-footer__portrait">
-          <img src={`${base}melissa-keizer-avatar.jpeg`} alt="Melissa Keizer" />
-        </div>
-        <div class="site-footer__introduction">
-          <p class="site-footer__label">About me</p>
-          <p class="site-footer__introduction-copy">
-            <strong>Hi, I’m Melissa Keizer.</strong>
-            <span>I’m a photographer and product designer based in Bangor, Northern Ireland. Usually found following dogs into good light or making one more tiny adjustment in Lightroom.</span>
-          </p>
-        </div>
-        <nav class="site-footer__links" aria-label="Explore">
-          <p class="site-footer__label">Explore</p>
-          <a href={base}>Home</a>
-          <a href={`${base}stories/`}>All posts</a>
-          <a href={`${base}field-notes/`}>PhotoStream</a>
-          <a href="mailto:hi@melissakeizer.com">Email</a>
-        </nav>
-        <nav class="site-footer__social-links" aria-label="Social media">
-          <a href="https://www.linkedin.com/in/melissakeizer/" target="_blank" rel="noreferrer">LinkedIn</a>
-          <a href="https://www.instagram.com/KeizGoesBoom/" target="_blank" rel="noreferrer">Instagram</a>
-          <a href="https://unsplash.com/@KeizGoesBoom" target="_blank" rel="noreferrer">Unsplash</a>
-        </nav>
-        <div class="site-footer__equipment-space" aria-hidden="true">
-          <img src={`${base}lens-sketch-zeiss-55mm-v3.png`} alt="" />
-        </div>
-      </div>
-    </footer>
+    <SiteFooter />
     {isDev && (
       <script is:inline>
         (() => {

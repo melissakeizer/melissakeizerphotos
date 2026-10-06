@@ -1,0 +1,33 @@
+---
+const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
+---
+
+<footer class="site-footer" id="contact" style={`--footer-photo: url('${base}photos/road-to-sligo/000-photo.jpg')`}>
+  <div class="site-footer__panel">
+    <div class="site-footer__portrait">
+      <img src={`${base}melissa-keizer-avatar.jpeg`} alt="Melissa Keizer" />
+    </div>
+    <div class="site-footer__introduction">
+      <p class="site-footer__label">About me</p>
+      <p class="site-footer__introduction-copy">
+        <strong>Hi, I’m Melissa Keizer.</strong>
+        <span>I’m a photographer and product designer based in Bangor, Northern Ireland. Usually found following dogs into good light or making one more tiny adjustment in Lightroom.</span>
+      </p>
+    </div>
+    <div class="site-footer__navigation">
+      <p class="site-footer__label">Explore</p>
+      <nav class="site-footer__links" aria-label="Explore and social media">
+        <a href={base}>Home</a>
+        <a href={`${base}posts/`}>All posts</a>
+        <a href={`${base}field-notes/`}>PhotoStream</a>
+        <a href="mailto:hi@melissakeizer.com">Email</a>
+        <a href="https://www.linkedin.com/in/melissakeizer/" target="_blank" rel="noreferrer">LinkedIn</a>
+        <a href="https://www.instagram.com/KeizGoesBoom/" target="_blank" rel="noreferrer">Instagram</a>
+        <a href="https://unsplash.com/@KeizGoesBoom" target="_blank" rel="noreferrer">Unsplash</a>
+      </nav>
+    </div>
+    <div class="site-footer__equipment-space" aria-hidden="true">
+      <img src={`${base}lens-sketch-zeiss-55mm-v3.png`} alt="" />
+    </div>
+  </div>
+</footer>
