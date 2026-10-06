@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import DisplayHeading from '../components/DisplayHeading.astro';
 import { fieldNotes } from '../lib/field-notes';
 
 const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
@@ -18,7 +19,7 @@ const landscapeNotes = new Set([
 <Layout title="PhotoStream" description="A stream of single photographs, passing encounters and camera notes by Melissa Keizer." theme="dark">
   <main class="field-notes-page">
     <header class="field-notes-header">
-      <h1>PhotoStream</h1>
+      <DisplayHeading>PhotoStream</DisplayHeading>
       <p>For a girl who misses the simplicity of Flickr.</p>
     </header>
 

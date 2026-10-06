@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import ProjectCard from './ProjectCard.astro';
+import DisplayHeading from './DisplayHeading.astro';
 import { fieldNotes } from '../lib/field-notes';
 import { subtitleForStory } from '../lib/story-metadata';
 
@@ -39,7 +40,7 @@ function photoUrl(path: string) {
     >
       <section class="home-concept-hero" aria-labelledby="home-intro-title">
         <div class="home-concept-hero__copy">
-          <h1 id="home-intro-title">I’m Melissa,<br class="home-title-break" /> this is my<br class="home-title-break" /> photo journal</h1>
+          <DisplayHeading id="home-intro-title" class="display-heading--home">I’m Melissa, this is<br class="home-title-break" /> my photo journal</DisplayHeading>
           <p>A home for little adventures, wet noses, beautiful places and moments worth remembering — from Northern Ireland and beyond.</p>
         </div>
       </section>

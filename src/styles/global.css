@@ -9,6 +9,280 @@
   font-weight: 400;
 }
 
+/* October story and mobile polish: one type scale, calmer reading rhythm. */
+.display-heading {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(2.75rem, 4.2vw, 4.75rem);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 0.96;
+}
+
+.home-title-break { display: none; }
+
+.home-page--selected .home-concept-hero__copy .display-heading,
+.field-notes-header .display-heading {
+  font-size: clamp(2.75rem, 4.2vw, 4.75rem);
+  font-weight: 500;
+  line-height: 0.96;
+}
+
+.home-feature-story h2,
+.home-feature-story:not(.home-feature-story--primary) h2 {
+  font-size: clamp(1.65rem, 2.55vw, 2.9rem);
+  line-height: 1;
+}
+
+.home-field-notes h2 {
+  font-weight: 600;
+}
+
+.home-field-notes__grid .field-note-card figcaption strong {
+  font-weight: 400;
+}
+
+/* Match category links to the main navigation: the active rule is word-width. */
+.archive-filters button {
+  padding-right: 0;
+  padding-left: 0;
+  border-radius: 0;
+}
+
+/* Story headers share the same editorial voice, including split-cover stories. */
+.story-hero__subtitle {
+  margin-top: 1rem;
+}
+
+.story-hero__author {
+  margin-top: 1.75rem;
+}
+
+.story-hero-split__title {
+  margin-bottom: 1rem;
+  font-family: var(--font-serif);
+  font-size: clamp(2.75rem, 5vw, 5rem);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+  text-transform: none;
+}
+
+.story-hero-split__subtitle {
+  margin-bottom: 0;
+}
+
+.story-hero-split__author {
+  margin-top: 1.75rem;
+}
+
+/* Cambon is the reading face inside stories; the gaps form an even beat. */
+.story-section {
+  --story-beat-gap: clamp(2rem, 3.2vw, 3rem);
+}
+
+.story-section__text {
+  margin-bottom: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(1.08rem, 1.18vw, 1.28rem);
+  line-height: 1.7;
+}
+
+.story-section__text:not(:last-child) {
+  margin-bottom: 0;
+}
+
+.story-section__photos,
+.story-section__photo-item--stacked,
+.story-section__photo-item--spotlight {
+  margin-top: var(--story-beat-gap);
+}
+
+.story-section__content {
+  margin-bottom: var(--story-beat-gap);
+}
+
+/* Related stories deliberately form a single, touch-friendly scrolling shelf. */
+.related-stories {
+  overflow: hidden;
+  padding: clamp(3.5rem, 6vw, 6rem) max(var(--site-margin), calc((100vw - var(--grid-max)) / 2));
+  color: #f5f1e9;
+  background: #11110f;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.related-stories__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.related-stories__header h2 {
+  font-family: var(--font-serif);
+  font-size: clamp(2.25rem, 4vw, 4rem);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.related-stories__header p {
+  color: rgba(245, 241, 233, 0.58);
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+}
+
+.related-stories__track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: clamp(14rem, 20vw, 19rem);
+  gap: var(--grid-gap);
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  scroll-snap-type: x proximity;
+  scrollbar-color: rgba(255, 255, 255, 0.28) transparent;
+}
+
+.related-stories .project-card {
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+.related-stories .project-card__image {
+  aspect-ratio: 3 / 4;
+}
+
+.related-stories .project-card__content h2 {
+  color: #f5f1e9;
+}
+
+.related-stories .project-card__caption,
+.related-stories .project-card__type {
+  color: rgba(245, 241, 233, 0.58);
+}
+
+.related-stories .project-card__type {
+  border-top-color: rgba(255, 255, 255, 0.14);
+}
+
+@media (max-width: 700px) {
+  .display-heading,
+  .home-page--selected .home-concept-hero__copy .display-heading,
+  .field-notes-header .display-heading {
+    font-size: clamp(2.55rem, 11.5vw, 2.95rem);
+    line-height: 0.98;
+  }
+
+  .home-title-break { display: block; }
+
+  .home-page--selected .home-concept-hero__art {
+    top: 4.5rem;
+    right: -6.5rem;
+    background-size: 45rem auto;
+  }
+
+  .home-feature-story h2,
+  .home-feature-story:not(.home-feature-story--primary) h2 {
+    font-size: clamp(1.35rem, 5.5vw, 1.65rem);
+    line-height: 1.04;
+  }
+
+  .home-field-notes h2 {
+    font-size: 2.35rem;
+  }
+
+  .archive-filters {
+    gap: 0.55rem 1.15rem;
+  }
+
+  .archive-filters button {
+    padding: 0.35rem 0;
+  }
+
+  .story-hero__subtitle {
+    margin-top: 0.85rem;
+  }
+
+  .story-hero__author {
+    margin-top: 1.4rem;
+  }
+
+  .story-hero-wrapper--split {
+    grid-template-rows: min(76vw, 27rem) auto;
+  }
+
+  .story-hero-split__content {
+    justify-content: flex-start;
+    padding: 2rem 1rem 2.25rem;
+  }
+
+  .story-hero-split__body {
+    flex: none;
+  }
+
+  .story-hero-split__title {
+    margin-bottom: 0.85rem;
+    font-size: clamp(2.5rem, 12vw, 3.25rem);
+    line-height: 0.98;
+  }
+
+  .story-hero-split__author {
+    margin-top: 1.4rem;
+  }
+
+  .story-section {
+    --story-beat-gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .story-section__text {
+    margin-bottom: 0;
+    font-size: 1.08rem;
+    line-height: 1.68;
+  }
+
+  .story-section__text:not(:last-child) {
+    margin-bottom: 0;
+  }
+
+  .story-section__photos,
+  .story-section__photo-item--stacked,
+  .story-section__photo-item--spotlight {
+    margin-top: var(--story-beat-gap);
+  }
+
+  .story-section--stacked,
+  .story-section--full-bleed,
+  .story-section--edge-to-edge,
+  .story-section--parallax,
+  .story-section--split {
+    margin-bottom: 2rem;
+  }
+
+  .related-stories {
+    padding: 3rem 1rem 2.5rem;
+  }
+
+  .related-stories__header {
+    display: block;
+    margin-bottom: 1.5rem;
+  }
+
+  .related-stories__header h2 {
+    font-size: 2.5rem;
+  }
+
+  .related-stories__header p {
+    margin-top: 0.6rem;
+  }
+
+  .related-stories__track {
+    grid-auto-columns: min(72vw, 17rem);
+    gap: 1rem;
+  }
+}
+
 @font-face {
   font-family: 'Cambon';
   src: url('/melissakeizerphotos/fonts/cambon-semibold-webfont.woff2') format('woff2');
@@ -3954,4 +4228,139 @@ html[data-theme="dark"] body,
   }
   .site-footer__links a { font-size: 0.72rem; }
   .site-footer__equipment-space { display: none; }
+
+  /* Tall mobile photo groups can never satisfy a percentage-based
+     IntersectionObserver threshold. Keep every story image visible on phones. */
+  .is-ready .story-section :is(
+    .story-section__photos,
+    .story-section__photo-item--stacked,
+    .story-section__photo-item--spotlight,
+    .story-section__full-bleed-photo,
+    .story-section__edge-to-edge-photo,
+    .story-section__split-photo,
+    .story-separator,
+    .story-section__title,
+    .story-section__text
+  ) {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Final cascade layer for the shared editorial type and story rhythm. */
+.home-page--selected .home-concept-hero__copy .display-heading,
+.field-notes-header .display-heading {
+  font-size: clamp(2.75rem, 4.2vw, 4.75rem);
+  font-weight: 500;
+  line-height: 0.96;
+}
+
+.home-feature-story h2,
+.home-feature-story:not(.home-feature-story--primary) h2 {
+  font-size: clamp(1.65rem, 2.55vw, 2.9rem);
+  line-height: 1;
+}
+
+.home-field-notes h2 { font-weight: 600; }
+.home-field-notes__grid .field-note-card figcaption strong { font-weight: 400; }
+.archive-filters button { padding-right: 0; padding-left: 0; border-radius: 0; }
+
+.story-hero__subtitle { margin-top: 1rem; }
+.story-hero__author { margin-top: 1.75rem; }
+.story-hero-split__title {
+  margin-bottom: 1rem;
+  font-family: var(--font-serif);
+  font-size: clamp(2.75rem, 5vw, 5rem);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+  text-transform: none;
+}
+.story-hero-split__subtitle { margin-bottom: 0; }
+.story-hero-split__author { margin-top: 1.75rem; }
+
+.story-section { --story-beat-gap: clamp(2rem, 3.2vw, 3rem); }
+.story-section__text {
+  margin-bottom: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(1.08rem, 1.18vw, 1.28rem);
+  line-height: 1.7;
+}
+.story-section__text:not(:last-child) { margin-bottom: 0; }
+.story-section__photos,
+.story-section__photo-item--stacked,
+.story-section__photo-item--spotlight { margin-top: var(--story-beat-gap); }
+.story-section__content { margin-bottom: var(--story-beat-gap); }
+
+@media (max-width: 700px) {
+  .display-heading,
+  .home-page--selected .home-concept-hero__copy .display-heading,
+  .field-notes-header .display-heading {
+    font-size: clamp(2.55rem, 11.5vw, 2.95rem);
+    line-height: 0.98;
+  }
+  .home-title-break { display: block; }
+  .home-page--selected .home-concept-hero__art {
+    top: 4.5rem;
+    right: -6.5rem;
+    background-size: 45rem auto;
+  }
+  .home-feature-story h2,
+  .home-feature-story:not(.home-feature-story--primary) h2 {
+    font-size: clamp(1.35rem, 5.5vw, 1.65rem);
+    line-height: 1.04;
+  }
+  .home-field-notes h2 { font-size: 2.35rem; }
+  .archive-filters { gap: 0.55rem 1.15rem; }
+  .archive-filters button { padding: 0.35rem 0; }
+  .story-hero__subtitle { margin-top: 0.85rem; }
+  .story-hero__author { margin-top: 1.4rem; }
+  .story-hero-wrapper--split {
+    grid-template-rows: min(76vw, 27rem) auto;
+    height: auto;
+    min-height: 0;
+  }
+  .story-hero-split__content { justify-content: flex-start; padding: 2rem 1rem 2.25rem; }
+  .story-hero-split__body { flex: none; }
+  .story-hero-split__title {
+    margin-bottom: 0.85rem;
+    font-size: clamp(2.5rem, 12vw, 3.25rem);
+    line-height: 0.98;
+  }
+  .story-hero-split__author { margin-top: 1.4rem; }
+  .story-section { --story-beat-gap: 2rem; margin-bottom: 2rem; }
+  .story-section__text { margin-bottom: 0; font-size: 1.08rem; line-height: 1.68; }
+  .story-section__text:not(:last-child) { margin-bottom: 0; }
+  .story-section__photos,
+  .story-section__photo-item--stacked,
+  .story-section__photo-item--spotlight { margin-top: var(--story-beat-gap); }
+  /* Gallery cards receive an inline flex ratio for desktop justified rows.
+     Reset that inline value on phones so every stacked image keeps its height. */
+  .story-section__photos--pair .story-section__photo-item,
+  .story-section__photos--trio .story-section__photo-item,
+  .quad-row .story-section__photo-item,
+  .penta-row .story-section__photo-item,
+  .multi-row .story-section__photo-item {
+    flex: none !important;
+    width: 100%;
+    aspect-ratio: var(--photo-ratio, 1.5);
+  }
+  .story-section__photos--pair,
+  .story-section__photos--trio,
+  .quad-row,
+  .penta-row,
+  .multi-row {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .story-section__photos--quad,
+  .story-section__photos--penta,
+  .story-section__photos--multi {
+    gap: 0.75rem;
+  }
+  .story-section--stacked,
+  .story-section--full-bleed,
+  .story-section--edge-to-edge,
+  .story-section--parallax,
+  .story-section--split { margin-bottom: 2rem; }
 }

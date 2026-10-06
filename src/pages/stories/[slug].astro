@@ -3,7 +3,8 @@ import Layout from '../../layouts/Layout.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import sharp from 'sharp';
 import nodePath from 'path';
-import { categoriesForStory, coverStyleForStory, layoutForStorySection, subtitleForStory } from '../../lib/story-metadata';
+import { categoriesForStory, coverStyleForStory, layoutForStorySection, subtitleForStory, thumbnailForStory } from '../../lib/story-metadata';
+import ProjectCard from '../../components/ProjectCard.astro';
 
 const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
 
@@ -44,6 +45,17 @@ const coverStyle = coverStyleForStory(story.id, data.coverStyle ?? 'full');
 const galleryLayout = data.galleryLayout ?? 'fitted-grid';
 const editorEnabled = import.meta.env.DEV && isStory;
 const StoryEditor = editorEnabled ? (await import('../../components/StoryEditor.astro')).default : null;
+const allStories = await getCollection('stories');
+const relatedStories = allStories
+  .filter((candidate) => candidate.id !== story.id)
+  .map((candidate) => {
+    const candidateCategories = categoriesForStory(candidate.id, candidate.data.categories);
+    const sharedCategories = candidateCategories.filter((category) => categories.includes(category)).length;
+    return { candidate, sharedCategories };
+  })
+  .sort((a, b) => b.sharedCategories - a.sharedCategories || a.candidate.data.order - b.candidate.data.order)
+  .slice(0, 6)
+  .map(({ candidate }) => candidate);
 
 // Parse sections from markdown body for story type posts
 let sections: Section[] = [];
@@ -338,7 +350,7 @@ function photoLayoutClass(count: number) {
                                 role="button"
                                 tabindex="0"
                                 aria-label="View photo"
-                                style={`flex: ${photoRatios.get(photo) ?? 1.5} 1 0`}
+                                style={`--photo-ratio: ${photoRatios.get(photo) ?? 1.5}; flex: ${photoRatios.get(photo) ?? 1.5} 1 0`}
                               >
                                 <img src={photoUrl(photo)} alt={section.title || data.title} loading="lazy" decoding="async" />
                               </div>
@@ -362,7 +374,7 @@ function photoLayoutClass(count: number) {
                                 role="button"
                                 tabindex="0"
                                 aria-label="View photo"
-                                style={`flex: ${photoRatios.get(photo) ?? 1.5} 1 0`}
+                                style={`--photo-ratio: ${photoRatios.get(photo) ?? 1.5}; flex: ${photoRatios.get(photo) ?? 1.5} 1 0`}
                               >
                                 <img
                                   src={photoUrl(photo)}
@@ -391,7 +403,7 @@ function photoLayoutClass(count: number) {
                                 role="button"
                                 tabindex="0"
                                 aria-label="View photo"
-                                style={`flex: ${photoRatios.get(photo) ?? 1.5} 1 0`}
+                                style={`--photo-ratio: ${photoRatios.get(photo) ?? 1.5}; flex: ${photoRatios.get(photo) ?? 1.5} 1 0`}
                               >
                                 <img src={photoUrl(photo)} alt={section.title || data.title} loading="lazy" decoding="async" />
                               </div>
@@ -411,7 +423,7 @@ function photoLayoutClass(count: number) {
                           role="button"
                           tabindex="0"
                           aria-label="View photo"
-                          style={useFlexRatio ? `flex: ${photoRatios.get(photo) ?? 1.5} 1 0` : undefined}
+                          style={useFlexRatio ? `--photo-ratio: ${photoRatios.get(photo) ?? 1.5}; flex: ${photoRatios.get(photo) ?? 1.5} 1 0` : undefined}
                         >
                           <img
                             src={photoUrl(photo)}
@@ -465,6 +477,29 @@ function photoLayoutClass(count: number) {
         </div>
       )}
     </div>
+  )}
+
+  {isStory && relatedStories.length > 0 && (
+    <section class="related-stories" aria-labelledby="related-stories-title">
+      <div class="related-stories__header">
+        <h2 id="related-stories-title">More like this</h2>
+        <p>More stories and galleries from the journal.</p>
+      </div>
+      <div class="related-stories__track" tabindex="0" aria-label="More stories; scroll horizontally to browse">
+        {relatedStories.map((relatedStory) => {
+          const relatedCover = thumbnailForStory(relatedStory.id, relatedStory.data.coverImage || relatedStory.data.photos[0]);
+          return (
+            <ProjectCard
+              href={`${base}stories/${relatedStory.id}`}
+              image={relatedCover ? photoUrl(relatedCover) : undefined}
+              title={relatedStory.data.title}
+              type={relatedStory.data.type}
+              caption={subtitleForStory(relatedStory.id, relatedStory.data.subtitle)}
+            />
+          );
+        })}
+      </div>
+    </section>
   )}
 
   <!-- Lightbox (shared by both layouts) -->
