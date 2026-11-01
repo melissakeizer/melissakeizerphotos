@@ -116,3 +116,15 @@ Choose two or three questions per block. These are prompts only; no new personal
 - What makes you revisit an old photograph?
 - Has your editing style changed over the years?
 - How do you decide when a picture is finished?
+
+## Matisse Q&A revision — 1 November 2026
+
+Placed between Orca at four months and Matisse among the flowers, with a full-width Quick-fire Q&A heading and two answer columns. The earlier questions above are retained as a question bank for future sections.
+
+### What got you into photography?
+
+Matisse, my little scruffy dog. I loved taking photos of him and wanted to take better ones. At 17, picking up a DSLR brought together two of my favourite things: spending time with Matisse and making pictures.
+
+### What camera did you start with?
+
+A second-hand Sony A100, an entry-level DSLR, with a couple of zoom lenses. It arrived just as I was heading to Rathlin Island with my family, so its first outing was photographing seals and beautiful Irish scenery. I’ve stayed with Sony since: first an A580, then an A7 II, and now an A7 IV.

@@ -39,10 +39,10 @@ const questions = new Map(photoStreamQuestions.map(block => [
       {pageNotes.map((note, index) => (
         <>
           {questions.has(note.image) && (
-            <aside class="field-notes-interlude field-notes-interlude--qa" aria-label="Quick-fire Q&A">
+            <aside class:list={['field-notes-interlude', 'field-notes-interlude--qa', { 'field-notes-interlude--two-column': questions.get(note.image)?.layout === 'two-column' }]} aria-label="Quick-fire Q&A">
               <div class="field-notes-interlude__heading">
-                <p class="home-kicker">Quick-fire<br />Q&amp;A</p>
-                <p class="field-notes-interlude__topic">{questions.get(note.image)?.label}</p>
+                <p class="home-kicker">{questions.get(note.image)?.layout === 'two-column' ? 'Quick-fire Q&A' : <>Quick-fire<br />Q&amp;A</>}</p>
+                {questions.get(note.image)?.layout !== 'two-column' && <p class="field-notes-interlude__topic">{questions.get(note.image)?.label}</p>}
               </div>
               {questions.get(note.image)?.items.map(item => <div class="field-notes-interlude__item"><h3>{item.question}</h3><p>{item.answer}</p></div>)}
             </aside>
@@ -74,6 +74,13 @@ const questions = new Map(photoStreamQuestions.map(block => [
 </Layout>
 
 <style>
+  .photostream-page .field-notes-interlude--qa { row-gap: 1.25rem; padding: clamp(1.5rem, 3vw, 3rem) 0; }
+  .photostream-page .field-notes-interlude--qa .field-notes-interlude__item p { margin-top: .65rem; text-wrap: pretty; }
+  .photostream-page .field-notes-interlude--two-column { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .photostream-page .field-notes-interlude--two-column .field-notes-interlude__heading { grid-column: 1 / -1; }
+  .photostream-page .field-notes-interlude--two-column .field-notes-interlude__item { grid-column: auto; }
+  .photostream-page .field-notes-interlude--two-column .field-notes-interlude__item :is(h3, p) { max-width: none; }
+  @media (max-width: 700px) { .photostream-page .field-notes-interlude--two-column { grid-template-columns: 1fr; } }
   .photostream-page .field-notes-interlude__heading .home-kicker {
     font-size: clamp(1.1rem, 1.8vw, 1.7rem);
     font-weight: 650;
@@ -126,9 +133,10 @@ const questions = new Map(photoStreamQuestions.map(block => [
     .photostream-phone { width: 14.3rem; bottom: -6rem; }
   }
   @media (max-width: 700px) {
-    .photostream-page .field-notes-header { height: 22rem; padding-right: 0; }
-    .photostream-intro-copy { padding-left: 20%; }
+    .photostream-page .field-notes-header { height: 10rem; padding-right: 0; margin-bottom: 1.5rem; }
+    .photostream-intro-copy { padding-left: 12%; }
     .photostream-eyebrow { margin-bottom: .8rem; font-size: .62rem; }
-    .photostream-phone { width: 11.55rem; bottom: -6rem; opacity: .36; }
+    .photostream-phone { width: 10rem; bottom: -13rem; opacity: .36; }
+    .photostream-page .field-notes-interlude--qa { padding-bottom: 2.75rem; }
   }
 </style>

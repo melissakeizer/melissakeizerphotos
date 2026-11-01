@@ -24,7 +24,7 @@ const videoPosition = media?.position ?? Astro.props.videoPosition;
 <article class="project-card" data-categories={categories?.join('|')}>
   <a href={href}>
     <div class="project-card__image">
-      {image && <img src={image} alt={title} loading="lazy" decoding="async" />}
+      {image && <img src={image} alt={title} style={videoPosition ? `object-position: ${videoPosition}` : undefined} loading="lazy" decoding="async" />}
       {video && <video class="project-card__video" src={video} poster={image} style={videoPosition ? `object-position: ${videoPosition}` : undefined} autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>}
     </div>
     <div class="project-card__content">
@@ -34,3 +34,17 @@ const videoPosition = media?.position ?? Astro.props.videoPosition;
     </div>
   </a>
 </article>
+
+<style>
+  .project-card__type { transition: border-color .25s ease; }
+  .project-card a:hover .project-card__type,
+  .project-card a:focus-visible .project-card__type { border-top-color: var(--color-text); }
+  .project-card__image video { transition: transform .4s ease; }
+  .project-card a:hover :is(img, video),
+  .project-card a:focus-visible :is(img, video) { transform: scale(1.02); }
+  @media (prefers-reduced-motion: reduce) {
+    .project-card a:hover :is(img, video),
+    .project-card a:focus-visible :is(img, video) { transform: none; }
+    .project-card__image :is(img, video), .project-card__type { transition: none; }
+  }
+</style>

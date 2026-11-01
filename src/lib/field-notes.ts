@@ -23,7 +23,8 @@ export const fieldNotes: FieldNote[] = [
   },
   {
     image: 'auditt.jpg',
-    title: 'Saying goodbye to my Audi TT.',
+    title: 'Saying goodbye to my Audi\u00a0TT.',
+    caption: 'I bought my dream car in 2020, a Daytona Grey Audi TT Black Edition. This year I swapped it for something more family-friendly, but I still miss this wonderful little motor.',
     place: 'Castle Park, Bangor',
     date: '30 August 2026',
     camera: 'Sony A7 IV',
@@ -33,6 +34,7 @@ export const fieldNotes: FieldNote[] = [
   {
     image: 'riley-orca-cairn-wood.jpg',
     title: 'Orca and Riley.',
+    caption: 'My sister’s lovely, laid-back Riley — and probably Orca’s best doggy friend.',
     place: 'Cairn Wood, County Down',
     date: '7 August 2026',
     camera: 'iPhone 17 Pro',
@@ -52,7 +54,7 @@ export const fieldNotes: FieldNote[] = [
   {
     image: 'sparrowhawk.jpg',
     title: 'Unusual garden visitor',
-    caption: 'I grabbed my camera as soon as Elias spotted this beautiful sparrowhawk from our bedroom window.',
+    caption: 'I grabbed my camera as soon as Elias spotted the sparrowhawk from our bedroom window.',
     place: 'Bangor, Northern Ireland',
     date: '10 July 2026',
     camera: 'Sony A7 IV',
@@ -96,6 +98,7 @@ export const fieldNotes: FieldNote[] = [
   {
     image: 'dusk-at-lazise.jpg',
     title: 'Dusk at Lazise',
+    caption: 'An evening stroll by Lake Garda, gelato in hand and barely a ripple on the water.',
     place: 'Lazise, Lake Garda, Italy',
     date: '11 June 2025',
     camera: 'iPhone 15',
@@ -114,7 +117,9 @@ export const fieldNotes: FieldNote[] = [
   },
   {
     image: 'elias-with-daddy.jpg',
-    title: 'Elias with Daddy',
+    title: 'A first trip to the farm',
+    place: 'The Ark Open Farm, County Down',
+    caption: 'Elias’s first farm visit, aged one. A chilly morning full of animals to meet — with Pickles, the baby guinea pig, a firm favourite.',
     date: '25 January 2025',
     camera: 'Sony A7 IV',
     lens: '55mm',
@@ -123,6 +128,8 @@ export const fieldNotes: FieldNote[] = [
   {
     image: 'orca-and-indie-05.jpg',
     title: 'Orca and Indie',
+    place: 'Stormont, Belfast',
+    caption: 'A visit from Scotland meant a muddy reunion for Orca and her littermate, Indie. The sisters got on brilliantly, and soon became hard to tell apart.',
     date: '22 December 2023',
     camera: 'Sony A7 IV',
     lens: '200mm',
@@ -130,7 +137,8 @@ export const fieldNotes: FieldNote[] = [
   },
   {
     image: 'barcelona-parakeet.jpeg',
-    title: 'Barcelona parakeet',
+    title: 'New Friend',
+    caption: 'Mikey made a few friends. With a handful of seeds, neither of us stayed parakeet-free for long.',
     place: 'Barcelona, Spain',
     date: '13 October 2023',
     camera: 'Sony A7 IV',
@@ -140,7 +148,7 @@ export const fieldNotes: FieldNote[] = [
   {
     image: 'red-panda-dublin-zoo.jpeg',
     title: 'Red Panda Appreciation Society',
-    caption: 'A red panda stepping out at Dublin Zoo.',
+    caption: 'A curious little climber, and finally a red panda photo I was really happy with.',
     place: 'Dublin Zoo',
     date: '25 May 2022',
     camera: 'Sony A7 II',
@@ -173,13 +181,16 @@ export const fieldNotes: FieldNote[] = [
   },
   {
     image: 'llama-walk.JPG',
-    title: 'Llama walk',
+    title: 'Llama trekking',
+    place: 'The Jungle NI, Moneymore',
+    caption: 'A birthday present from Mikey: a countryside stroll with a llama each. Excellent company, all round.',
     date: 'Date to confirm',
     metadataNote: 'Camera details to confirm',
   },
   {
     image: '05-orca-11-months-stacked-p1-2.jpg',
-    title: 'Orca at eleven months',
+    title: 'Growing Up Beautifully',
+    caption: 'Orca at eleven months, looking less like a puppy by the day. Just look at that coat.',
     date: '31 December 2021',
     camera: 'Sony A7 II',
     lens: '55mm',
@@ -187,7 +198,9 @@ export const fieldNotes: FieldNote[] = [
   },
   {
     image: 'DSC05520.jpg',
-    title: 'Sculpture garden',
+    title: 'Cascada Monumental',
+    place: 'Parc de la Ciutadella, Barcelona',
+    caption: 'Swapping the usual wide-angle view for my 55mm prime. A little challenge to find a different frame.',
     date: '10 October 2023',
     camera: 'Sony A7 IV',
     lens: '55mm',
@@ -195,7 +208,8 @@ export const fieldNotes: FieldNote[] = [
   },
   {
     image: 'Orca-four-months--15.jpg',
-    title: 'Orca at four months',
+    title: 'Oh, Orca',
+    caption: 'Four months old, all paws and that goofy little face. A very good reason to keep the camera close at home.',
     date: '10 June 2021',
     camera: 'Sony A7 II',
     lens: '55mm',
@@ -203,7 +217,8 @@ export const fieldNotes: FieldNote[] = [
   },
   {
     image: 'bailey-and-sully-22.jpg',
-    title: 'Bailey and Sully',
+    title: 'Baby Bailey',
+    caption: 'When a friend gets a golden retriever puppy, a visit with the camera is compulsory. Puppy kisses are just part of the deal.',
     date: '13 January 2022',
     camera: 'Sony A7 II',
     lens: '55mm',
@@ -211,7 +226,8 @@ export const fieldNotes: FieldNote[] = [
   },
   {
     image: 'barcelona-2023-6.jpg',
-    title: 'Barcelona parakeets',
+    title: 'Got any more?',
+    caption: 'Excuse me, any more seeds? A very vocal member of Barcelona’s welcoming committee.',
     place: 'Barcelona, Spain',
     date: '13 October 2023',
     camera: 'Sony A7 IV',
@@ -221,6 +237,8 @@ export const fieldNotes: FieldNote[] = [
   {
     image: 'exploris-shots--15.jpg',
     title: 'A seal at Exploris',
+    place: 'Exploris Aquarium, Portaferry',
+    caption: 'A little temporary resident at Exploris, where rescued seals are cared for before returning to the wild.',
     date: '8 January 2022',
     camera: 'Sony A7 II',
     lens: '108mm',
@@ -228,7 +246,7 @@ export const fieldNotes: FieldNote[] = [
   },
   {
     image: 'matisse-castle-park-final.jpg',
-    title: 'Matisse among the flowers',
+    title: 'Matisse in the bluebells',
     place: 'Castle Park, Bangor',
     date: '9 May 2021',
     camera: 'Sony A7 II',
@@ -237,7 +255,8 @@ export const fieldNotes: FieldNote[] = [
   },
   {
     image: 'orca-castle-park.jpg',
-    title: 'Orca in Castle Park',
+    title: 'Outlandish Orca',
+    caption: 'A few leaps over a log, one very enthusiastic Orca, and the shot I’d pictured. All her Aussie energy in one frame — now hanging in my kitchen.',
     place: 'Castle Park, Bangor',
     date: '11 October 2022',
     camera: 'Sony A7 IV',
@@ -246,7 +265,9 @@ export const fieldNotes: FieldNote[] = [
   },
   {
     image: 'peregrine-1.jpg',
-    title: 'Peregrine',
+    title: 'Hawk Walks NI',
+    place: 'Hawk Walks NI',
+    caption: 'This little Peregrine Falcon was a highlight of a photography day with my friend Sam. We also had a hawk fly between our heads, which was quite the thrill.',
     date: '14 August 2021',
     camera: 'Sony A7 II',
     lens: '200mm',
@@ -254,7 +275,8 @@ export const fieldNotes: FieldNote[] = [
   },
   {
     image: 'porto-edits-1-2.jpg',
-    title: 'Inside the bookshop',
+    title: 'Livraria Lello',
+    caption: 'The most beautiful bookshop I’ve ever been in. Open since 1906, with a staircase that deserves a story of its own.',
     place: 'Porto, Portugal',
     date: '27 August 2022',
     camera: 'Sony A7 II',
@@ -264,6 +286,7 @@ export const fieldNotes: FieldNote[] = [
   {
     image: 'porto-edits-3.jpg',
     title: 'Porto waterfront',
+    caption: 'Sipping port with Mikey and taking pictures as we cruised along the Douro on our honeymoon. A lovely way to see the city.',
     place: 'Porto, Portugal',
     date: '27 August 2022',
     camera: 'Sony A7 II',
@@ -272,7 +295,9 @@ export const fieldNotes: FieldNote[] = [
   },
   {
     image: 'streamvale-farm-8.jpg',
-    title: 'At Streamvale Farm',
+    title: 'New arrivals',
+    place: 'Streamvale Open Farm, Belfast',
+    caption: 'A springtime visit to meet the newest arrivals. Welcome to the world, little lambs.',
     date: '26 March 2023',
     camera: 'Sony A7 IV',
     lens: '55mm',

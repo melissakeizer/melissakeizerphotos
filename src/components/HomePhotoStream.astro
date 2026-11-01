@@ -10,12 +10,13 @@ const previewPhotos = picks.map(image => fieldNotes.find(note => note.image === 
 <div class="photostream-home-strip">
     <section class="home-field-notes home-field-notes--preview home-field-notes--light-preview" id="field-notes" aria-labelledby="field-notes-title">
       <div class="home-field-notes__phone" aria-hidden="true">
-        <CameraDrawing variant="phone" />
+        <div class="home-phone-crop"><CameraDrawing variant="phone" /></div>
+        <div class="home-phone-full"><CameraDrawing variant="phone-full" id="home-phone-full-pencil" /></div>
       </div>
       <div class="home-field-notes__intro">
         <Heading as="h2" id="field-notes-title">PhotoStream</Heading>
         <p>Small moments and everyday frames without a bigger story.</p>
-        <a class="home-text-link" href={`${base}photostream/`}>Browse PhotoStream <span aria-hidden="true">→</span></a>
+        <a class="home-text-link home-text-link--browse" href={`${base}photostream/`}>Browse PhotoStream <span aria-hidden="true">→</span></a>
       </div>
       <div class="home-field-notes__grid">
         {previewPhotos.map((fieldNote) => (
@@ -31,5 +32,20 @@ const previewPhotos = picks.map(image => fieldNotes.find(note => note.image === 
     </section>
 </div>
 <style>
+.home-phone-full { display: none; }
+@media (max-width: 700px) {
+  .home-phone-crop { display: none; }
+  .home-phone-full { display: block; }
+  .photostream-home-strip .home-field-notes--preview { padding-top: 2.5rem; }
+  .photostream-home-strip .home-field-notes__intro > p { margin-top: .75rem; max-width: 19rem; }
+  .photostream-home-strip .home-text-link--browse { margin-top: 1rem; }
+  .photostream-home-strip .home-field-notes__grid { margin-top: 1.75rem; }
+  .photostream-home-strip .home-field-notes__phone { top: 125px; bottom: auto; left: auto; right: -55px; width: 190px; height: auto; transform: none; opacity: .32; }
+}
+.home-text-link--browse { transition: color .2s ease, border-color .2s ease; }
+.home-text-link--browse:hover, .home-text-link--browse:focus-visible { color: #766027; border-color: currentColor; }
+.home-text-link--browse:hover span, .home-text-link--browse:focus-visible span { animation: arrow-nudge .65s ease-in-out 2; }
+@keyframes arrow-nudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(5px); } }
+@media (prefers-reduced-motion: reduce) { .home-text-link--browse:hover span, .home-text-link--browse:focus-visible span { animation: none; } }
 .photostream-home-strip { --color-text: #1a1918; --color-muted: #6b6560; color: #1a1918; }
 </style>

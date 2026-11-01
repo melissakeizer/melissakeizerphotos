@@ -157,10 +157,7 @@ function photoLayoutClass(count: number) {
 }
 ---
 
-<Layout title={data.title} description={description || undefined} image={cover ? photoUrl(cover) : undefined} theme={data.theme ?? 'light'} hideNav={true}>
-  <a class="story-home-btn" href={base} aria-label="Home">
-    <img src={`${base}melissa-keizer-sticker.png`} alt="" />
-  </a>
+<Layout title={data.title} description={description || undefined} image={cover ? photoUrl(cover) : undefined} theme={data.theme ?? 'light'}>
   {StoryEditor && <StoryEditor slug={story.id} sections={sourceSections} effectiveLayouts={sections.map((section) => section.layout || '')} />}
   {isStory && cover && coverStyle === 'full' && (
     <div class="story-hero-wrapper">

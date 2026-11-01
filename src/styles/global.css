@@ -409,6 +409,11 @@ img {
 .site-nav__links a.is-active,
 .site-nav__links a[aria-current="page"] { border-color: var(--color-yellow); }
 
+/* Keep the restored story navigation legible over full-bleed photographs. */
+body:has(.story-hero-wrapper:not(.story-hero-wrapper--split)) .site-nav__links {
+  color: #f2eee3;
+}
+
 .site-nav__brand--sticker img {
   object-fit: cover;
 }

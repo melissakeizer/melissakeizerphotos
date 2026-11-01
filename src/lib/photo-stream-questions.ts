@@ -2,6 +2,7 @@ export interface PhotoStreamQuestionBlock {
   id: string;
   beforeImage: string;
   label: string;
+  layout?: 'two-column';
   items: { question: string; answer: string }[];
 }
 
@@ -28,12 +29,12 @@ export const photoStreamQuestions: PhotoStreamQuestionBlock[] = [
   },
   {
     id: 'pictures',
-    beforeImage: '05-orca-11-months-stacked-p1-2.jpg',
+    beforeImage: 'matisse-castle-park-final.jpg',
     label: 'Behind the pictures',
+    layout: 'two-column',
     items: [
-      { question: 'Which lens do you reach for most?', answer: 'My Sony 55mm f/1.8. It’s gorgeously sharp, gives me beautiful depth of field and I like the constraint of zooming with my feet.' },
-      { question: 'What do you most enjoy photographing now?', answer: 'Animals, always—but I’m also enjoying exploring automotive photography and finding a new visual language for it.' },
-      { question: 'What got you into photography?', answer: 'Wanting to hold onto the small details: live music, animals, journeys and the ordinary scenes that become meaningful later.' },
+      { question: 'What got you into photography?', answer: 'Matisse, my little scruffy dog. I loved taking photos of him and wanted to take better ones, inspired by the talented photographers I followed on Flickr. At 17, I picked up a DSLR and brought together two of my favourite things: spending time with Matisse and taking pictures.' },
+      { question: 'What camera did you start with?', answer: 'A second-hand Sony A100, an entry-level DSLR, with a couple of zoom lenses. It arrived just as I was heading to Rathlin Island with my family, so its first outing was photographing seals and beautiful Irish scenery. I’ve stayed with Sony since: first an A580, then an A7\u00a0II, and now an A7\u00a0IV.' },
     ],
   },
 ];

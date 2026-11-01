@@ -8,13 +8,16 @@ import Heading from '../../components/Heading.astro';
 const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
 const stories = await getCollection('stories');
 const archiveOrder = new Map([
+  ['vegas-baby', 6.5],
   ['dogs-of-dubrovnik', 8],
   ['pet-expo-belfast', 9],
   ['a-few-favourites', 10],
   ['dubrovnik-and-cavtat', 11],
-  ['animals-afternoon-tea', 12],
-  ['world-of-owls', 14],
+  ['animals-afternoon-tea', 14],
+  ['world-of-owls', 12],
   ['barks-and-bows', 15],
+  ['cat-colony-of-cala-bona', 28],
+  ['mutley-and-dexter', 30],
 ]);
 const sorted = stories.sort((a, b) =>
   (archiveOrder.get(a.id) ?? a.data.order) - (archiveOrder.get(b.id) ?? b.data.order)
