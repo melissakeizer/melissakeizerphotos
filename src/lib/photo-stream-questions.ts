@@ -3,13 +3,15 @@ export interface PhotoStreamQuestionBlock {
   beforeImage: string;
   label: string;
   layout?: 'two-column';
+  hidden?: boolean;
   items: { question: string; answer: string }[];
 }
 
 // The arranger reads these same cards as the public PhotoStream.
-export const photoStreamQuestions: PhotoStreamQuestionBlock[] = [
+export const allPhotoStreamQuestions: PhotoStreamQuestionBlock[] = [
   {
     id: 'phone',
+    hidden: true,
     beforeImage: 'pale-waves-belfast.jpg',
     label: 'The camera in your pocket',
     items: [
@@ -19,6 +21,7 @@ export const photoStreamQuestions: PhotoStreamQuestionBlock[] = [
   },
   {
     id: 'dogs',
+    hidden: true,
     beforeImage: 'barcelona-2023-6.jpg',
     label: 'Dogs and dog shows',
     items: [
@@ -29,7 +32,7 @@ export const photoStreamQuestions: PhotoStreamQuestionBlock[] = [
   },
   {
     id: 'pictures',
-    beforeImage: 'matisse-castle-park-final.jpg',
+    beforeImage: 'pale-waves-belfast.jpg',
     label: 'Behind the pictures',
     layout: 'two-column',
     items: [
@@ -38,3 +41,5 @@ export const photoStreamQuestions: PhotoStreamQuestionBlock[] = [
     ],
   },
 ];
+
+export const photoStreamQuestions = allPhotoStreamQuestions.filter(block => !block.hidden);

@@ -7,6 +7,7 @@ export interface FieldNote {
   lens?: string;
   settings?: string;
   caption?: string;
+  memorialDates?: string;
   metadataNote?: string;
 }
 
@@ -166,7 +167,9 @@ export const fieldNotes: FieldNote[] = [
   },
   {
     image: 'matisse-refinds-1-4.jpg',
-    title: 'Matisse',
+    title: 'Remembering Matisse',
+    memorialDates: '13.07.07 – 13.04.23',
+    caption: 'An emotional goodbye to my heart dog. Such a good boy.',
     date: '25 October 2015',
     camera: 'Sony A7 II',
     lens: '55mm',
@@ -174,7 +177,8 @@ export const fieldNotes: FieldNote[] = [
   },
   {
     image: 'stag-gosford-edit-3.jpg',
-    title: 'Stag at Gosford',
+    title: 'A soft spot for deer',
+    caption: 'I’ve always had a soft spot for deer. Lovely to photograph this gorgeous red stag on a summer visit.',
     place: 'Gosford Forest Park',
     date: 'Date to confirm',
     metadataNote: 'Camera details to confirm',
