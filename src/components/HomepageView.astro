@@ -4,7 +4,7 @@ import Layout from '../layouts/Layout.astro';
 import ProjectCard from './ProjectCard.astro';
 import DisplayHeading from './DisplayHeading.astro';
 import CameraDrawing from './CameraDrawing.astro';
-import { fieldNotes } from '../lib/field-notes';
+import HomePhotoStream from './HomePhotoStream.astro';
 import { subtitleForStory } from '../lib/story-metadata';
 
 const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
@@ -17,11 +17,9 @@ const supportingProjectIds = [
   'sky-odin',
   'vegas-baby',
   'road-to-sligo',
-  'an-afternoon-with-angus',
   'dubrovnik-and-cavtat',
   'eckles',
   'born-this-way-baby',
-  'animals-afternoon-tea',
 ];
 
 const supportingProjects = supportingProjectIds
@@ -113,27 +111,7 @@ function photoUrl(path: string) {
       </section>
     </div>
 
-    <section class="home-field-notes home-field-notes--preview home-field-notes--light-preview" id="field-notes" aria-labelledby="field-notes-title">
-      <div class="home-field-notes__phone" aria-hidden="true">
-        <img src={`${base}iphone-17-pro-sketch-v1.png`} alt="" />
-      </div>
-      <div class="home-field-notes__intro">
-        <h2 id="field-notes-title">PhotoStream</h2>
-        <p>Small moments and everyday frames without a bigger story.</p>
-        <a class="home-text-link" href={`${base}field-notes/`}>Browse PhotoStream <span aria-hidden="true">→</span></a>
-      </div>
-      <div class="home-field-notes__grid">
-        {fieldNotes.slice(0, 4).map((fieldNote) => (
-          <figure class="field-note-card">
-            <img src={photoUrl(`/photos/00-field-notes/${fieldNote.image}`)} alt={fieldNote.title} loading="lazy" decoding="async" />
-            <figcaption>
-              <strong>{fieldNote.title}</strong>
-              <span>{fieldNote.camera ? `${fieldNote.camera}${fieldNote.lens ? ` · ${fieldNote.lens}` : ''}` : fieldNote.metadataNote || fieldNote.date}</span>
-            </figcaption>
-          </figure>
-        ))}
-      </div>
-    </section>
+  <HomePhotoStream />
   </main>
 </Layout>
 

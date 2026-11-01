@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import '../styles/typography.css';
 import SiteFooter from '../components/SiteFooter.astro';
 
 interface Props {
@@ -16,13 +17,17 @@ const { title = 'Photography by Melissa Keizer', description = 'Freelance pet & 
 const fullTitle = title === 'Photography by Melissa Keizer' ? title : `${title} — Melissa Keizer Photography`;
 const pathname = Astro.url.pathname;
 const storiesActive = pathname.includes('/stories') || pathname.includes('/posts');
-const photoStreamActive = pathname.includes('/field-notes');
+const photoStreamActive = pathname.includes('/photostream') || pathname.includes('/field-notes');
+const homeActive = pathname.replace(/\/$/, '') === base.replace(/\/$/, '');
+const palette = homeActive || pathname.includes('/photostream/') || pathname.includes('/previews/homepage/')
+  ? 'warm-dark' : pathname.includes('/posts') ? 'warm-light' : undefined;
 const isDev = import.meta.env.DEV;
 ---
 
 <!doctype html>
-<html lang="en" data-theme={theme}>
+<html lang="en" data-theme={theme} data-palette={palette}>
   <head>
+    <script is:inline>document.documentElement.classList.add('camera-draw-enabled');</script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
@@ -39,8 +44,9 @@ const isDev = import.meta.env.DEV;
         <img src={`${base}${brandImage}`} alt="" />
       </a>
       <div class="site-nav__links">
+        <a class:list={{ 'is-active': homeActive }} href={base} aria-current={homeActive ? 'page' : undefined}>Home</a>
         <a class:list={{ 'is-active': storiesActive }} href={`${base}posts/`} aria-current={storiesActive ? 'page' : undefined}>Stories</a>
-        <a class:list={{ 'is-active': photoStreamActive }} href={`${base}field-notes/`} aria-current={photoStreamActive ? 'page' : undefined}>PhotoStream</a>
+        <a class:list={{ 'is-active': photoStreamActive }} href={`${base}photostream/`} aria-current={photoStreamActive ? 'page' : undefined}>PhotoStream</a>
         <a href="#contact">Contact</a>
       </div>
     </nav>

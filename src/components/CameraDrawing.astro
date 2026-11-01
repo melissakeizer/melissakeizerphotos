@@ -1,44 +1,61 @@
 ---
-import source from '../../public/camera-pencil-traced.svg?raw';
+import cameraSource from '../../public/camera-pencil-traced.svg?raw';
+import phoneSource from '../../public/phone-pencil-traced.svg?raw';
+import fullPhoneSource from '../../public/phone-full-pencil.svg?raw';
+import lensSource from '../../public/lens-pencil-traced.svg?raw';
+import { phoneStrokes, phoneAccents, fullPhoneStrokes } from '../lib/phone-drawing';
+import { lensStrokes, lensAccents } from '../lib/lens-drawing';
 import { cameraStrokes, cameraAccents, cameraDrawingDuration, cameraDrawingTimeScale } from '../lib/camera-drawing';
+import { cameraRightEdge } from '../lib/camera-right-edge';
 
-interface Props { id?: string; }
-const { id = 'home-camera-pencil' } = Astro.props;
-const graphite = source.match(/<g id="graphite"[\s\S]*?<\/g>/)?.[0] ?? '';
-const yellow = source.match(/<g id="yellow-accents"[\s\S]*?<\/g>/)?.[0] ?? '';
+interface Props { id?: string; variant?: 'camera' | 'phone' | 'phone-full' | 'lens'; }
+const { variant = 'camera', id = `home-${variant}-pencil` } = Astro.props;
+const drawings = {
+  camera: { source: cameraSource, strokes: cameraStrokes, accents: cameraAccents, width: 1664, height: 1024, viewBox: '0 0 1536 1024' },
+  phone: { source: phoneSource, strokes: phoneStrokes, accents: phoneAccents, width: 1230, height: 1278, viewBox: '0 0 1230 1278' },
+  'phone-full': { source: fullPhoneSource, strokes: fullPhoneStrokes, accents: phoneAccents, width: 1230, height: 2160, viewBox: '140 235 950 1900' },
+  lens: { source: lensSource, strokes: lensStrokes, accents: lensAccents, width: 1420, height: 1108, viewBox: '0 0 1420 1108' },
+};
+const { source, strokes, accents, width, height, viewBox } = drawings[variant];
+const graphite = source.match(/<g id="graphite"[\s\S]*?<\/g>/)?.[0]?.replace('id="graphite"', `id="${id}-graphite-art"`) ?? '';
+const yellow = source.match(/<g id="yellow-accents"[\s\S]*?<\/g>/)?.[0]?.replace('id="yellow-accents"', `id="${id}-yellow-art"`) ?? '';
 if (!graphite || !yellow) throw new Error('Camera pencil SVG is missing its artwork layers.');
 ---
 <svg
   class="pencil-camera"
-  viewBox="0 0 1536 1024"
+  viewBox={viewBox}
   aria-hidden="true"
   focusable="false"
   data-pencil-camera
+  data-drawing={variant}
   data-duration={cameraDrawingDuration}
   style={`--drawing-speed:${cameraDrawingTimeScale}`}
 >
   <defs>
-    <mask id={`${id}-graphite`} maskUnits="userSpaceOnUse" x="0" y="0" width="1536" height="1024" style="mask-type: luminance">
-      {cameraStrokes.map(stroke => (
+    <mask id={`${id}-graphite`} maskUnits="userSpaceOnUse" x="0" y="0" width={width} height={height} style="mask-type: luminance">
+      {strokes.map(stroke => (
         <path class="pencil-camera__pen" d={stroke.d} pathLength="1" fill="none" stroke="white" stroke-width={stroke.width} stroke-linecap="round" stroke-linejoin="round" data-phase={stroke.phase} style={`--pen-start:${stroke.start}s;--pen-time:${stroke.duration}s`} />
       ))}
       {/* Only the faint residual grain fills at the end; this is the same SVG,
           never a crossfade to a different drawing or a replacement PNG. */}
-      <rect class="pencil-camera__finish" width="1536" height="1024" fill="white" />
+      <rect class="pencil-camera__finish" width={width} height={height} fill="white" />
     </mask>
-    <mask id={`${id}-yellow`} maskUnits="userSpaceOnUse" x="0" y="0" width="1536" height="1024" style="mask-type: luminance">
-      {cameraAccents.map(stroke => (
+    <mask id={`${id}-yellow`} maskUnits="userSpaceOnUse" x="0" y="0" width={width} height={height} style="mask-type: luminance">
+      {accents.map(stroke => (
         <path class="pencil-camera__pen" d={stroke.d} pathLength="1" fill="none" stroke="white" stroke-width={stroke.width} stroke-linecap="round" stroke-linejoin="round" data-phase={stroke.phase} style={`--pen-start:${stroke.start}s;--pen-time:${stroke.duration}s`} />
       ))}
-      <rect class="pencil-camera__finish" width="1536" height="1024" fill="white" />
+      <rect class="pencil-camera__finish" width={width} height={height} fill="white" />
     </mask>
   </defs>
-  <g class="pencil-camera__art" mask={`url(#${id}-graphite)`} set:html={graphite} />
+  <g class="pencil-camera__art" mask={`url(#${id}-graphite)`} set:html={graphite + (variant === 'camera' ? cameraRightEdge : '')} />
   <g class="pencil-camera__art" mask={`url(#${id}-yellow)`} set:html={yellow} />
 </svg>
 
 <style>
   .pencil-camera { display: block; width: 100%; height: auto; }
+  /* The raster trace ended mid-eyelet at x=1536. Let the completed pencil edge
+     extend beyond that canvas without rescaling or repositioning the camera. */
+  .pencil-camera[data-drawing="camera"] { overflow: visible; }
   .pencil-camera__pen { stroke-dasharray: 1; stroke-dashoffset: 0; }
   /* Without JS the fully drawn vector stays visible. JS enables the replay
      only after the component is in view. */

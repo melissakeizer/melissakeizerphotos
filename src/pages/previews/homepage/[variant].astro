@@ -1,0 +1,206 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import CameraDrawing from '../../../components/CameraDrawing.astro';
+import OpeningSpread from '../../../components/OpeningSpread.astro';
+
+export function getStaticPaths() {
+  return ['1', '2', '3', '4', '5'].map(variant => ({ params: { variant } }));
+}
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const variant = Number(Astro.params.variant);
+const names = ['The editorial lead', 'The mixed contact sheet', 'The opening spread', 'The light journal', 'The opening spread — refined', 'Previous homepage'];
+const notes = [
+  'One generous opening story, with smaller discoveries alongside it.',
+  'An asymmetric mix of portraits, landscape frames and breathing room.',
+  'A quieter introduction followed by two equally prominent stories.',
+  'Warm paper, soft pencil lines and a staggered collection of photographs.',
+];
+const posts = {
+  vegas: { title: 'Vegas, Baby', caption: 'Neon nights on Fremont Street', slug: 'vegas-baby', image: 'videos/vegas-neon-poster.jpg', video: 'videos/vegas-neon.mp4', position: 'center', kind: 'Story' },
+  wolf: { title: 'Walk on the Wild Side', caption: 'Wild Ireland, County Donegal', slug: 'wild-ireland', image: 'photos/wild-ireland/012-wolves-croppedforvideo.jpg', video: 'videos/wolf-looking-toward-camera.mp4', position: 'center 20%', kind: 'Story' },
+  harbour: { title: 'Dubrovnik & Cavtat', caption: 'A little time on the Adriatic', slug: 'dubrovnik-and-cavtat', image: 'videos/dubrovnik-harbour-poster.jpg', video: 'videos/dubrovnik-harbour.mp4', position: 'center', kind: 'Story' },
+  eagle: { title: 'World of Owls', caption: 'An afternoon with remarkable birds', slug: 'world-of-owls', image: 'photos/world-of-owls/011-ph_lqfa3al2vfqnk4ie.jpg', video: 'videos/eagle-world-of-owls.mp4', position: 'center', kind: 'Story' },
+  rome: { title: 'Roaming Rome', caption: 'Streets, statues and the Trevi Fountain', slug: 'roaming-rome', image: 'videos/trevi-fountain-poster.jpg', video: 'videos/trevi-fountain.mp4', position: 'center 65%', kind: 'Story' },
+  dogs: { title: 'Sky & Odin', caption: 'A pair of Samoyeds in the woods', slug: 'sky-odin', image: 'photos/sky-odin/000-ph_log7wlnpvdpmhx0i.jpg', video: '', position: 'center', kind: 'Gallery' },
+  cars: { title: 'Dubshed', caption: 'Northern Ireland’s largest car show', slug: 'dubshed-northern-irelands-largest-car-show', image: 'photos/dubshed-northern-irelands-largest-car-show/022-ph_kktw3zobcna0077q.jpg', video: '', position: 'center', kind: 'Gallery' },
+};
+const selections = [
+  [posts.wolf, posts.vegas, posts.dogs, posts.cars],
+  [posts.vegas, posts.cars, posts.rome, posts.dogs],
+  [posts.wolf, posts.rome, posts.dogs, posts.cars],
+  [posts.harbour, posts.dogs, posts.vegas, posts.cars],
+];
+---
+
+<Layout title={`Homepage preview ${variant} — ${names[variant - 1]}`} theme={variant === 4 ? 'light' : 'dark'}>
+  <details class="preview-switcher">
+    <summary>Layout {variant} ▾</summary>
+    <nav aria-label="Homepage previews">
+      {names.map((name, index) => <a href={`${base}previews/homepage/${index + 1}/`} aria-current={variant === index + 1 ? 'page' : undefined}>{index + 1}. {name}</a>)}
+      <a href={base}>Current homepage ↗</a>
+    </nav>
+  </details>
+  {variant === 5 ? <OpeningSpread /> : <>
+  <main class={`homepage-study study-${variant}`}>
+    <aside class="study-tools" aria-label="Homepage layout previews">
+      <span>Homepage studies</span>
+      <nav aria-label="Choose layout">
+        {names.map((name, index) => <a href={`${base}previews/homepage/${index + 1}/`} aria-current={variant === index + 1 ? 'page' : undefined}><span>0{index + 1}</span> {name}</a>)}
+      </nav>
+      <a class="study-original" href={base}>Current home ↗</a>
+    </aside>
+
+    <div class="study-stage">
+      <div class="study-camera"><CameraDrawing id={`study-${variant}-camera`} /></div>
+      <header class="study-intro">
+        <p class="study-eyebrow">Photography by Melissa Keizer</p>
+        <h1>I’m Melissa,<br />this is my<br class="study-break" /> photo journal.</h1>
+        <p class="study-description">Little adventures, wet noses and beautiful places.<br />From Northern Ireland and beyond.</p>
+      </header>
+      <section class="study-stories" aria-label="Featured stories">
+        <div class="study-section-label"><span>Selected stories & galleries</span><span>01 — 04</span></div>
+        <div class="study-grid">
+          {selections[variant - 1].map((post, index) => (
+            <article class={`study-card card-${index + 1}`}>
+              <a href={`${base}stories/${post.slug}/`}>
+                <div class="study-media">
+                  <img src={`${base}${post.image}`} alt={post.title} loading={index > 1 ? 'lazy' : 'eager'} />
+                  {post.video && <video data-study-video data-src={`${base}${post.video}`} poster={`${base}${post.image}`} style={`object-position:${post.position}`} muted loop playsinline preload="none" aria-hidden="true" />}
+                </div>
+                <div class="study-caption">
+                  <p class="study-kind">{post.kind}<span>0{index + 1}</span></p>
+                  <h2>{post.title}</h2>
+                  <p class="study-subtitle">{post.caption}</p>
+                </div>
+              </a>
+            </article>
+          ))}
+        </div>
+        <a class="study-all" href={`${base}posts/`}>Explore all stories <span>↗</span></a>
+      </section>
+    </div>
+    <div class="study-note"><span>Study 0{variant} / {names[variant - 1]}</span><p>{notes[variant - 1]}</p></div>
+  </main>
+  </>}
+</Layout>
+
+<script>
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        const video = entry.target as HTMLVideoElement;
+        if (entry.isIntersecting) {
+          if (!video.src) video.src = video.dataset.src || '';
+          void video.play().catch(() => {});
+        } else video.pause();
+      });
+    }, { rootMargin: '100px' });
+    document.querySelectorAll('[data-study-video]').forEach(video => observer.observe(video));
+  }
+</script>
+
+<style>
+  .preview-switcher { position: fixed; top: 76px; left: 50%; transform: translateX(-50%); z-index: 1000; font: 500 12px/1.5 var(--font-sans); color: #f4f0e8; }
+  .preview-switcher summary { cursor: pointer; list-style: none; border: 1px solid #ffffff40; border-radius: 30px; background: #22221def; padding: 8px 16px; width: max-content; margin: auto; }
+  .preview-switcher nav { background: #22221d; border: 1px solid #ffffff40; border-radius: 12px; padding: 10px; margin-top: 8px; width: 270px; box-shadow: 0 8px 30px #0005; }
+  .preview-switcher nav a { display: block; padding: 8px; color: inherit; }
+  .preview-switcher nav a[aria-current] { color: #f1d221; }
+  .homepage-study .study-tools { display: none; }
+  .homepage-study { --paper: #11110f; --ink: #f4f0e8; --muted: #a09d95; --rule: #ffffff26; background: var(--paper); color: var(--ink); padding-top: 170px; overflow: clip; }
+  .study-tools { position: relative; z-index: 2; display: flex; align-items: center; gap: 22px; max-width: 1680px; margin: 0 auto; padding: 18px 4%; border-block: 1px solid var(--rule); font: 400 11px/1.4 var(--font-sans); }
+  .study-tools > span { text-transform: uppercase; letter-spacing: .13em; color: var(--muted); }
+  .study-tools nav { display: flex; flex-wrap: wrap; gap: 8px 22px; }
+  .study-tools a { color: var(--muted); padding: 7px 0; }
+  .study-tools a[aria-current] { color: var(--ink); box-shadow: 0 1px #f1d221; }
+  .study-tools nav span { color: #d5b925; margin-right: 5px; }
+  .study-original { margin-left: auto; white-space: nowrap; }
+  .study-stage { position: relative; max-width: 1680px; margin: auto; padding: 0 7%; }
+  .study-camera { position: absolute; width: 68%; right: -8%; top: 10px; pointer-events: none; opacity: .68; filter: brightness(1.9); }
+  .study-intro { position: relative; padding: 90px 0 80px; min-height: 450px; }
+  .study-eyebrow, .study-section-label, .study-kind, .study-all, .study-note > span { font: 500 11px/1.4 var(--font-sans); letter-spacing: .13em; text-transform: uppercase; }
+  .study-eyebrow { color: #dac42b; margin-bottom: 24px; }
+  h1 { font: 400 clamp(42px, 4.6vw, 76px)/1.03 var(--font-serif); letter-spacing: -.035em; max-width: 720px; }
+  .study-break { display: none; }
+  .study-description { margin-top: 24px; font: 400 16px/1.6 var(--font-serif); color: var(--muted); }
+  .study-stories { position: relative; }
+  .study-section-label { display: flex; justify-content: space-between; border-top: 1px solid var(--rule); padding: 16px 0 28px; color: var(--muted); }
+  .study-grid { display: grid; grid-template-columns: repeat(12, minmax(0,1fr)); gap: 42px 24px; align-items: start; }
+  .study-card { min-width: 0; }
+  .study-card a { display: block; color: inherit; }
+  .study-media { position: relative; overflow: hidden; background: #282822; aspect-ratio: 3/4; }
+  .study-media img, .study-media video { display: block; position: absolute; width: 100%; height: 100%; object-fit: cover; inset: 0; }
+  .study-caption { padding-top: 18px; }
+  .study-kind { display: flex; justify-content: space-between; color: var(--muted); font-size: 10px; margin-bottom: 9px; }
+  h2 { font: 400 clamp(24px, 2.7vw, 44px)/1.08 var(--font-serif); letter-spacing: -.025em; }
+  .study-subtitle { color: var(--muted); font: 400 14px/1.5 var(--font-serif); margin-top: 10px; }
+  .study-all { display: flex; justify-content: space-between; padding: 24px 0; margin-top: 60px; border-block: 1px solid var(--rule); }
+  .study-all:hover { color: #d5b925; }
+  .study-note { max-width: 1680px; margin: auto; padding: 64px 7% 80px; color: var(--muted); }
+  .study-note p { margin-top: 10px; font: 400 15px/1.5 var(--font-sans); }
+  /* Large lead, two intimate portraits, and a panoramic closing frame. */
+  .study-1 .card-1 { grid-column: span 8; }
+  .study-1 .card-1 .study-media { aspect-ratio: 5/4; }
+  .study-1 .card-2 { grid-column: span 4; margin-top: 90px; }
+  .study-1 .card-3 { grid-column: span 4; }
+  .study-1 .card-4 { grid-column: span 8; }
+  .study-1 .card-4 .study-media { aspect-ratio: 2/1; }
+  /* A contact sheet with deliberately offset edges and variable scale. */
+  .study-2 .study-intro { padding-bottom: 100px; }
+  .study-2 .study-camera { right: -13%; width: 73%; }
+  .study-2 .card-1 { grid-column: 1 / span 4; }
+  .study-2 .card-2 { grid-column: 6 / span 7; margin-top: 100px; }
+  .study-2 .card-2 .study-media { aspect-ratio: 16/10; }
+  .study-2 .card-3 { grid-column: 8 / span 5; grid-row: 2; margin-top: 30px; }
+  .study-2 .card-4 { grid-column: 2 / span 4; grid-row: 2; margin-top: 100px; }
+  /* The introduction and two tall features share the opening viewport. */
+  .study-3 .study-stage { display: grid; grid-template-columns: 4fr 8fr; gap: 40px; padding-top: 70px; }
+  .study-3 .study-intro { padding: 70px 0 0; min-height: 620px; }
+  .study-3 h1 { font-size: clamp(36px, 3.7vw, 60px); }
+  .study-3 .study-break { display: block; }
+  .study-3 .study-camera { width: 57%; top: 350px; left: -18%; right: auto; transform: rotate(-9deg); }
+  .study-3 .study-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .study-3 .card-2 { margin-top: 80px; }
+  .study-3 .card-3 .study-media, .study-3 .card-4 .study-media { aspect-ratio: 4/3; }
+  .study-3 h2 { font-size: clamp(24px, 2.2vw, 34px); }
+  /* A paper alternative with a low, unobtrusive pencil drawing. */
+  .study-4 { --paper: #f1eee6; --ink: #22221d; --muted: #747167; --rule: #22221d30; }
+  .study-4 .study-eyebrow, .study-4 .study-tools nav span { color: #776a20; }
+  .study-4 .study-camera { filter: none; opacity: .55; width: 64%; right: -5%; top: 5px; }
+  .study-4 .study-intro { padding-top: 85px; padding-bottom: 100px; }
+  .study-4 .card-1 { grid-column: span 5; }
+  .study-4 .card-2 { grid-column: 7 / span 6; margin-top: 100px; }
+  .study-4 .card-2 .study-media { aspect-ratio: 4/3; }
+  .study-4 .card-3 { grid-column: 2 / span 4; margin-top: 50px; }
+  .study-4 .card-4 { grid-column: 7 / span 6; margin-top: 130px; }
+  .study-4 .card-4 .study-media { aspect-ratio: 16/10; }
+  @media (max-width: 1000px) {
+    .study-tools { flex-wrap: wrap; gap: 8px 20px; }
+    .study-tools nav { order: 3; width: 100%; }
+    .study-3 .study-stage { display: block; padding-top: 0; }
+    .study-3 .study-intro { min-height: 0; padding: 70px 0; }
+    .study-3 .study-camera { width: 70%; top: 15px; right: -12%; left: auto; transform: none; }
+    .study-3 .study-break { display: none; }
+  }
+  @media (max-width: 600px) {
+    .homepage-study { padding-top: 130px; }
+    .study-tools { padding-inline: 20px; }
+    .study-tools nav { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 16px; }
+    .study-stage { padding-inline: 20px; }
+    .study-intro, .study-2 .study-intro, .study-4 .study-intro { min-height: 0; padding: 55px 0 85px; }
+    h1, .study-3 h1 { font-size: 40px; }
+    .study-description { font-size: 14px; max-width: 260px; }
+    .study-camera, .study-2 .study-camera, .study-3 .study-camera, .study-4 .study-camera { width: 105%; top: 70px; right: -35%; opacity: .48; }
+    .study-eyebrow { font-size: 9px; }
+    .study-grid, .study-3 .study-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 30px 14px; }
+    .homepage-study .study-card { grid-column: auto; grid-row: auto; margin-top: 0; }
+    .study-1 .card-1, .study-1 .card-4, .study-2 .card-2, .study-4 .card-1, .study-4 .card-4 { grid-column: 1 / -1; }
+    .study-2 .card-1 { grid-column: 1 / -1; max-width: 78%; }
+    .study-2 .card-3, .study-4 .card-3 { margin-top: 40px; }
+    h2, .study-3 h2 { font-size: 24px; }
+    .study-subtitle { font-size: 12px; }
+    .study-kind { font-size: 9px; }
+    .study-section-label { font-size: 9px; }
+    .study-note { padding: 40px 20px 55px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .study-media video { display: none; } }
+</style>

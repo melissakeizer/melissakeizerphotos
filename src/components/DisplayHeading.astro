@@ -1,4 +1,5 @@
 ---
+import Heading from './Heading.astro';
 interface Props {
   as?: 'h1' | 'h2';
   id?: string;
@@ -8,4 +9,4 @@ interface Props {
 const { as: Tag = 'h1', id, class: className } = Astro.props;
 ---
 
-<Tag id={id} class:list={['display-heading', className]}><slot /></Tag>
+<Heading as={Tag} id={id} class:list={['display-heading', className]}><slot /></Heading>

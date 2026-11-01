@@ -1,111 +1,75 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import DisplayHeading from '../components/DisplayHeading.astro';
-
-const styles = [
-  { token: 'Display / H1', sample: 'I’m Melissa, this is my photo journal', className: 'type-system__display' },
-  { token: 'H2 / Section', sample: 'PhotoStream', className: 'type-system__h2' },
-  { token: 'H3 / Card', sample: 'A walk on the wild side', className: 'type-system__h3' },
-  { token: 'H4 / Note', sample: 'Good genes', className: 'type-system__h4' },
+import Heading from '../components/Heading.astro';
+const headings = [
+ { level: 'h1' as const, name: 'H1', use: 'Homepage, All Posts and PhotoStream page titles', sample: 'My photo journal', size: '54px', weight: '400' },
+ { level: 'h2' as const, name: 'H2', use: 'Section headings: PhotoStream, More like this, story chapters', sample: 'More like this', size: '42px', weight: '400' },
+ { level: 'h3' as const, name: 'H3', use: 'Post-card titles and PhotoStream photo titles', sample: 'Walk on the Wild Side', size: '30px', weight: '400' },
+ { level: 'h4' as const, name: 'H4', use: 'Small photo titles in the homepage PhotoStream strip', sample: 'She’s My Religion', size: '20px', weight: '400' },
+];
+const paragraphs = [
+ { name: 'Paragraph', use: 'Cambon · homepage introduction and PhotoStream strip introduction', className: 'type-paragraph', sample: 'A home for little adventures, wet noses, beautiful places and moments worth remembering — from Northern Ireland and beyond.' },
+ { name: 'Small paragraph', use: 'Fakt Pro · PhotoStream descriptions and Q&A answers', className: 'type-paragraph--small', sample: 'Heather Baron-Gracie of Pale Waves, performing at The Limelight, Belfast.' },
+ { name: 'Story paragraph', use: 'Cambon · larger text for reading a story', className: 'type-paragraph--story', sample: 'A little later, the path opened onto the shore. The dogs ran ahead, the light slipped through the trees, and for a moment the whole afternoon felt worth remembering.' },
+ { name: 'Caption', use: 'Cambon · subtitle beneath a post-card title', className: 'type-caption', sample: 'Wild Ireland, County Donegal' },
+ { name: 'Detail', use: 'Fakt Pro · location, EXIF and camera details', className: 'type-detail', sample: 'The Limelight, Belfast · Sony A7 IV · 55mm' },
 ];
 ---
-
-<Layout title="Type system" description="The live Cambon and Fakt Pro type styles used across Melissa Keizer Photography.">
-  <main class="type-system">
-    <header class="type-system__intro">
-      <p class="home-kicker">Design system · Type</p>
-      <DisplayHeading>Type system</DisplayHeading>
-      <p>This page uses the live styles from the site, so their names and proportions can be referenced directly when refining a page.</p>
-    </header>
-
-    <section class="type-system__section" aria-labelledby="headings-title">
-      <div class="type-system__section-heading">
-        <h2 id="headings-title">Headings</h2>
-        <p>Cambon · editorial voice</p>
-      </div>
-      <div class="type-system__samples">
-        {styles.map((style) => (
-          <article class="type-system__sample">
-            <p class="type-system__label">{style.token}</p>
-            <p class={style.className}>{style.sample}</p>
-          </article>
-        ))}
-      </div>
-    </section>
-
-    <section class="type-system__section" aria-labelledby="body-title">
-      <div class="type-system__section-heading">
-        <h2 id="body-title">Reading text</h2>
-        <p>Cambon · stories</p>
-      </div>
-      <div>
-        <article class="type-system__sample">
-          <p class="type-system__label">Story body</p>
-          <p class="type-system__story-body">A little later, the path opened onto the shore. The dogs ran ahead, the light slipped through the trees, and for a moment the whole afternoon felt worth remembering.</p>
-        </article>
-        <article class="type-system__sample">
-          <p class="type-system__label">Editorial introduction</p>
-          <p class="type-system__intro-copy">A home for little adventures, wet noses, beautiful places and moments worth remembering—from Northern Ireland and beyond.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="type-system__section" aria-labelledby="utility-title">
-      <div class="type-system__section-heading">
-        <h2 id="utility-title">Utility text</h2>
-        <p>Fakt Pro · details and navigation</p>
-      </div>
-      <div class="type-system__utility-grid">
-        <article class="type-system__sample">
-          <p class="type-system__label">Body / UI copy</p>
-          <p class="type-system__ui-body">One-off photographs, passing visitors and things seen along the way.</p>
-        </article>
-        <article class="type-system__sample">
-          <p class="type-system__label">Metadata</p>
-          <p class="type-system__metadata">Sony A7 IV · 55mm · County Down</p>
-        </article>
-        <article class="type-system__sample">
-          <p class="type-system__label">Navigation</p>
-          <p class="type-system__navigation">Stories&nbsp;&nbsp;&nbsp; PhotoStream&nbsp;&nbsp;&nbsp; Contact</p>
-        </article>
-        <article class="type-system__sample">
-          <p class="type-system__label">Byline</p>
-          <p class="type-system__byline"><span>By</span> MELISSA KEIZER</p>
-        </article>
-      </div>
-    </section>
-  </main>
+<Layout title="Typography reference">
+ <main class="type-reference">
+  <header class="type-reference__intro">
+   <Heading>Typography reference</Heading>
+   <p class="type-paragraph--small">One shared scale for the current site. Desktop reference sizes are shown below; the live measurements change with your browser width. Page and card headings use regular weight; story and gallery detail titles share a heavier hero variant.</p>
+  </header>
+  <section aria-label="Headings">
+   {headings.map(style => <article class="type-sample">
+    <header><h2>{style.name} · {style.size} · weight {style.weight}</h2><p>{style.use}</p><p data-type-measurement /></header>
+    <div class="type-sample__preview"><Heading as={style.level}>{style.sample}</Heading></div>
+   </article>)}
+  </section>
+  <section aria-label="Paragraphs and details">
+   {paragraphs.map(style => <article class="type-sample">
+    <header><h2>{style.name}</h2><p>{style.use}</p><p data-type-measurement /></header>
+    <div class="type-sample__preview"><p class={style.className}>{style.sample}</p></div>
+   </article>)}
+  </section>
+  <section aria-label="Story-specific variants">
+   <article class="type-sample">
+    <header><h2>Story / gallery title · 72px · weight 600</h2><p>Same H1 style for image heroes, split heroes and gallery detail pages.</p><p data-type-measurement /></header>
+    <div class="type-sample__preview"><Heading size="story-hero">Young Finn the GSP</Heading></div>
+   </article>
+   <article class="type-sample">
+    <header><h2>Story subtitle · H3 style</h2><p>Uses the same size, weight and upright style as H3; remains a paragraph beneath the title.</p><p data-type-measurement /></header>
+    <div class="type-sample__preview"><p class="type-heading type-heading--h3 type-story-subtitle">Wild Ireland, County Donegal</p></div>
+   </article>
+  </section>
+ </main>
 </Layout>
-
+<script>
+ function measureType() {
+  document.querySelectorAll('.type-sample').forEach(sample => {
+   const element = sample.querySelector('.type-sample__preview')?.firstElementChild;
+   const label = sample.querySelector('[data-type-measurement]');
+   if (!element || !label) return;
+   const style = getComputedStyle(element);
+   const lineHeight = style.lineHeight === 'normal' ? 'normal' : parseFloat(style.lineHeight).toFixed(1) + 'px';
+   label.textContent = style.fontFamily.split(',')[0].replaceAll('"','') + ' · ' + parseFloat(style.fontSize).toFixed(1) + 'px · line height ' + lineHeight + ' · weight ' + style.fontWeight;
+  });
+ }
+ document.fonts.ready.then(measureType);
+ window.addEventListener('resize', measureType);
+</script>
 <style>
-  .type-system { max-width: var(--grid-max); margin: 0 auto; padding: clamp(8rem, 12vw, 12rem) var(--site-margin) 8rem; }
-  .type-system__intro { max-width: 58rem; margin-bottom: clamp(5rem, 8vw, 8rem); }
-  .type-system__intro :global(.display-heading) { margin-top: 1.25rem; }
-  .type-system__intro > p:last-child { max-width: 42rem; margin-top: 1.5rem; color: var(--color-muted); font-family: var(--font-sans); line-height: 1.6; }
-  .type-system__section { display: grid; grid-template-columns: minmax(11rem, 2fr) 8fr; gap: var(--grid-gap); padding: clamp(3rem, 5vw, 5rem) 0; border-top: 1px solid var(--color-border); }
-  .type-system__section-heading h2 { font: 600 0.75rem/1.2 var(--font-sans); letter-spacing: 0.12em; text-transform: uppercase; }
-  .type-system__section-heading p { margin-top: 0.45rem; color: var(--color-muted); font: 0.75rem/1.4 var(--font-sans); }
-  .type-system__samples, .type-system__utility-grid { display: grid; gap: 0; }
-  .type-system__utility-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--grid-gap); }
-  .type-system__sample { min-width: 0; padding: 0 0 2.5rem; }
-  .type-system__sample + .type-system__sample { padding-top: 2.5rem; border-top: 1px solid var(--color-border); }
-  .type-system__utility-grid .type-system__sample:nth-child(2) { padding-top: 0; border-top: 0; }
-  .type-system__label { margin-bottom: 1.1rem; color: var(--color-muted); font: 600 0.62rem/1.2 var(--font-sans); letter-spacing: 0.11em; text-transform: uppercase; }
-  .type-system__display { max-width: 14ch; font: 500 clamp(2.75rem, 5vw, 5rem)/0.96 var(--font-serif); letter-spacing: -0.045em; }
-  .type-system__h2 { font: 600 clamp(2.25rem, 4vw, 4rem)/1 var(--font-serif); letter-spacing: -0.04em; }
-  .type-system__h3 { font: 500 clamp(1.65rem, 2.55vw, 2.9rem)/1 var(--font-serif); letter-spacing: -0.035em; }
-  .type-system__h4 { font: 400 1.05rem/1.15 var(--font-serif); }
-  .type-system__story-body { max-width: 38rem; font: clamp(1.08rem, 1.18vw, 1.28rem)/1.7 var(--font-serif); }
-  .type-system__intro-copy { max-width: 36rem; color: var(--color-muted); font: 1.05rem/1.55 var(--font-serif); }
-  .type-system__ui-body { max-width: 30rem; font: 1rem/1.6 var(--font-sans); }
-  .type-system__metadata, .type-system__navigation { font: 600 0.68rem/1.4 var(--font-sans); letter-spacing: 0.11em; text-transform: uppercase; }
-  .type-system__byline { font: 600 0.68rem/1.4 var(--font-sans); letter-spacing: 0.11em; }
-  .type-system__byline span { margin-right: 0.35rem; font: 400 0.88rem/1 var(--font-serif); letter-spacing: 0; text-transform: none; }
-  @media (max-width: 700px) {
-    .type-system { padding-right: 1rem; padding-left: 1rem; }
-    .type-system__section { display: block; }
-    .type-system__section-heading { margin-bottom: 2.5rem; }
-    .type-system__utility-grid { grid-template-columns: 1fr; }
-    .type-system__utility-grid .type-system__sample:nth-child(2) { padding-top: 2.5rem; border-top: 1px solid var(--color-border); }
-  }
+ .type-reference { padding: 170px var(--site-margin) 80px; }
+ .type-reference__intro { max-width: 760px; margin-bottom: 64px; }
+ .type-reference__intro p { margin-top: 24px; color: var(--color-muted); }
+ .type-sample { display: grid; grid-template-columns: minmax(200px,1fr) minmax(0,3fr); gap: 32px; padding: 36px 0; border-top: 1px solid var(--color-border); }
+ .type-sample > header h2 { font: 500 14px/1.5 var(--font-sans); }
+ .type-sample > header p { margin-top: 8px; font: 12px/1.5 var(--font-sans); color: var(--color-muted); }
+ .type-sample__preview { min-width: 0; }
+ .type-sample__preview p { max-width: 44rem; }
+ @media(max-width:700px) {
+  .type-reference { padding-top: 140px; }
+  .type-sample { grid-template-columns: 1fr; gap: 20px; }
+ }
 </style>

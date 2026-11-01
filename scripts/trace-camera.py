@@ -6,6 +6,7 @@ Future draw-on effects can reveal the named groups with stroke masks.
 """
 from pathlib import Path
 import json
+import argparse
 import numpy as np
 from PIL import Image
 
@@ -93,19 +94,34 @@ def path_data(points):
 
 
 def main():
-    rgba = np.asarray(Image.open(SOURCE).convert('RGBA'), dtype=float) / 255
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--phone', action='store_true')
+    parser.add_argument('--lens', action='store_true')
+    args = parser.parse_args()
+    phone, lens = args.phone, args.lens
+    source = ROOT / 'public/iphone-17-pro-sketch-v1.png' if phone else SOURCE
+    output = ROOT / 'public/phone-pencil-traced.svg' if phone else OUT
+    if lens:
+        source = ROOT / 'public/lens-sketch-zeiss-55mm-v3.png'
+        output = ROOT / 'public/lens-pencil-traced.svg'
+    rgba = np.asarray(Image.open(source).convert('RGBA'), dtype=float) / 255
     rgb, alpha = rgba[:, :, :3], rgba[:, :, 3]
     # Decompose into neutral graphite plus yellow, retaining the original alpha.
     # Their optical densities add, so the same contours capture soft pencil edges.
     yellow_weight = np.clip((rgb[:, :, 0] - rgb[:, :, 2]) / .64, 0, 1)
     gold = np.clip(alpha * yellow_weight, 0, .96)
-    neutral = np.clip(alpha * (1 - yellow_weight) * rgb[:, :, 1] / (37 / 255), 0, .96)
+    neutral = np.clip(alpha * (1 - yellow_weight) * (1 if phone or lens else rgb[:, :, 1] / (37 / 255)), 0, .96)
     levels = [.009, .025, .05, .085, .13, .19, .27, .37, .49, .63, .78, .92]
-    parts = ['<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1536 1024" fill="none">',
+    height, width = alpha.shape
+    parts = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" fill="none">',
              '<title>Faded pencil sketch of Melissa’s Sony camera</title>',
              '<desc>Vector contours traced from the approved original camera drawing. Transparent background; original broken graphite lines, construction guides and yellow accents.</desc>']
     counts = {}
-    for name, field, color in [('graphite', neutral, '#262523'), ('yellow-accents', gold, '#dcab22')]:
+    if phone:
+        parts[1:3] = ['<title>Faded pencil sketch of Melissa’s phone</title>', '<desc>Transparent vector contours traced from the original phone sketch.</desc>']
+    if lens:
+        parts[1:3] = ['<title>Sony Zeiss 55mm pencil sketch</title>', '<desc>Transparent vector contours traced from the approved lens drawing.</desc>']
+    for name, field, color in [('graphite', neutral, '#716b60' if phone else '#585750' if lens else '#262523'), ('yellow-accents', gold, '#dcab22')]:
         parts.append(f'<g id="{name}" fill="{color}" fill-rule="evenodd">')
         previous = 0
         counts[name] = 0
@@ -120,8 +136,8 @@ def main():
             parts.append(f'<path id="{name}-tone-{i + 1:02}" opacity="{opacity:.4f}" d="' + ''.join(path_data(c) for c in curves) + '"/>')
         parts.append('</g>')
     parts.append('</svg>')
-    OUT.write_text('\n'.join(parts) + '\n')
-    print(json.dumps({'output': str(OUT), 'bytes': OUT.stat().st_size, 'contours': counts}))
+    output.write_text('\n'.join(parts) + '\n')
+    print(json.dumps({'output': str(output), 'bytes': output.stat().st_size, 'contours': counts}))
 
 
 if __name__ == '__main__':

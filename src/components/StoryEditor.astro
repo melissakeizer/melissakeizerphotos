@@ -29,6 +29,7 @@ const serialized = JSON.stringify({ slug, sections, effectiveLayouts }).replace(
       <ul data-editor-changes><li>No changes yet.</li></ul>
     </details>
     <div class="story-editor__actions">
+      <button type="button" data-editor-restore hidden>Restore local draft</button>
       <button type="button" data-editor-discard>Discard</button>
       <button class="story-editor__save" type="button" data-editor-save disabled>Save changes</button>
     </div>
@@ -38,7 +39,7 @@ const serialized = JSON.stringify({ slug, sections, effectiveLayouts }).replace(
 <script type="application/json" id="story-editor-data" set:html={serialized}></script>
 
 <script is:inline>
-  (() => {
+  function initializeStoryEditor() {
     const root = document.querySelector('[data-story-editor]');
     const dataNode = document.getElementById('story-editor-data');
     if (!root || !dataNode) return;
@@ -51,7 +52,28 @@ const serialized = JSON.stringify({ slug, sections, effectiveLayouts }).replace(
     const status = root.querySelector('[data-editor-status]');
     const count = root.querySelector('[data-editor-count]');
     const list = root.querySelector('[data-editor-changes]');
+    const restore = root.querySelector('[data-editor-restore]');
+    const draftKey = `mk-story-draft:${original.slug}`;
     let editing = false;
+    let saving = false;
+    let savedDraft = false;
+    let recoveryPending = false;
+
+    const equivalent = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+    function readDraft() {
+      try { return JSON.parse(localStorage.getItem(draftKey) || 'null'); } catch { return null; }
+    }
+    function clearDraft() {
+      try { localStorage.removeItem(draftKey); } catch { /* Storage may be disabled. */ }
+    }
+    function keepDraft(sections, saved = false, baseSections = original.sections) {
+      try {
+        localStorage.setItem(draftKey, JSON.stringify({ sections, baseSections, saved, updatedAt: Date.now() }));
+        savedDraft = saved;
+      } catch {
+        status.textContent = 'Browser draft storage is unavailable. Keep this tab open until saving succeeds.';
+      }
+    }
 
     const layoutOptions = [
       ['', 'Automatic / text beside photo'],
@@ -187,14 +209,15 @@ const serialized = JSON.stringify({ slug, sections, effectiveLayouts }).replace(
       return original.sections.map((source, index) => {
         const section = sectionElement(index);
         if (!section) return source;
-        const title = section.querySelector('.story-section__title')?.textContent?.trim() || null;
+        const heading = section.querySelector('.story-section__title');
+        const title = heading ? heading.textContent.trim() || null : source.title;
         const textElement = section.querySelector('.story-section__text');
         const textClone = textElement?.cloneNode(true);
         textClone?.querySelectorAll('[contenteditable], [spellcheck]').forEach((node) => {
           node.removeAttribute('contenteditable');
           node.removeAttribute('spellcheck');
         });
-        const text = textClone?.innerHTML.trim() || '';
+        const text = textClone ? textClone.innerHTML.trim() : source.text || '';
         const layoutSelect = section.querySelector('[data-editor-layout]');
         const captionInput = section.querySelector('[data-editor-caption]');
         const next = { title, text, photos: source.photos };
@@ -222,10 +245,13 @@ const serialized = JSON.stringify({ slug, sections, effectiveLayouts }).replace(
 
     function updateChanges() {
       if (!editing) return;
-      const changes = describeChanges(collectSections());
+      const sections = collectSections();
+      const changes = describeChanges(sections);
       count.textContent = String(changes.length);
       list.innerHTML = changes.length ? changes.map((change) => `<li>${change}</li>`).join('') : '<li>No changes yet.</li>';
-      save.disabled = changes.length === 0;
+      save.disabled = saving || changes.length === 0;
+      if (changes.length) keepDraft(sections);
+      else if (!saving && !savedDraft && !recoveryPending) clearDraft();
     }
 
     toggle.addEventListener('click', () => {
@@ -240,28 +266,103 @@ const serialized = JSON.stringify({ slug, sections, effectiveLayouts }).replace(
       if (editing && event.target.closest('[data-editor-section]')) updateChanges();
     });
 
-    discard.addEventListener('click', () => window.location.reload());
+    discard.addEventListener('click', () => {
+      clearDraft();
+      editing = false;
+      window.location.reload();
+    });
+
+    function restoreDraft(draft) {
+      editing = true;
+      panel.hidden = false;
+      toggle.textContent = 'Close editor';
+      setEditable(true);
+      draft.sections.forEach((saved, index) => {
+        const section = sectionElement(index);
+        if (!section) return;
+        let { heading, text, content, firstMedia } = ensureTextNodes(section, index);
+        if (!heading && saved.title) {
+          heading = document.createElement('h2');
+          heading.className = 'story-section__title';
+          content.insertBefore(heading, firstMedia);
+        }
+        if (heading) heading.textContent = saved.title || '';
+        if (!text && saved.text) {
+          text = document.createElement('div');
+          text.className = 'story-section__text';
+          content.insertBefore(text, firstMedia);
+        }
+        if (text) text.innerHTML = saved.text || '';
+        const layout = section.querySelector('select[data-editor-layout]');
+        if (layout) layout.value = saved.layout || original.effectiveLayouts[index] || '';
+        const caption = section.querySelector('[data-editor-caption]');
+        if (caption) caption.value = saved.caption || '';
+      });
+      setEditable(true);
+      restore.hidden = true;
+      recoveryPending = false;
+      updateChanges();
+      status.textContent = 'Your local draft has been restored. Review it, then save when ready.';
+    }
+
+    const previousDraft = readDraft();
+    if (previousDraft && Array.isArray(previousDraft.sections)) {
+      if (equivalent(previousDraft.sections, original.sections)) {
+        clearDraft();
+      } else if (equivalent(previousDraft.baseSections, original.sections)) {
+        restoreDraft(previousDraft);
+      } else {
+        recoveryPending = true;
+        panel.hidden = false;
+        status.textContent = 'A local draft is available, but the saved story has also changed. Restore it only if you want to review that draft.';
+        restore.hidden = false;
+        restore.addEventListener('click', () => restoreDraft(previousDraft));
+      }
+    }
+    // Vite may refresh the page as soon as a save touches the content file.
+    // The draft is written before sending the request and survives that refresh.
+    window.addEventListener('pagehide', () => {
+      if (editing && describeChanges(collectSections()).length) keepDraft(collectSections());
+    });
 
     save.addEventListener('click', async () => {
       const nextSections = collectSections();
       const changes = describeChanges(nextSections);
       if (!changes.length) return;
+      const baseSections = JSON.parse(JSON.stringify(original.sections));
+      keepDraft(nextSections, false, baseSections);
+      saving = true;
       save.disabled = true;
       status.textContent = 'Saving to the local story file…';
       try {
         const response = await fetch('/melissakeizerphotos/__story-editor/save', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ slug: original.slug, sections: nextSections }),
+          body: JSON.stringify({ slug: original.slug, sections: nextSections, baseSections }),
         });
         const result = await response.json();
         if (!response.ok) throw new Error(result.error || 'Save failed.');
-        status.textContent = 'Saved. Reloading the story…';
-        window.setTimeout(() => window.location.reload(), 450);
+        // Keep a verified copy until a future page load contains these sections.
+        // Do not force a reload while Astro's content collection is still syncing.
+        keepDraft(result.sections, true, baseSections);
+        original.sections = result.sections;
+        saving = false;
+        updateChanges();
+        status.textContent = changes.some(change => change.includes('layout →'))
+          ? 'Saved and backed up. Reload the page to view the new layout.'
+          : 'Saved and backed up.';
       } catch (error) {
+        saving = false;
         status.textContent = error instanceof Error ? error.message : 'Could not save changes.';
         save.disabled = false;
       }
     });
-  })();
+  }
+  // The editor is rendered before the story sections. Draft restoration must
+  // wait until those sections exist, just like a user's first Edit click does.
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeStoryEditor, { once: true });
+  } else {
+    initializeStoryEditor();
+  }
 </script>

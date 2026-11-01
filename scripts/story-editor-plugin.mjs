@@ -1,5 +1,5 @@
-import fs from 'node:fs/promises';
 import path from 'node:path';
+import { saveStorySections } from './story-editor-store.mjs';
 
 const VALID_LAYOUTS = new Set([
   '', 'split', 'split-reverse', 'stacked', 'stacked-centered',
@@ -21,6 +21,7 @@ function readRequest(request) {
 function send(response, status, payload) {
   response.statusCode = status;
   response.setHeader('Content-Type', 'application/json; charset=utf-8');
+  response.setHeader('Cache-Control', 'no-store');
   response.end(JSON.stringify(payload));
 }
 
@@ -51,34 +52,16 @@ export function storyEditorPlugin() {
           const slug = typeof payload.slug === 'string' ? payload.slug : '';
           if (!/^[a-z0-9][a-z0-9-]*$/.test(slug)) return send(response, 400, { error: 'Invalid story slug.' });
           if (!validSections(payload.sections)) return send(response, 400, { error: 'Invalid story sections.' });
+          if (payload.baseSections !== undefined && !validSections(payload.baseSections)) return send(response, 400, { error: 'Invalid original story sections.' });
 
           const storyDirectory = path.resolve(process.cwd(), 'src/content/stories');
           const storyPath = path.resolve(storyDirectory, `${slug}.md`);
           if (!storyPath.startsWith(`${storyDirectory}${path.sep}`)) return send(response, 400, { error: 'Invalid story path.' });
 
-          const source = await fs.readFile(storyPath, 'utf8');
-          const frontmatter = source.match(/^(---\r?\n[\s\S]*?\r?\n---\r?\n)/)?.[1];
-          if (!frontmatter) return send(response, 422, { error: 'Story frontmatter could not be preserved.' });
-
-          const cleaned = payload.sections.map((section) => {
-            const saved = {
-              title: section.title?.trim() || null,
-              text: section.text.trim(),
-              photos: section.photos,
-            };
-            if (section.layout) saved.layout = section.layout;
-            if (section.caption?.trim()) saved.caption = section.caption.trim();
-            return saved;
-          });
-
-          const serializedSections = JSON.stringify(cleaned, null, 2).replace(
-            /    "photos": \[\n([\s\S]*?)\n    \]/g,
-            (_match, photoLines) => `    "photos": [${photoLines.split('\n').map((line) => line.trim().replace(/,$/, '')).join(', ')}]`,
-          );
-          await fs.writeFile(storyPath, `${frontmatter}${serializedSections}\n`, 'utf8');
-          send(response, 200, { ok: true, savedAt: new Date().toISOString() });
+          const result = await saveStorySections(process.cwd(), slug, payload.sections, payload.baseSections);
+          send(response, 200, result);
         } catch (error) {
-          send(response, 500, { error: error instanceof Error ? error.message : 'Could not save story.' });
+          send(response, error.status || 500, { error: error instanceof Error ? error.message : 'Could not save story.' });
         }
       });
     },

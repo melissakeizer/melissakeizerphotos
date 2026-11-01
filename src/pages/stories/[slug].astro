@@ -1,10 +1,11 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getCollection, type CollectionEntry } from 'astro:content';
+import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 import sharp from 'sharp';
 import nodePath from 'path';
 import { categoriesForStory, coverStyleForStory, layoutForStorySection, subtitleForStory, thumbnailForStory } from '../../lib/story-metadata';
 import ProjectCard from '../../components/ProjectCard.astro';
+import Heading from '../../components/Heading.astro';
 
 const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
 
@@ -33,7 +34,11 @@ type Chunk =
   | { type: 'separator'; photo: string; sectionIndex: number }
   | { type: 'article'; sections: Section[] };
 
-const { story } = Astro.props;
+// Route props can outlive a local editor save in development. Read the current
+// content entry for each request instead of rendering the cached route props.
+const story = import.meta.env.DEV
+  ? (await getEntry('stories', Astro.params.slug!)) ?? Astro.props.story
+  : Astro.props.story;
 const { data, body } = story;
 const exposurePlaceholder = 'Write your story here. (Optional)';
 const description = data.description?.trim() === exposurePlaceholder ? null : data.description;
@@ -166,7 +171,7 @@ function photoLayoutClass(count: number) {
       />
       <div class="story-hero__overlay">
         <div class="story-hero__content">
-          <h1 class="story-hero__title">{data.title}</h1>
+          <Heading size="story-hero" class="story-hero__title">{data.title}</Heading>
           {subtitle && <p class="story-hero__subtitle">{subtitle}</p>}
         </div>
         <div class="story-hero__author">
@@ -188,7 +193,7 @@ function photoLayoutClass(count: number) {
       </div>
       <div class="story-hero-split__content">
         <div class="story-hero-split__body">
-          <h1 class="story-hero-split__title">{data.title}</h1>
+          <Heading size="story-hero" class="story-hero-split__title">{data.title}</Heading>
           {subtitle && <p class="story-hero-split__subtitle">{subtitle}</p>}
         </div>
         <div class="story-hero-split__author">
@@ -209,7 +214,7 @@ function photoLayoutClass(count: number) {
       {
         <header class="story-header">
           <a class="story-header__back" href={`${base}posts/`}>← All Posts</a>
-          <h1 class="story-header__title">{data.title}</h1>
+          <Heading size="story-hero" class="story-header__title">{data.title}</Heading>
           {subtitle && <p class="story-header__subtitle">{subtitle}</p>}
           <div class="story-header__meta">
             {data.date && <span>{data.date}</span>}
@@ -489,7 +494,7 @@ function photoLayoutClass(count: number) {
   {isStory && relatedStories.length > 0 && (
     <section class="related-stories" aria-labelledby="related-stories-title">
       <div class="related-stories__header">
-        <h2 id="related-stories-title">More like this</h2>
+        <Heading as="h2" id="related-stories-title">More like this</Heading>
         <p>More stories and galleries from the journal.</p>
       </div>
       <div class="related-stories__track" tabindex="0" aria-label="More stories; scroll horizontally to browse">

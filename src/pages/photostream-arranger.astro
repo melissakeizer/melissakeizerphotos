@@ -1,0 +1,356 @@
+---
+import { photoStreamNotes } from '../lib/field-notes';
+import { photoStreamQuestions } from '../lib/photo-stream-questions';
+import sharp from 'sharp';
+import { resolve } from 'node:path';
+
+const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
+// This is a private planning surface, not another page on the published site.
+if (!import.meta.env.DEV) return Astro.redirect(`${base}photostream/`);
+
+const questionsByImage = new Map(photoStreamQuestions.map(question => [question.beforeImage, question]));
+const photoShapes = new Map((await Promise.all(photoStreamNotes.map(async note => {
+  const metadata = await sharp(resolve('public/photos/00-photostream', note.image)).metadata();
+  const rotated = (metadata.orientation ?? 1) >= 5;
+  const width = rotated ? metadata.height : metadata.width;
+  const height = rotated ? metadata.width : metadata.height;
+  return [note.image, (width ?? 0) >= (height ?? 0) ? 'landscape' : 'portrait'] as const;
+}))).filter(Boolean));
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>PhotoStream arranger — local preview</title>
+    <style is:global>
+      @font-face { font-family: 'Fakt Pro'; src: url('/melissakeizerphotos/fonts/FaktPro-Normal.woff2') format('woff2'); font-display: swap; }
+      @font-face { font-family: Cambon; src: url('/melissakeizerphotos/fonts/cambon-regular-webfont.woff2') format('woff2'); font-display: swap; }
+      * { box-sizing: border-box; }
+      html { background: #141411; }
+      body { margin: 0; color: #f2eee6; background: #141411; font-family: 'Fakt Pro', Arial, sans-serif; }
+      button, input { font: inherit; }
+      button { cursor: pointer; }
+      .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+      :focus-visible { outline: 2px solid #f4cb25; outline-offset: 3px; }
+      .arranger-shell { max-width: 1280px; margin: auto; padding: 12px 20px 28px; }
+      .arranger-top { display: flex; justify-content: space-between; align-items: center; gap: 18px; margin-bottom: 8px; }
+      .arranger-kicker { margin: 0 0 3px; color: #f4cb25; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
+      h1 { margin: 0; font: normal clamp(27px, 3vw, 36px)/1 Cambon, Georgia, serif; letter-spacing: -.035em; }
+      .arranger-back { flex: none; color: #f4cb25; text-decoration: none; font-size: 12px; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
+      .arranger-toolbar { position: sticky; top: 0; z-index: 8; display: flex; flex-wrap: wrap; align-items: center; gap: 7px; padding: 7px 0; margin-bottom: 7px; background: #141411ee; backdrop-filter: blur(14px); border-bottom: 1px solid #42413a; }
+      .arranger-toolbar button { padding: 6px 9px; border: 1px solid #625f55; border-radius: 3px; background: #24231e; color: #f2eee6; font-size: 11px; }
+      .arranger-toolbar button:hover { border-color: #f4cb25; }
+      .arranger-toolbar .primary { background: #f4cb25; color: #171611; border-color: #f4cb25; }
+      .arranger-status { margin-left: auto; color: #aaa69e; font-size: 11px; }
+      .arranger-feed { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; align-items: start; }
+      .arranger-card { position: relative; min-width: 0; height: 78px; overflow: visible; border: 1px solid #45433b; background: #24231e; cursor: grab; }
+      .arranger-card:active { cursor: grabbing; }
+      .arranger-card.is-landscape, .arranger-card.is-qa { grid-column: 1 / -1; }
+      .arranger-card.is-dragging { opacity: .42; }
+      .arranger-card.drop-before::before, .arranger-card.drop-after::after, .arranger-end.drop-before::before { content: ''; position: absolute; z-index: 10; height: 4px; left: 0; right: 0; background: #f4cb25; box-shadow: 0 0 12px #f4cb25; pointer-events: none; }
+      .arranger-card.drop-before::before, .arranger-end.drop-before::before { top: -5px; }
+      .arranger-card.drop-after::after { bottom: -5px; }
+      .arranger-card.drop-inline.drop-before::before, .arranger-card.drop-inline.drop-after::after { top: 0; bottom: 0; height: auto; width: 4px; }
+      .arranger-card.drop-inline.drop-before::before { left: -5px; right: auto; }
+      .arranger-card.drop-inline.drop-after::after { right: -5px; left: auto; }
+      .arranger-photo { display: block; width: 150px; height: 100%; margin-left: 6px; object-fit: contain; object-position: left center; }
+      .is-portrait .arranger-photo { width: 70px; }
+      .arranger-card-body { position: absolute; inset: 0; pointer-events: none; }
+      .arranger-card-meta { display: none; }
+      .arranger-card-title { position: absolute; left: 170px; top: 50%; transform: translateY(-50%); max-width: calc(100% - 205px); margin: 0; color: #f2eee6; font: normal 12px/1.2 'Fakt Pro', Arial, sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .is-portrait .arranger-card-title { left: 88px; max-width: calc(100% - 122px); }
+      .arranger-actions { position: absolute; top: 3px; right: 3px; pointer-events: auto; }
+      .arranger-actions button { display: none; }
+      .arranger-actions [data-action="remove"] { display: grid; place-items: center; width: 22px; height: 22px; padding: 0; color: #f2eee6; background: #141411d9; border: 1px solid #8e8877; border-radius: 50%; font-size: 15px; line-height: 1; }
+      .arranger-actions [data-action="remove"]:hover { color: #141411; background: #f4cb25; border-color: #f4cb25; }
+      .is-qa { height: 44px; background: #29271b; border-color: #8e7925; }
+      .is-qa .arranger-card-body { display: flex; align-items: center; padding: 0 11px; }
+      .is-qa .arranger-card-meta { display: inline; flex: none; margin-right: 14px; color: #f4cb25; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
+      .qa-topic { width: min(100%, 390px); padding: 3px 5px; color: #f2eee6; background: transparent; border: 1px solid transparent; border-radius: 2px; font: normal 14px/1.2 Cambon, Georgia, serif; pointer-events: auto; }
+      .qa-topic:hover, .qa-topic:focus { border-color: #69643e; }
+      .qa-hint { display: none; }
+      .arranger-end { position: relative; grid-column: 1 / -1; min-height: 25px; display: grid; place-items: center; color: #aaa69e; border: 1px dashed #626057; font-size: 10px; }
+      .arranger-set-aside { margin-top: 20px; padding-top: 12px; border-top: 1px solid #45433b; }
+      .arranger-set-aside[hidden] { display: none; }
+      .arranger-set-aside h2 { margin: 0 0 5px; font: normal 27px/1.1 Cambon, Georgia, serif; }
+      .arranger-set-aside > p { margin: 0 0 15px; color: #aaa69e; font-size: 13px; }
+      .arranger-set-aside-list { display: flex; flex-wrap: wrap; gap: 9px; }
+      .arranger-set-aside-item { display: flex; align-items: center; gap: 10px; padding: 6px 8px 6px 6px; border: 1px solid #555248; background: #24231e; }
+      .arranger-set-aside-item img { width: 44px; height: 44px; object-fit: cover; }
+      .arranger-set-aside-item span { max-width: 175px; font-size: 12px; }
+      .arranger-set-aside-item button { margin-left: 5px; padding: 6px 8px; border: 1px solid #8e7925; color: #f4cb25; background: transparent; font-size: 11px; }
+      .arranger-copy-fallback { width: min(640px, calc(100vw - 36px)); color: #f2eee6; background: #24231e; border: 1px solid #8e7925; padding: 18px; }
+      .arranger-copy-fallback textarea { width: 100%; height: 220px; margin: 10px 0; padding: 9px; background: #141411; color: #f2eee6; border: 1px solid #625f55; font: 12px/1.4 monospace; }
+      .arranger-copy-fallback button { margin-right: 8px; padding: 7px 10px; color: #141411; background: #f4cb25; border: 0; }
+      @media (max-width: 700px) { .arranger-shell { padding: 10px; } .arranger-top { align-items: start; } .arranger-back { font-size: 10px; } .arranger-status { flex-basis: 100%; margin-left: 0; } .arranger-card { height: 70px; } .is-qa { height: 44px; } .arranger-card-title { font-size: 10px; } .is-qa .arranger-card-meta { margin-right: 5px; font-size: 8px; } }
+    </style>
+  </head>
+  <body>
+    <main class="arranger-shell">
+      <div class="arranger-top">
+        <div>
+          <p class="arranger-kicker">Local planning tool · not published</p>
+          <h1>Arrange PhotoStream</h1>
+        </div>
+        <a class="arranger-back" href={`${base}photostream/`}>View PhotoStream ↗</a>
+      </div>
+      <div class="arranger-toolbar">
+        <button type="button" data-add-qa>Add Q&amp;A card</button>
+        <button type="button" data-reset>Reset draft</button>
+        <button type="button" class="primary" data-export>Copy changes for Codex</button>
+        <span class="arranger-status" role="status" data-status>Draft is saved in this browser</span>
+      </div>
+      <div class="arranger-feed" data-feed>
+        {photoStreamNotes.map(note => (
+          <>
+            {questionsByImage.has(note.image) && (() => {
+              const question = questionsByImage.get(note.image)!;
+              return <section class="arranger-card is-qa" data-id={`qa:${question.id}`} data-kind="qa" draggable="true">
+                <div class="arranger-card-body">
+                  <p class="arranger-card-meta">Quick-fire Q&amp;A · {question.items.length} questions</p>
+                  <label><span class="sr-only">Q&amp;A topic</span><input class="qa-topic" value={question.label} aria-label="Q&A topic" /></label>
+                  <p class="qa-hint">Move this break between photo groups. The questions stay attached to it.</p>
+                  <div class="arranger-actions"><button type="button" data-action="remove" aria-label={`Remove ${question.label} from plan`}>×</button></div>
+                </div>
+              </section>;
+            })()}
+            <article class:list={['arranger-card', photoShapes.get(note.image) === 'landscape' ? 'is-landscape' : 'is-portrait']} data-id={`photo:${note.image}`} data-kind="photo" draggable="true">
+              <img class="arranger-photo" src={`${base}photos/00-photostream/${note.image}`} alt="" loading="lazy" />
+              <div class="arranger-card-body">
+                <h2 class="arranger-card-title">{note.title}</h2>
+                <div class="arranger-actions"><button type="button" data-action="remove" aria-label={`Remove ${note.title} from plan`}>×</button></div>
+              </div>
+            </article>
+          </>
+        ))}
+        <div class="arranger-end" data-end>Drop here to place last</div>
+      </div>
+      <section class="arranger-set-aside" data-set-aside hidden>
+        <h2>Set aside</h2>
+        <p>These photos are out of your plan, not deleted. Restore any one whenever you like.</p>
+        <div class="arranger-set-aside-list" data-set-aside-list></div>
+      </section>
+    </main>
+    <dialog class="arranger-copy-fallback" data-copy-dialog>
+      <p>Paste this into our chat to apply your arrangement:</p>
+      <textarea readonly data-copy-text aria-label="PhotoStream arrangement instructions"></textarea>
+      <button type="button" data-copy-again>Copy text</button><button type="button" data-close-dialog>Close</button>
+    </dialog>
+    <script>
+      type Draft = { version: 1; ids: string[]; topics: Record<string, string>; removedQa: string[]; removedPhotos?: string[] };
+      const storageKey = 'mk-photostream-arranger-v1';
+      const feed = document.querySelector<HTMLElement>('[data-feed]')!;
+      const end = document.querySelector<HTMLElement>('[data-end]')!;
+      const status = document.querySelector<HTMLElement>('[data-status]')!;
+      const originalCards = [...feed.querySelectorAll<HTMLElement>('.arranger-card')];
+      const originalIds = originalCards.map(card => card.dataset.id!);
+      const originalPhotoCards = new Map(originalCards.filter(card => card.dataset.kind === 'photo').map(card => [card.dataset.id!, card]));
+      const setAside = document.querySelector<HTMLElement>('[data-set-aside]')!;
+      const setAsideList = document.querySelector<HTMLElement>('[data-set-aside-list]')!;
+      let removedQa: string[] = [];
+      let removedPhotos: string[] = [];
+      let draggingId: string | null = null;
+      let dropTarget: HTMLElement | null = null;
+      let dropAfter = false;
+      let pointerX = 0;
+      let pointerY = 0;
+      let scrollTimer: number | null = null;
+
+      const cards = () => [...feed.querySelectorAll<HTMLElement>('.arranger-card')];
+      const byId = (id: string) => cards().find(card => card.dataset.id === id);
+      const announce = (message: string) => { status.textContent = message; };
+      const save = () => {
+        const draft: Draft = {
+          version: 1,
+          ids: cards().map(card => card.dataset.id!),
+          topics: Object.fromEntries(cards().filter(card => card.dataset.kind === 'qa').map(card => [card.dataset.id!, card.querySelector<HTMLInputElement>('.qa-topic')?.value.trim() || 'Untitled Q&A'])),
+          removedQa,
+          removedPhotos,
+        };
+        try { localStorage.setItem(storageKey, JSON.stringify(draft)); announce('Draft saved in this browser'); }
+        catch { announce('Browser storage unavailable — copy your changes before closing'); }
+      };
+      const moveBefore = (id: string, target: HTMLElement) => {
+        const card = byId(id);
+        if (!card || card === target) return;
+        feed.insertBefore(card, target);
+        save();
+      };
+      const createDraftQa = (id: string, topic: string) => {
+        const card = document.createElement('section');
+        card.className = 'arranger-card is-qa';
+        card.dataset.id = id;
+        card.dataset.kind = 'qa';
+        card.draggable = true;
+        card.innerHTML = '<div class="arranger-card-body"><p class="arranger-card-meta">Quick-fire Q&amp;A</p><label><span class="sr-only">Q&amp;A topic</span><input class="qa-topic" aria-label="Q&A topic" /></label><div class="arranger-actions"><button type="button" data-action="remove" aria-label="Remove Q&A from plan">×</button></div></div>';
+        card.querySelector<HTMLInputElement>('input')!.value = topic;
+        return card;
+      };
+      const renderSetAside = () => {
+        setAside.hidden = removedPhotos.length === 0;
+        setAsideList.replaceChildren();
+        for (const id of removedPhotos) {
+          const photo = originalPhotoCards.get(id);
+          if (!photo) continue;
+          const item = document.createElement('div');
+          item.className = 'arranger-set-aside-item';
+          const image = photo.querySelector<HTMLImageElement>('img')!.cloneNode() as HTMLImageElement;
+          const title = document.createElement('span');
+          title.textContent = photo.querySelector('.arranger-card-title')?.textContent || id;
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.textContent = 'Restore';
+          button.setAttribute('aria-label', `Restore ${title.textContent} to plan`);
+          button.addEventListener('click', () => {
+            removedPhotos = removedPhotos.filter(removed => removed !== id);
+            feed.insertBefore(photo, end);
+            renderSetAside();
+            save();
+          });
+          item.append(image, title, button);
+          setAsideList.append(item);
+        }
+      };
+
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey) || 'null') as Draft | null;
+        if (saved?.version === 1 && Array.isArray(saved.ids)) {
+          removedQa = Array.isArray(saved.removedQa) ? saved.removedQa.filter(id => originalIds.includes(id) && id.startsWith('qa:')) : [];
+          removedPhotos = Array.isArray(saved.removedPhotos) ? [...new Set(saved.removedPhotos.filter(id => originalPhotoCards.has(id)))] : [];
+          for (const id of removedQa) byId(id)?.remove();
+          for (const id of removedPhotos) byId(id)?.remove();
+          const seen = new Set<string>();
+          for (const id of saved.ids) {
+            if (typeof id !== 'string' || seen.has(id) || removedQa.includes(id) || removedPhotos.includes(id)) continue;
+            seen.add(id);
+            const card = byId(id) || (id.startsWith('qa:draft-') ? createDraftQa(id, saved.topics?.[id] || 'New Q&A topic') : null);
+            if (card) feed.insertBefore(card, end);
+          }
+          // Photos added to the site later still appear on the planning board.
+          for (const card of originalCards) if (card.dataset.kind === 'photo' && !seen.has(card.dataset.id!) && !removedPhotos.includes(card.dataset.id!)) feed.insertBefore(card, end);
+          for (const card of cards()) {
+            const topic = saved.topics?.[card.dataset.id!];
+            if (topic && card.dataset.kind === 'qa') card.querySelector<HTMLInputElement>('.qa-topic')!.value = topic;
+          }
+        }
+      } catch { announce('Could not read the saved draft; showing the current feed'); }
+      renderSetAside();
+
+      feed.addEventListener('click', event => {
+        const target = event.target as HTMLElement;
+        const action = target.closest<HTMLButtonElement>('[data-action]')?.dataset.action;
+        const card = target.closest<HTMLElement>('.arranger-card');
+        if (!action || !card) return;
+        const id = card.dataset.id!;
+        if (action === 'remove') {
+          if (card.dataset.kind === 'qa' && originalIds.includes(id)) removedQa.push(id);
+          if (card.dataset.kind === 'photo') removedPhotos.push(id);
+          card.remove(); renderSetAside(); save();
+        }
+      });
+      feed.addEventListener('input', event => { if ((event.target as HTMLElement).matches('.qa-topic')) save(); });
+      const clearDropIndicator = () => {
+        for (const item of [...cards(), end]) item.classList.remove('drop-before', 'drop-after', 'drop-inline', 'is-dragging');
+        dropTarget = null;
+      };
+      const showDropIndicator = (target: HTMLElement | null, x: number, y: number) => {
+        for (const item of [...cards(), end]) item.classList.remove('drop-before', 'drop-after', 'drop-inline');
+        if (!target || target.dataset.id === draggingId) { dropTarget = null; return; }
+        dropTarget = target;
+        const source = draggingId ? byId(draggingId) : null;
+        const inline = target !== end && source?.classList.contains('is-portrait') && target.classList.contains('is-portrait');
+        const rect = target.getBoundingClientRect();
+        dropAfter = target === end ? false : inline ? x > rect.left + rect.width / 2 : y > rect.top + rect.height / 2;
+        if (inline) target.classList.add('drop-inline');
+        target.classList.add(dropAfter ? 'drop-after' : 'drop-before');
+      };
+      const stopDragging = () => {
+        draggingId = null;
+        if (scrollTimer !== null) window.clearInterval(scrollTimer);
+        scrollTimer = null;
+        clearDropIndicator();
+      };
+      feed.addEventListener('dragstart', event => {
+        const target = event.target as HTMLElement;
+        if (target.closest('input, button')) { event.preventDefault(); return; }
+        draggingId = target.closest<HTMLElement>('.arranger-card')?.dataset.id || null;
+        if (event.dataTransfer && draggingId) {
+          pointerX = event.clientX;
+          pointerY = event.clientY;
+          event.dataTransfer.effectAllowed = 'move';
+          event.dataTransfer.setData('text/plain', draggingId);
+          byId(draggingId)?.classList.add('is-dragging');
+          scrollTimer = window.setInterval(() => {
+            if (!draggingId) return;
+            const edge = 95;
+            if (pointerY < edge) window.scrollBy(0, -18);
+            else if (pointerY > window.innerHeight - edge) window.scrollBy(0, 18);
+            const hovered = document.elementFromPoint(pointerX, pointerY)?.closest<HTMLElement>('.arranger-card, .arranger-end') || null;
+            if (hovered) showDropIndicator(hovered, pointerX, pointerY);
+          }, 25);
+        }
+      });
+      feed.addEventListener('dragover', event => {
+        const target = (event.target as HTMLElement).closest<HTMLElement>('.arranger-card, .arranger-end');
+        if (!draggingId) return;
+        pointerX = event.clientX; pointerY = event.clientY;
+        if (!target) return;
+        event.preventDefault();
+        showDropIndicator(target, pointerX, pointerY);
+      });
+      feed.addEventListener('drop', event => {
+        const hovered = (event.target as HTMLElement).closest<HTMLElement>('.arranger-card, .arranger-end');
+        if (draggingId && hovered) showDropIndicator(hovered, event.clientX, event.clientY);
+        if (draggingId && dropTarget) {
+          event.preventDefault();
+          const insertionPoint = dropAfter ? dropTarget.nextElementSibling as HTMLElement || end : dropTarget;
+          moveBefore(draggingId, insertionPoint);
+        }
+        stopDragging();
+      });
+      feed.addEventListener('dragend', stopDragging);
+
+      document.querySelector('[data-add-qa]')!.addEventListener('click', () => {
+        const id = `qa:draft-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
+        const card = createDraftQa(id, 'New Q&A topic');
+        feed.insertBefore(card, end); save();
+        card.querySelector<HTMLInputElement>('input')!.focus();
+        card.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      });
+      document.querySelector('[data-reset]')!.addEventListener('click', () => {
+        if (!confirm('Reset your local arrangement? Copy your changes first if you want to keep them.')) return;
+        localStorage.removeItem(storageKey);
+        location.reload();
+      });
+      const copyDialog = document.querySelector<HTMLDialogElement>('[data-copy-dialog]')!;
+      const copyText = document.querySelector<HTMLTextAreaElement>('[data-copy-text]')!;
+      const makePrompt = () => {
+        const ordered = cards().map((card, index) => {
+          if (card.dataset.kind === 'qa') return `${index + 1}. Quick-fire Q&A — ${card.querySelector<HTMLInputElement>('.qa-topic')?.value.trim() || 'Untitled'} (${card.dataset.id})`;
+          return `${index + 1}. Photo — ${card.querySelector('.arranger-card-title')?.textContent?.trim()} [${card.dataset.id?.slice(6)}]`;
+        });
+        const excluded = removedPhotos.map(id => `- ${originalPhotoCards.get(id)?.querySelector('.arranger-card-title')?.textContent?.trim()} [${id.slice(6)}]`);
+        const excludedQa = removedQa.map(id => `- ${id}`);
+        return [
+          'Please apply this PhotoStream arrangement to my site. Keep all existing captions and photo details. Portrait photos should pair where possible; landscape photos should fill a row. Keep the Quick-fire Q&A blocks in the positions below. New Q&A topics are placeholders to develop together.',
+          '', 'Order:', ...ordered, '', 'Photos to hide from the feed:', ...(excluded.length ? excluded : ['None']), '', 'Q&A blocks to hide:', ...(excludedQa.length ? excludedQa : ['None']),
+        ].join('\n');
+      };
+      const copyPrompt = async () => {
+        copyText.value = makePrompt();
+        try { await navigator.clipboard.writeText(copyText.value); announce('Copied — paste it into our chat when ready'); }
+        catch { announce('Select and copy the text in the open box'); }
+        copyDialog.showModal();
+      };
+      document.querySelector('[data-export]')!.addEventListener('click', copyPrompt);
+      document.querySelector('[data-copy-again]')!.addEventListener('click', async () => {
+        try { await navigator.clipboard.writeText(copyText.value); announce('Copied — paste it into our chat when ready'); }
+        catch { copyText.select(); announce('Press ⌘C to copy the selected text'); }
+      });
+      document.querySelector('[data-close-dialog]')!.addEventListener('click', () => copyDialog.close());
+    </script>
+  </body>
+</html>

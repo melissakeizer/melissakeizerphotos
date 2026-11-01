@@ -3,17 +3,29 @@ import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import { categoriesForStory, subtitleForStory, thumbnailForStory } from '../../lib/story-metadata';
 import ProjectCard from '../../components/ProjectCard.astro';
+import Heading from '../../components/Heading.astro';
 
 const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
 const stories = await getCollection('stories');
-const sorted = stories.sort((a, b) => a.data.order - b.data.order);
+const archiveOrder = new Map([
+  ['dogs-of-dubrovnik', 8],
+  ['pet-expo-belfast', 9],
+  ['a-few-favourites', 10],
+  ['dubrovnik-and-cavtat', 11],
+  ['animals-afternoon-tea', 12],
+  ['world-of-owls', 14],
+  ['barks-and-bows', 15],
+]);
+const sorted = stories.sort((a, b) =>
+  (archiveOrder.get(a.id) ?? a.data.order) - (archiveOrder.get(b.id) ?? b.data.order)
+);
 const categoryOrder = ['animals', 'pet sessions', 'adventures', 'live music'];
 const categorySlug = (category: string) => category.toLowerCase().replace(/\s+/g, '-');
 ---
 
 <Layout title="All Posts">
   <header class="archive-header">
-    <h1>All Posts</h1>
+    <Heading>All Posts</Heading>
     <div class="archive-filters" aria-label="Filter posts">
       <button class="is-active" type="button" data-filter="all" aria-pressed="true">All</button>
       {categoryOrder.map((category) => (
@@ -25,11 +37,41 @@ const categorySlug = (category: string) => category.toLowerCase().replace(/\s+/g
     <div class="stories-grid stories-grid--archive" id="posts">
       {sorted.map((story) => {
         const cover = thumbnailForStory(story.id, story.data.coverImage || story.data.photos[0]);
+        const archiveCover = story.id === 'world-of-owls'
+          ? '/photos/world-of-owls/011-ph_lqfa3al2vfqnk4ie.jpg'
+          : story.id === 'cat-colony-of-cala-bona'
+            ? '/videos/kitten-cala-bona-poster.jpg'
+          : story.id === 'a-story-of-ice-and-fire'
+            ? '/videos/storyboard-reflections-poster.jpg'
+          : story.id === 'dubrovnik-and-cavtat'
+            ? '/videos/dubrovnik-harbour-poster.jpg'
+          : story.id === 'roaming-rome'
+            ? '/videos/trevi-fountain-poster.jpg'
+          : story.id === 'vegas-baby'
+            ? '/videos/vegas-neon-poster.jpg'
+          : cover;
+        const archiveVideo = story.id === 'wild-ireland'
+          ? 'videos/wolf-looking-toward-camera.mp4'
+          : story.id === 'world-of-owls'
+            ? 'videos/eagle-world-of-owls.mp4'
+            : story.id === 'cat-colony-of-cala-bona'
+              ? 'videos/kitten-cala-bona.mp4'
+            : story.id === 'a-story-of-ice-and-fire'
+              ? 'videos/storyboard-reflections.mp4'
+            : story.id === 'dubrovnik-and-cavtat'
+              ? 'videos/dubrovnik-harbour.mp4'
+            : story.id === 'roaming-rome'
+              ? 'videos/trevi-fountain.mp4'
+            : story.id === 'vegas-baby'
+              ? 'videos/vegas-neon.mp4'
+            : undefined;
         const categories = categoriesForStory(story.id, story.data.categories);
         const subtitle = subtitleForStory(story.id, story.data.subtitle);
         return <ProjectCard
           href={`${base}stories/${story.id}`}
-          image={cover ? `${base}${cover.replace(/^\//, '')}` : undefined}
+          image={archiveCover ? `${base}${archiveCover.replace(/^\//, '')}` : undefined}
+          video={archiveVideo ? `${base}${archiveVideo}` : undefined}
+          videoPosition={story.id === 'wild-ireland' ? 'center 20%' : undefined}
           title={story.data.title}
           type={story.data.type}
           caption={subtitle}

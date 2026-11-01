@@ -1,0 +1,67 @@
+---
+import { getCollection } from 'astro:content';
+import ProjectCard from './ProjectCard.astro';
+import CameraDrawing from './CameraDrawing.astro';
+import HomePhotoStream from './HomePhotoStream.astro';
+import Heading from './Heading.astro';
+import { subtitleForStory } from '../lib/story-metadata';
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const stories = await getCollection('stories');
+const selections = [
+  { slug: 'wild-ireland', image: 'photos/wild-ireland/012-wolves-croppedforvideo.jpg', video: 'videos/wolf-looking-toward-camera.mp4', position: 'center 20%' },
+  { slug: 'dubshed-northern-irelands-largest-car-show', image: 'photos/dubshed-northern-irelands-largest-car-show/000-ph_jg9l8ba69uqazrny.jpg' },
+  { slug: 'sky-odin', image: 'photos/sky-odin/000-ph_log7wlnpvdpmhx0i.jpg' },
+  { slug: 'vegas-baby', image: 'videos/vegas-neon-poster.jpg', video: 'videos/vegas-neon.mp4', position: 'center' },
+];
+---
+
+<main class="opening-home">
+  <section class="opening-spread" aria-label="Introduction and featured posts">
+    <div class="opening-left">
+      <header class="opening-copy">
+        <Heading class="opening-title"><span>I’m Melissa, this is</span>{' '}<span>my photo journal</span></Heading>
+        <p>A home for little adventures, wet noses, beautiful places and moments worth remembering — from Northern Ireland and beyond.</p>
+        <div class="opening-more"><a class="home-text-link home-text-link--button" href={`${base}posts/`}>See all stories <span aria-hidden="true">→</span></a></div>
+      </header>
+      <div class="opening-camera" aria-hidden="true"><CameraDrawing id="opening-spread-camera" /></div>
+    </div>
+    <div class="opening-posts">
+      {selections.map(post => {
+        const story = stories.find(story => story.id === post.slug)!;
+        return <div class="opening-card"><ProjectCard href={`${base}stories/${post.slug}/`} image={`${base}${post.image}`} video={post.video ? `${base}${post.video}` : undefined} videoPosition={post.position} title={story.data.title} caption={subtitleForStory(story.id, story.data.subtitle)} type={story.data.type} /></div>;
+      })}
+    </div>
+  </section>
+  <HomePhotoStream />
+</main>
+
+<style>
+  .opening-home { background: var(--color-bg); color: var(--color-text); overflow: clip; }
+  .opening-spread { position: relative; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 48px var(--grid-gap); margin: auto; padding: 140px var(--site-margin) 110px; }
+  .opening-left { position: relative; min-width: 0; grid-column: 1 / span 4; container-type: inline-size; align-self: start; height: calc(100svh - 280px); min-height: 420px; display: flex; align-items: center; }
+  .opening-copy { position: relative; z-index: 1; }
+  .opening-copy { width: 100%; }
+  .opening-copy p { max-width: none; margin-top: 1.5rem; color: var(--color-muted); }
+  .opening-camera { position: absolute; width: 225%; top: calc(50% + 30px); left: calc(-45% - (100% + var(--grid-gap)) / 4 - 30px); filter: brightness(1.9); opacity: .68; pointer-events: none; }
+  .opening-posts { grid-column: 6 / -1; position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 52px var(--grid-gap); align-items: start; padding-bottom: 64px; }
+  .opening-card { min-width: 0; background: transparent; }
+  .opening-card:nth-child(even) { transform: translateY(64px); }
+  .opening-posts :global(.project-card__image) { aspect-ratio: 3 / 4; }
+  .opening-more { margin-top: 24px; }
+  @media (max-width: 900px) {
+    .opening-spread { grid-template-columns: 1fr; padding: 150px var(--site-margin) 70px; gap: 36px; }
+    .opening-left { grid-column: 1; min-height: 490px; height: auto; display: block; }
+    .opening-copy { padding-top: 0; max-width: 440px; }
+    .opening-camera { position: absolute; width: 560px; max-width: 100%; top: 230px; left: -8%; margin: 0; opacity: .5; }
+    .opening-posts { grid-column: 1; gap: 52px 18px; }
+  }
+  @media (max-width: 500px) {
+    .opening-spread { padding-inline: var(--site-margin); }
+    .opening-copy p { max-width: none; }
+    .opening-left { min-height: 490px; }
+    .opening-camera { top: 270px; width: 115%; max-width: none; left: -12%; }
+    .opening-posts { gap: 48px 14px; padding-bottom: 36px; }
+    .opening-card:nth-child(even) { transform: translateY(36px); }
+  }
+</style>
