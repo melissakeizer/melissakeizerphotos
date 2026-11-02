@@ -4,6 +4,7 @@ import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 import sharp from 'sharp';
 import nodePath from 'path';
 import { categoriesForStory, coverStyleForStory, layoutForStorySection, subtitleForStory, thumbnailForStory } from '../../lib/story-metadata';
+import { relatedStoryIds } from '../../lib/related-stories';
 import ProjectCard from '../../components/ProjectCard.astro';
 import Heading from '../../components/Heading.astro';
 
@@ -51,16 +52,9 @@ const galleryLayout = data.galleryLayout ?? 'fitted-grid';
 const editorEnabled = import.meta.env.DEV && isStory;
 const StoryEditor = editorEnabled ? (await import('../../components/StoryEditor.astro')).default : null;
 const allStories = await getCollection('stories');
-const relatedStories = allStories
-  .filter((candidate) => candidate.id !== story.id)
-  .map((candidate) => {
-    const candidateCategories = categoriesForStory(candidate.id, candidate.data.categories);
-    const sharedCategories = candidateCategories.filter((category) => categories.includes(category)).length;
-    return { candidate, sharedCategories };
-  })
-  .sort((a, b) => b.sharedCategories - a.sharedCategories || a.candidate.data.order - b.candidate.data.order)
-  .slice(0, 6)
-  .map(({ candidate }) => candidate);
+const relatedStories = relatedStoryIds({ id: story.id, categories }, allStories.map(candidate => ({
+  id: candidate.id, categories: categoriesForStory(candidate.id, candidate.data.categories),
+}))).map(id => allStories.find(candidate => candidate.id === id)!);
 
 // Parse sections from markdown body for story type posts
 let sections: Section[] = [];
@@ -186,7 +180,7 @@ function photoLayoutClass(count: number) {
   {isStory && cover && coverStyle === 'split' && (
     <div class="story-hero-wrapper story-hero-wrapper--split">
       <div class="story-hero-split__photo">
-        <img src={photoUrl(cover)} alt={data.title} />
+        <img src={photoUrl(cover)} alt={data.title} style={story.id === 'an-afternoon-with-angus' ? '--mobile-hero-position: center bottom' : undefined} />
       </div>
       <div class="story-hero-split__content">
         <div class="story-hero-split__body">
