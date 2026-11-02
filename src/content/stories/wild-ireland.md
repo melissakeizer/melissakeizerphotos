@@ -1,5 +1,5 @@
 ---
-title: "Walk on the Wild Side"
+title: "Where the Wild Things Are"
 subtitle: "Wild Ireland, County Donegal"
 date: "April 6th, 2026"
 order: 0

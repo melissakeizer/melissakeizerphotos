@@ -21,7 +21,7 @@ const selections = [
     <div class="opening-left">
       <header class="opening-copy">
         <Heading class="opening-title"><span>I’m Melissa, this is</span>{' '}<span>my photo journal</span></Heading>
-        <p>A home for little adventures, wet noses, beautiful places and moments worth remembering — from Northern Ireland and beyond.</p>
+        <p>A home for little adventures, wet noses, beautiful places and moments worth remembering — from Northern Ireland <span class="opening-ending">and beyond.</span></p>
         <div class="opening-more"><a class="home-text-link home-text-link--button" href={`${base}posts/`}>See all stories <span aria-hidden="true">→</span></a></div>
       </header>
       <div class="opening-camera" aria-hidden="true"><CameraDrawing id="opening-spread-camera" /></div>
@@ -43,6 +43,7 @@ const selections = [
   .opening-copy { position: relative; z-index: 1; }
   .opening-copy { width: 100%; }
   .opening-copy p { max-width: none; margin-top: 1.5rem; color: var(--color-muted); }
+  .opening-ending { white-space: nowrap; }
   .opening-camera { position: absolute; width: 225%; top: calc(50% + 30px); left: calc(-45% - (100% + var(--grid-gap)) / 4 - 50px); filter: brightness(1.9); opacity: .68; pointer-events: none; }
   .opening-posts { grid-column: 6 / -1; position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 52px var(--grid-gap); align-items: start; padding-bottom: 64px; }
   .opening-card { min-width: 0; background: transparent; }
@@ -62,7 +63,7 @@ const selections = [
     .opening-left { min-height: 300px; }
     .opening-more { margin-top: 18px; }
     .opening-more .home-text-link--button { margin-top: 0; padding: .8rem 1rem; min-height: 44px; }
-    .opening-camera { top: 145px; width: 115%; max-width: none; left: -15%; opacity: .42; }
+    .opening-camera { top: 130px; width: 115%; max-width: none; left: -5%; opacity: .42; }
     .opening-posts { gap: 28px 14px; padding-bottom: 24px; align-items: stretch; }
     .opening-card:nth-child(even) { transform: none; }
   }
