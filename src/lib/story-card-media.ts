@@ -8,7 +8,7 @@ export const storyCardMedia: Record<string, { image: string; video?: string; pos
   'designers-explorers': { image: 'photos/designers-explorers/011-34kjy3a6gcgfd2t98lw9v50o0vx11yvi6zf4.jpg' },
   'the-ark': { image: 'photos/the-ark/010-gkm6qkslvglgcik9gju7v3p63ggsc3di56n7rr7x.jpg' },
   'dogease': { image: 'photos/dogease/000-ph_f9ux66noqfw3q7fw.jpg', position: '30% center' },
-  'wild-ireland': { image: 'photos/wild-ireland/012-wolves-croppedforvideo.jpg', video: 'videos/wolf-looking-toward-camera.mp4', position: 'center 20%' },
+  'wild-ireland': { image: 'photos/wild-ireland/000-cover.jpg', video: 'videos/wolf-looking-toward-camera.mp4', position: 'center 20%' },
   'world-of-owls': { image: 'photos/world-of-owls/011-ph_lqfa3al2vfqnk4ie.jpg', video: 'videos/eagle-world-of-owls.mp4' },
   'cat-colony-of-cala-bona': { image: 'videos/kitten-cala-bona-poster.jpg', video: 'videos/kitten-cala-bona.mp4' },
   'a-story-of-ice-and-fire': { image: 'videos/storyboard-reflections-poster.jpg', video: 'videos/storyboard-reflections.mp4' },

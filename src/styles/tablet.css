@@ -1,0 +1,104 @@
+/* Tablet reading scale and layouts, between the phone and desktop compositions. */
+@media (min-width: 701px) and (max-width: 1280px) {
+  [data-wrap-tablet="true"] { flex-wrap: wrap; gap: .75rem; }
+  [data-wrap-tablet="true"] > .story-section__photo-item { flex: var(--photo-ratio, 1) 1 0 !important; min-width: 0; }
+  [data-wrap-tablet="true"] > .story-section__photo-item:last-child { flex-basis: 100% !important; }
+  [data-wrap-tablet="true"] > .story-section__photo-item img { height: auto; width: 100%; }
+}
+
+/* One shared heading anchor across the three index pages. The PhotoStream
+   eyebrow sits above it without shifting the title's baseline. */
+@media (max-width: 1180px) {
+  :root { --index-title-top: 10.5rem; --index-title-left: calc(var(--site-margin) + (100vw - 2 * var(--site-margin)) * .12); }
+  .opening-home.opening-home.opening-home .opening-spread { padding-top: var(--index-title-top); }
+  .opening-home.opening-home.opening-home .opening-left { padding-top: 0; }
+  .opening-home.opening-home.opening-home .opening-copy { margin-left: calc((100vw - 2 * var(--site-margin)) * .12); width: auto; padding-top: 0; }
+  :root .archive-header { padding-top: var(--index-title-top); padding-inline: var(--site-margin); }
+  :root .archive-header > h1, :root .archive-header > .archive-filters { margin-left: calc(var(--index-title-left) - var(--site-margin)); }
+  :root .photostream-page.photostream-page { padding-top: var(--index-title-top); padding-inline: var(--site-margin); }
+  :root .photostream-page.photostream-page.photostream-page .field-notes-header { padding-top: 0; }
+  :root .photostream-page.photostream-page.photostream-page .photostream-intro-copy { padding-left: 0; margin-left: calc(var(--index-title-left) - var(--site-margin)); }
+  .photostream-eyebrow { position: absolute; bottom: 100%; left: 0; }
+  :root .opening-title, :root .archive-header h1, :root .field-notes-header .display-heading { font-size: clamp(2.1rem, 4.4vw, 2.75rem); line-height: 1.06; margin-top: 0; }
+}
+@media (max-width: 600px) {
+  :root { --index-title-top: 9rem; }
+  :root .story-section__text, :root .story-intro { max-width: 36ch; width: calc(100% - 2rem); margin-inline: auto; font-size: 1rem; line-height: 1.6; }
+  :root .story-section__title { max-width: 24ch; width: calc(100% - 2rem); margin-inline: auto; font-size: clamp(1.5rem, 6vw, 1.85rem); line-height: 1.15; text-wrap: balance; }
+  :root .story-header__title, :root .story-hero__title, :root .story-hero-split__title { font-size: clamp(2rem, 8.5vw, 2.65rem); line-height: 1.06; text-wrap: balance; }
+  :root .story-section { --story-beat-gap: 1.75rem; margin-bottom: 2.5rem; }
+  :root .opening-home .opening-copy > p { font-size: 1.1rem; line-height: 1.4; max-width: 32ch; }
+}
+@media (min-width: 701px) and (max-width: 1280px) {
+  :root {
+    --type-h1: clamp(2.25rem, 3.8vw, 2.75rem);
+    --type-story-hero: var(--type-h1);
+    --type-paragraph: 1.125rem;
+    --type-small: .95rem;
+  }
+  .story-header__title, .story-hero__title, .story-hero-split__title { font-size: var(--type-h1); text-wrap: balance; }
+  .story-section__text, .type-paragraph--story, .story-intro { font-size: 1.125rem; line-height: 1.55; }
+  .story-section__text, .story-intro { max-width: 60ch; margin-inline: auto; }
+  .story-section__title { max-width: 60ch; margin-inline: auto; }
+  .story-section { --story-beat-gap: 2.5rem; margin-bottom: 3.5rem; }
+  .story-section__text p + p { margin-top: 1.25em; }
+  .story-section__content { margin-bottom: 2.5rem; }
+  .story-page:has(.story-article), .story-page--has-hero { padding-top: 3rem; padding-bottom: 3rem; }
+  .story-hero-wrapper:not(.story-hero-wrapper--split) { height: min(72svh, 44rem); min-height: 30rem; }
+  body:has(.story-hero-wrapper:not(.story-hero-wrapper--split)) .site-nav__links a { color: #f2eee3; text-shadow: 0 1px 6px rgba(0,0,0,.85); }
+  .story-hero-wrapper--split { height: min(70svh, 40rem); min-height: 28rem; margin-top: 7rem; }
+  .story-hero-split__content { padding: 2rem; }
+  .story-hero-split__photo img { object-position: var(--mobile-hero-position, center center); }
+  .story-page:has(> .story-header) { padding-top: 9rem; }
+  .story-header { max-width: 48rem; padding: 1.5rem 1rem 0; margin-bottom: 2rem; }
+  .story-header__title { margin-top: 0; }
+  .story-header__subtitle { max-width: 36ch; margin: 1rem auto 0; font-size: 1.5rem; line-height: 1.3; }
+  .story-header__meta { margin-top: 1.25rem; }
+  .story-divider { margin-top: 1.75rem; }
+  .story-intro { margin-bottom: 2.5rem; }
+  .masonry-gallery { columns: 2; column-gap: .75rem; }
+  .masonry-gallery__item { margin-bottom: .75rem; }
+  .stories-grid--archive { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .site-footer { min-height: clamp(32rem, 65svh, 42rem); padding-top: 10rem; }
+  .site-footer__introduction { grid-column: 3 / span 7; }
+  .site-footer__introduction > p:last-child { max-width: 42ch; font-size: .95rem; }
+  .site-footer__equipment-space { display: none; }
+  .photostream-page .field-notes-feed { row-gap: 3.5rem; }
+  .photostream-page .field-notes-entry { gap: 1.1rem; }
+  .photostream-page .field-notes-entry__note { font-size: 1.0625rem; line-height: 1.5; max-width: 60ch; }
+  .photostream-page .field-notes-interlude--qa { padding: 2rem 0 2.5rem; }
+}
+@media (min-width: 501px) and (max-width: 700px) {
+  :root { --type-h1: 2.25rem; }
+  .story-header__title, .story-hero__title, .story-hero-split__title { font-size: var(--type-h1); }
+  .site-footer { min-height: clamp(30rem, 65svh, 38rem); }
+  .story-hero-wrapper:not(.story-hero-wrapper--split) { height: min(70svh, 36rem); min-height: 28rem; }
+}
+@media (min-width: 501px) and (max-width: 1180px) {
+  .opening-home.opening-home .opening-spread { display: block; padding: 7.5rem var(--site-margin) 4rem; }
+  .opening-home.opening-home .opening-left { height: auto; min-height: 0; display: block; padding: 3rem 0; }
+  .opening-home.opening-home .opening-copy { max-width: 36rem; padding: 0; }
+  .opening-home.opening-home .opening-copy > p { max-width: 34ch; margin-top: 1.25rem; }
+  .opening-home.opening-home .opening-more { margin-top: 1.5rem; }
+  .opening-home.opening-home .opening-more .home-text-link--button { margin: 0; min-height: 44px; padding: .9rem 1.25rem; font-size: .7rem; }
+  .opening-home.opening-home .opening-camera { width: 32rem; max-width: none; top: auto; bottom: -7rem; left: auto; right: -3rem; opacity: .36; }
+  .opening-home.opening-home .opening-posts { gap: 2.5rem 1.25rem; padding-bottom: 0; align-items: stretch; }
+  .opening-home.opening-home .opening-card:nth-child(even) { transform: none; }
+  .stories-grid--archive { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.5rem 1.25rem; padding-bottom: 4rem; }
+  .archive-header { display: block; padding-top: 10rem; padding-bottom: 2rem; }
+  .archive-header .archive-filters { margin-top: 1.5rem; }
+  .project-card { display: flex; flex-direction: column; height: 100%; }
+  .project-card > a { display: flex; flex: 1; flex-direction: column; }
+  .project-card__image { flex: none; }
+  .project-card__content { display: flex; flex: 1; flex-direction: column; }
+  .project-card__content .project-card__caption { margin-bottom: 1rem; }
+  .project-card__content .project-card__type { margin-top: auto; }
+  .story-section--split { display: flex; flex-direction: column; gap: 2rem; }
+  .story-section--split .story-section__content { width: 100%; margin-bottom: 0; }
+  .story-section--split .story-section__split-photo { width: 100%; max-width: 46rem; margin-inline: auto; }
+  .photostream-page { display: block; overflow-x: clip; padding-top: 10rem; }
+  :root .photostream-page.photostream-page.photostream-page .field-notes-header { position: relative; top: auto; height: 13rem; padding: 0; margin-bottom: 2rem; clip-path: none; }
+  .photostream-page.photostream-page .photostream-intro-copy { padding-left: 12%; }
+  .photostream-page.photostream-page .photostream-phone { width: 12rem; top: 4.5rem; bottom: auto; left: auto; right: -3.5rem; opacity: .36; }
+  .photostream-page .field-notes-feed { position: relative; z-index: 1; }
+}

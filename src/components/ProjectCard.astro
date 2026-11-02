@@ -35,11 +35,26 @@ const videoPosition = media?.position ?? Astro.props.videoPosition;
   </a>
 </article>
 
+<script>
+  document.querySelectorAll<HTMLVideoElement>('.project-card__video').forEach(video => {
+    const showFrame = () => {
+      if ('requestVideoFrameCallback' in video) {
+        video.requestVideoFrameCallback(() => video.classList.add('is-playing'));
+      } else {
+        video.classList.add('is-playing');
+      }
+    };
+    video.addEventListener('playing', showFrame, { once: true });
+    if (!video.paused && video.readyState >= 3) showFrame();
+  });
+</script>
+
 <style>
   .project-card__type { transition: border-color .25s ease; }
   .project-card a:hover .project-card__type,
   .project-card a:focus-visible .project-card__type { border-top-color: var(--color-text); }
-  .project-card__image video { transition: transform .4s ease; }
+  .project-card__image video { opacity: 0; transition: opacity .7s ease, transform .4s ease; }
+  .project-card__image video.is-playing { opacity: 1; }
   .project-card a:hover :is(img, video),
   .project-card a:focus-visible :is(img, video) { transform: scale(1.02); }
   @media (prefers-reduced-motion: reduce) {

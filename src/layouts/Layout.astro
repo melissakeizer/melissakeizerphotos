@@ -1,6 +1,8 @@
 ---
 import '../styles/global.css';
 import '../styles/typography.css';
+import '../styles/tablet.css';
+import '../styles/entrances.css';
 import SiteFooter from '../components/SiteFooter.astro';
 
 interface Props {
@@ -28,6 +30,13 @@ const isDev = import.meta.env.DEV;
 <html lang="en" data-theme={theme} data-palette={palette}>
   <head>
     <script is:inline>document.documentElement.classList.add('camera-draw-enabled');</script>
+    <script is:inline>
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+        document.documentElement.classList.add('entrances-enabled');
+        // Fail open if the page script cannot load.
+        window.entranceFallback = setTimeout(() => document.documentElement.classList.remove('entrances-enabled'), 4000);
+      }
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
@@ -62,6 +71,34 @@ const isDev = import.meta.env.DEV;
     )}
     <slot />
     <SiteFooter />
+    <script>
+      const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if (document.documentElement.classList.contains('entrances-enabled')) {
+        clearTimeout((window as Window & { entranceFallback?: number }).entranceFallback);
+        const observer = new IntersectionObserver(entries => {
+          let stagger = 0;
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            observer.unobserve(entry.target);
+            const element = entry.target as HTMLElement;
+            element.style.setProperty('--entrance-delay', `${Math.min(stagger++ * 70, 140)}ms`);
+            element.classList.add('entrance-visible');
+          }
+        }, { threshold: 0, rootMargin: '0px 0px 24px 0px' });
+        document.querySelectorAll(
+          '.opening-copy > p, .opening-more, .opening-posts .project-card, .stories-grid--archive .project-card, .photostream-home-strip .field-note-card, .photostream-page .field-notes-entry, .field-notes-interlude, .site-footer__panel, .story-section__content, .story-section__photos, .story-section__split-photo'
+        ).forEach(element => observer.observe(element));
+        document.addEventListener('focusin', event => {
+          const element = (event.target as HTMLElement).closest('.project-card, .site-footer__panel');
+          if (element) { element.classList.add('entrance-visible'); observer.unobserve(element); }
+        });
+        motion.addEventListener('change', event => {
+          if (!event.matches) return;
+          observer.disconnect();
+          document.documentElement.classList.remove('entrances-enabled');
+        });
+      }
+    </script>
     {isDev && (
       <script is:inline>
         (() => {

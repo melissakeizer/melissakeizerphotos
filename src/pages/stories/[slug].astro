@@ -344,7 +344,7 @@ function photoLayoutClass(count: number) {
                     return (
                       <div class="story-section__photos story-section__photos--multi">
                         {rows.map((row) => (
-                          <div class="multi-row">
+                          <div class="multi-row" data-wrap-tablet={row.length === 3 && row.some(photo => (photoRatios.get(photo) ?? 1.5) >= 1) ? 'true' : undefined}>
                             {row.map((photo) => (
                               <div
                                 class="story-section__photo-item"
@@ -368,7 +368,7 @@ function photoLayoutClass(count: number) {
                     return (
                       <div class="story-section__photos story-section__photos--penta">
                         {rows.map((row) => (
-                          <div class="penta-row">
+                          <div class="penta-row" data-wrap-tablet={row.length === 3 && row.some(photo => (photoRatios.get(photo) ?? 1.5) >= 1) ? 'true' : undefined}>
                             {row.map((photo) => (
                               <div
                                 class="story-section__photo-item"
@@ -417,7 +417,7 @@ function photoLayoutClass(count: number) {
                   }
 
                   return (
-                    <div class={`story-section__photos story-section__photos--${layout}`}>
+                    <div class={`story-section__photos story-section__photos--${layout}`} data-wrap-tablet={layout === 'trio' && section.photos.some(photo => (photoRatios.get(photo) ?? 1.5) >= 1) ? 'true' : undefined}>
                       {section.photos.map((photo) => (
                         <div
                           class="story-section__photo-item"
@@ -514,22 +514,6 @@ function photoLayoutClass(count: number) {
 </Layout>
 
 <script>
-  // Scroll-reveal animations
-  document.body.classList.add('is-ready');
-  requestAnimationFrame(() => document.body.classList.add('is-loaded'));
-  const storySections = document.querySelectorAll('.story-section');
-  if (storySections.length > 0) {
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-    storySections.forEach(el => revealObserver.observe(el));
-  }
-
   // Collect all clickable photo items regardless of layout
   const allItems = Array.from(
     document.querySelectorAll<HTMLElement>('.masonry-gallery__item, .story-section__photo-item')
