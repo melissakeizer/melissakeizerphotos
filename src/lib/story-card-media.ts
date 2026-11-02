@@ -1,5 +1,6 @@
 // One thumbnail treatment for archive, homepage and related-story cards.
 export const storyCardMedia: Record<string, { image: string; video?: string; position?: string }> = {
+  'aint-nothin-but-a-hound-dog': { image: 'photos/aint-nothin-but-a-hound-dog/001-40et0gy0ko61f4gbbtw3tkycumqb68zvslk6.jpg', video: 'videos/basset-hound.mp4', position: 'center bottom' },
   'dogs-of-dubrovnik': { image: 'photos/dogs-of-dubrovnik/007-b4fab7enpt90tr1jeyt0fxudqjjafoa3fzuz.jpg', position: '80% center' },
   'electric-pup': { image: 'photos/electric-pup/000-ph_fljeuilmkre5rlsa.jpg', position: '60% center' },
   'a-few-favourites': { image: 'photos/a-few-favourites/011-ph_vcisl1j3v9b0savf.jpg', position: 'center' },

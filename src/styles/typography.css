@@ -73,6 +73,9 @@
     --type-detail: .7rem;
   }
   .site-footer { min-height: max(75svh, 34rem); }
+  .archive-header { padding-bottom: 2rem; }
+  .archive-header .archive-filters { margin-top: 1rem; }
+  .stories-grid--archive { row-gap: 1.9rem; }
   .site-nav__links { gap: 1.25rem; align-items: center; }
   .site-nav__links a { display: inline-flex; min-height: 44px; align-items: center; position: relative; border-bottom: 0; }
   .site-nav__links a::after { content: ''; position: absolute; left: 0; right: 0; bottom: 10px; height: 1px; background: currentColor; transform: scaleX(0); }
