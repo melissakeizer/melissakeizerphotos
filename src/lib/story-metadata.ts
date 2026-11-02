@@ -7,6 +7,7 @@ export interface StoryMetadata {
 // Recovered from the original Exposure archive. Story prose remains in its
 // Markdown file; this holds archive-level metadata that was missing locally.
 export const storyMetadata: Record<string, StoryMetadata> = {
+  'barcelona': { thumbnailImage: '/photos/barcelona/web/barcelona-city-edit2.jpg' },
   'wild-ireland': { categories: ['animals'], subtitle: 'Wild Ireland, County Donegal', thumbnailImage: '/photos/wild-ireland/000-cover.jpg' },
   '746862776d2576268afc65758bbab369': { categories: ['animals'], subtitle: 'A closer look at the characters of a local cat show' },
   'a-few-favourites': { categories: ['animals'], subtitle: 'A portfolio of some of my favourite images' },

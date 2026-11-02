@@ -11,7 +11,7 @@ import Heading from '../../components/Heading.astro';
 const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
 
 export async function getStaticPaths() {
-  const stories = await getCollection('stories');
+  const stories = await getCollection('stories', ({ data }) => !data.draft);
   return stories.map((story) => ({
     params: { slug: story.id },
     props: { story },
@@ -51,7 +51,7 @@ const coverStyle = coverStyleForStory(story.id, data.coverStyle ?? 'full');
 const galleryLayout = data.galleryLayout ?? 'fitted-grid';
 const editorEnabled = import.meta.env.DEV && isStory;
 const StoryEditor = editorEnabled ? (await import('../../components/StoryEditor.astro')).default : null;
-const allStories = await getCollection('stories');
+const allStories = await getCollection('stories', ({ data }) => !data.draft);
 const relatedStories = relatedStoryIds({ id: story.id, categories }, allStories.map(candidate => ({
   id: candidate.id, categories: categoriesForStory(candidate.id, candidate.data.categories),
 }))).map(id => allStories.find(candidate => candidate.id === id)!);
@@ -136,6 +136,10 @@ if (sections.length > 0) {
 const galleryPhotos = !isStory
   ? [cover, ...data.photos].filter((photo): photo is string => Boolean(photo)).filter((photo, index, photos) => photos.indexOf(photo) === index)
   : [];
+const orderedGallery = story.id === 'barcelona';
+if (orderedGallery) {
+  await Promise.all(galleryPhotos.map(async photo => photoRatios.set(photo, await getAspectRatio(photo))));
+}
 
 function photoUrl(path: string) {
   return `${base}${path.replace(/^\//, '')}`;
@@ -221,11 +225,12 @@ function photoLayoutClass(count: number) {
         </div>
       )}
       {galleryPhotos.length > 0 && (
-        <div class:list={['masonry-gallery', `masonry-gallery--${galleryLayout}`]} id="gallery">
+        <div class:list={['masonry-gallery', `masonry-gallery--${galleryLayout}`]} id="gallery" data-ordered-gallery={orderedGallery || undefined}>
           {galleryPhotos.map((photo, i) => (
             <div
               class="masonry-gallery__item"
               data-index={i}
+              data-photo-ratio={orderedGallery ? photoRatios.get(photo) : undefined}
               data-src={photoUrl(photo)}
               role="button"
               tabindex="0"
@@ -234,6 +239,7 @@ function photoLayoutClass(count: number) {
               <img
                 src={photoUrl(photo)}
                 alt={`${data.title} — photo ${i + 1}`}
+                style={orderedGallery ? `aspect-ratio: ${photoRatios.get(photo)}` : undefined}
                 loading={i < 6 ? 'eager' : 'lazy'}
                 decoding="async"
               />
@@ -514,6 +520,7 @@ function photoLayoutClass(count: number) {
 </Layout>
 
 <script>
+  import '../../scripts/ordered-gallery';
   // Collect all clickable photo items regardless of layout
   const allItems = Array.from(
     document.querySelectorAll<HTMLElement>('.masonry-gallery__item, .story-section__photo-item')

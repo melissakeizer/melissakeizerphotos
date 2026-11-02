@@ -335,7 +335,7 @@ const serialized = JSON.stringify({ slug, sections, effectiveLayouts }).replace(
       save.disabled = true;
       status.textContent = 'Saving to the local story file…';
       try {
-        const response = await fetch('/melissakeizerphotos/__story-editor/save', {
+        const response = await fetch(`${import.meta.env.BASE_URL.replace(/\/?$/, '/')}__story-editor/save`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ slug: original.slug, sections: nextSections, baseSections }),

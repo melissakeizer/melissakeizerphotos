@@ -7,7 +7,7 @@ import Heading from './Heading.astro';
 import { subtitleForStory } from '../lib/story-metadata';
 
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
-const stories = await getCollection('stories');
+const stories = await getCollection('stories', ({ data }) => !data.draft);
 const selections = [
   { slug: 'wild-ireland', image: 'photos/wild-ireland/000-cover.jpg', video: 'videos/wolf-looking-toward-camera.mp4', position: 'center 20%' },
   { slug: 'dubshed-northern-irelands-largest-car-show', image: 'photos/dubshed-northern-irelands-largest-car-show/000-ph_jg9l8ba69uqazrny.jpg' },

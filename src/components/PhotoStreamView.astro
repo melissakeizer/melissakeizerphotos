@@ -28,7 +28,7 @@ const questions = new Map(photoStreamQuestions.map(block => [
     <header class="field-notes-header">
       <div class="photostream-intro-copy">
         <p class="photostream-eyebrow">PhotoStream</p>
-        <DisplayHeading>For the girl<br />who misses <em>Flickr.</em></DisplayHeading>
+        <DisplayHeading>For the girl<br />who misses Flickr.</DisplayHeading>
       </div>
       <div class="photostream-phone" aria-hidden="true">
         <CameraDrawing variant="phone-full" id="photostream-phone-pencil" />
@@ -75,6 +75,9 @@ const questions = new Map(photoStreamQuestions.map(block => [
 </Layout>
 
 <style>
+  /* Captions size to their content in the feed; the old side-by-side layout
+     reserved 20rem here at intermediate widths. */
+  .photostream-page .field-notes-entry__details { min-height: 0; }
   .photostream-page .field-notes-interlude--qa { row-gap: 1.25rem; padding: clamp(1.5rem, 3vw, 3rem) 0; }
   .photostream-page .field-notes-interlude--qa .field-notes-interlude__item p { margin-top: .65rem; text-wrap: pretty; }
   .photostream-page .field-notes-interlude--two-column { grid-template-columns: repeat(2, minmax(0, 1fr)); }

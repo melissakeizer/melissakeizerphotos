@@ -1,13 +1,15 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import { storyEditorPlugin } from './scripts/story-editor-plugin.mjs';
+import { contentBoardPlugin } from './scripts/content-board-plugin.mjs';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://melissakeizer.github.io',
-  base: '/melissakeizerphotos',
+  site: 'https://melissakeizer.photos',
+  // Production lives at the domain root. The dev command supplies its local base.
+  base: '/',
   output: 'static',
   vite: {
-    plugins: [storyEditorPlugin()],
+    plugins: [storyEditorPlugin(), contentBoardPlugin()],
   },
 });

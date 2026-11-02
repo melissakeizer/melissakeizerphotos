@@ -4,13 +4,6 @@
 .opening-title { margin: 0; }
 .opening-title span { display: block; white-space: nowrap; }
 
-@font-face {
-  font-family: 'Cambon';
-  src: url('/melissakeizerphotos/fonts/cambon-regular-webfont.woff2') format('woff2');
-  font-display: swap;
-  font-style: normal;
-  font-weight: 400;
-}
 
 /* October story and mobile polish: one type scale, calmer reading rhythm. */
 .display-heading {
@@ -286,29 +279,6 @@
   }
 }
 
-@font-face {
-  font-family: 'Cambon';
-  src: url('/melissakeizerphotos/fonts/cambon-semibold-webfont.woff2') format('woff2');
-  font-display: swap;
-  font-style: normal;
-  font-weight: 600;
-}
-
-@font-face {
-  font-family: 'Fakt Pro';
-  src: url('/melissakeizerphotos/fonts/FaktPro-Normal.woff2') format('woff2');
-  font-display: swap;
-  font-style: normal;
-  font-weight: 400;
-}
-
-@font-face {
-  font-family: 'Fakt Pro';
-  src: url('/melissakeizerphotos/fonts/FaktPro-SemiBold.woff2') format('woff2');
-  font-display: swap;
-  font-style: normal;
-  font-weight: 600;
-}
 
 :root {
   --color-bg: #fafaf9;
@@ -950,6 +920,7 @@ body:has(.story-hero-wrapper:not(.story-hero-wrapper--split)) .site-nav__links {
   column-gap: 0.35rem;
   margin: 0 auto;
 }
+
 
 @media (max-width: 700px) {
   .masonry-gallery { columns: 2; }
@@ -1908,10 +1879,10 @@ html {
 
 /* ── Dark theme ──────────────────────────────────────────────────── */
 [data-theme="dark"] {
-  --color-bg: #0f0e0d;
-  --color-text: #f0ede8;
-  --color-muted: #9a9490;
-  --color-border: #2a2825;
+  --color-bg: var(--color-dark-surface);
+  --color-text: var(--color-dark-text);
+  --color-muted: var(--color-dark-muted);
+  --color-border: var(--color-dark-border);
 }
 
 [data-theme="dark"] body {
@@ -2322,7 +2293,7 @@ html {
 .stories-grid--archive .story-card__title { font-size: clamp(1.25rem, 1.8vw, 1.8rem); font-weight: 400; letter-spacing: -0.01em; line-height: 1; text-transform: none; }
 
 /* Field notes: a photographic stream, deliberately distinct from projects. */
-[data-theme="dark"] { --color-bg: #0d0d0c; --color-text: #f3f0e9; --color-muted: #9d9991; --color-border: #30302d; }
+[data-theme="dark"] { --color-bg: var(--color-dark-surface); --color-text: var(--color-dark-text); --color-muted: var(--color-dark-muted); --color-border: var(--color-dark-border); }
 .field-notes-page { padding: clamp(8rem, 14vw, 12rem) 5rem clamp(6rem, 10vw, 10rem); }
 .field-notes-header { max-width: 1280px; margin: 0 auto clamp(5rem, 10vw, 10rem); }
 .field-notes-header .home-kicker { color: var(--color-yellow); }
@@ -3194,14 +3165,20 @@ body:has(.home-page--selected) .site-nav__links { color: #f5f2eb; }
 /* One continuous dark surface behind the fixed navigation and PhotoStream. */
 html[data-theme="dark"],
 html[data-theme="dark"] body,
-[data-theme="dark"] .site-nav { background-color: #11110f; }
+[data-theme="dark"] .site-nav { background-color: var(--color-dark-surface); }
 
 /* Journal interludes woven into the primary PhotoStream. */
+:root {
+  --color-dark-surface: #1d1c1b;
+  --color-dark-text: #e8e1d3;
+  --color-dark-muted: #aaa293;
+  --color-dark-border: #45413d;
+}
 html[data-palette="warm-dark"] {
-  --color-bg: #1d1c1b;
-  --color-text: #f2eee3;
-  --color-muted: #aaa59b;
-  --color-border: #45413d;
+  --color-bg: var(--color-dark-surface);
+  --color-text: var(--color-dark-text);
+  --color-muted: var(--color-dark-muted);
+  --color-border: var(--color-dark-border);
 }
 html[data-palette="warm-dark"],
 html[data-palette="warm-dark"] body { background-color: var(--color-bg); }
@@ -3212,8 +3189,8 @@ html[data-palette="warm-light"] {
   --color-border: #dedad1;
 }
 .site-footer .site-footer__panel {
-  background: #1d1c1b;
-  color: #f2eee3;
+  background: var(--color-dark-surface);
+  color: var(--color-dark-text);
 }
 
 .field-notes-interlude {

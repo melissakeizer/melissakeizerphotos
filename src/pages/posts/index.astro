@@ -6,7 +6,7 @@ import ProjectCard from '../../components/ProjectCard.astro';
 import Heading from '../../components/Heading.astro';
 
 const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
-const stories = await getCollection('stories');
+const stories = await getCollection('stories', ({ data }) => !data.draft);
 const archiveOrder = new Map([
   ['vegas-baby', 6.5],
   ['dogs-of-dubrovnik', 8],
@@ -32,7 +32,7 @@ const categorySlug = (category: string) => category.toLowerCase().replace(/\s+/g
     <div class="archive-filters" aria-label="Filter posts">
       <button class="is-active" type="button" data-filter="all" aria-pressed="true">All</button>
       {categoryOrder.map((category) => (
-        <button type="button" data-filter={categorySlug(category)} aria-pressed="false">{category}</button>
+        <button type="button" data-filter={categorySlug(category)} aria-pressed="false"><span class="archive-filter-full">{category}</span><span class="archive-filter-mobile">{category === 'pet sessions' ? 'Pets' : category === 'live music' ? 'Music' : category}</span></button>
       ))}
     </div>
   </header>

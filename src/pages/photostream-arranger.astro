@@ -2,6 +2,7 @@
 import { photoStreamNotes } from '../lib/field-notes';
 import { photoStreamQuestions } from '../lib/photo-stream-questions';
 import sharp from 'sharp';
+import Fonts from '../components/Fonts.astro';
 import { resolve } from 'node:path';
 
 const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
@@ -21,13 +22,12 @@ const photoShapes = new Map((await Promise.all(photoStreamNotes.map(async note =
 <!doctype html>
 <html lang="en">
   <head>
+    <Fonts />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex, nofollow" />
     <title>PhotoStream arranger — local preview</title>
     <style is:global>
-      @font-face { font-family: 'Fakt Pro'; src: url('/melissakeizerphotos/fonts/FaktPro-Normal.woff2') format('woff2'); font-display: swap; }
-      @font-face { font-family: Cambon; src: url('/melissakeizerphotos/fonts/cambon-regular-webfont.woff2') format('woff2'); font-display: swap; }
       * { box-sizing: border-box; }
       html { background: #141411; }
       body { margin: 0; color: #f2eee6; background: #141411; font-family: 'Fakt Pro', Arial, sans-serif; }
@@ -46,6 +46,7 @@ const photoShapes = new Map((await Promise.all(photoStreamNotes.map(async note =
       .arranger-toolbar .primary { background: #f4cb25; color: #171611; border-color: #f4cb25; }
       .arranger-status { margin-left: auto; color: #aaa69e; font-size: 11px; }
       .arranger-feed { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; align-items: start; }
+      .arranger-page-marker { grid-column: 1 / -1; margin: 12px 0 3px; padding-top: 8px; border-top: 1px solid #625f55; color: #f4cb25; font-size: 12px; }
       .arranger-card { position: relative; min-width: 0; height: 78px; overflow: visible; border: 1px solid #45433b; background: #24231e; cursor: grab; }
       .arranger-card:active { cursor: grabbing; }
       .arranger-card.is-landscape, .arranger-card.is-qa { grid-column: 1 / -1; }
@@ -100,8 +101,9 @@ const photoShapes = new Map((await Promise.all(photoStreamNotes.map(async note =
       <div class="arranger-toolbar">
         <button type="button" data-add-qa>Add Q&amp;A card</button>
         <button type="button" data-reset>Reset draft</button>
+        <button type="button" data-restore-draft hidden>Restore older browser draft</button>
         <button type="button" class="primary" data-export>Copy changes for Codex</button>
-        <span class="arranger-status" role="status" data-status>Draft is saved in this browser</span>
+        <span class="arranger-status" role="status" data-status>Showing the current site layout</span>
       </div>
       <div class="arranger-feed" data-feed>
         {photoStreamNotes.map(note => (
@@ -140,13 +142,16 @@ const photoShapes = new Map((await Promise.all(photoStreamNotes.map(async note =
       <button type="button" data-copy-again>Copy text</button><button type="button" data-close-dialog>Close</button>
     </dialog>
     <script>
-      type Draft = { version: 1; ids: string[]; topics: Record<string, string>; removedQa: string[]; removedPhotos?: string[] };
+      import { paginatePhotoStream, photoStreamPageSize } from '../lib/photo-stream-pagination';
+      type Draft = { version: 1; sourceSignature?: string; ids: string[]; topics: Record<string, string>; removedQa: string[]; removedPhotos?: string[] };
       const storageKey = 'mk-photostream-arranger-v1';
       const feed = document.querySelector<HTMLElement>('[data-feed]')!;
       const end = document.querySelector<HTMLElement>('[data-end]')!;
       const status = document.querySelector<HTMLElement>('[data-status]')!;
       const originalCards = [...feed.querySelectorAll<HTMLElement>('.arranger-card')];
       const originalIds = originalCards.map(card => card.dataset.id!);
+      const sourceSignature = JSON.stringify({ ids: originalIds, pageSize: photoStreamPageSize });
+      const restoreDraftButton = document.querySelector<HTMLButtonElement>('[data-restore-draft]')!;
       const originalPhotoCards = new Map(originalCards.filter(card => card.dataset.kind === 'photo').map(card => [card.dataset.id!, card]));
       const setAside = document.querySelector<HTMLElement>('[data-set-aside]')!;
       const setAsideList = document.querySelector<HTMLElement>('[data-set-aside-list]')!;
@@ -162,9 +167,35 @@ const photoShapes = new Map((await Promise.all(photoStreamNotes.map(async note =
       const cards = () => [...feed.querySelectorAll<HTMLElement>('.arranger-card')];
       const byId = (id: string) => cards().find(card => card.dataset.id === id);
       const announce = (message: string) => { status.textContent = message; };
+      const updatePages = () => {
+        feed.querySelectorAll('[data-page-marker]').forEach(marker => marker.remove());
+        const currentCards = cards();
+        const photos = currentCards.filter(card => card.dataset.kind === 'photo').map(card => ({ image: card.dataset.id! }));
+        const landscapes = new Set(currentCards.filter(card => card.classList.contains('is-landscape')).map(card => card.dataset.id!));
+        const breaks = new Set<string>();
+        currentCards.forEach((card, index) => {
+          if (card.dataset.kind === 'qa') {
+            const next = currentCards.slice(index + 1).find(item => item.dataset.kind === 'photo');
+            if (next) breaks.add(next.dataset.id!);
+          }
+        });
+        paginatePhotoStream(photos, landscapes, breaks).forEach((page, index) => {
+          const first = byId(page[0].image)!;
+          let target = first;
+          let position = currentCards.indexOf(first);
+          while (position > 0 && currentCards[position - 1].dataset.kind === 'qa') target = currentCards[--position];
+          const marker = document.createElement('div');
+          marker.className = 'arranger-page-marker';
+          marker.dataset.pageMarker = '';
+          marker.textContent = `Page ${index + 1} · ${page.length} photos`;
+          feed.insertBefore(marker, target);
+        });
+      };
       const save = () => {
+        updatePages();
         const draft: Draft = {
           version: 1,
+          sourceSignature,
           ids: cards().map(card => card.dataset.id!),
           topics: Object.fromEntries(cards().filter(card => card.dataset.kind === 'qa').map(card => [card.dataset.id!, card.querySelector<HTMLInputElement>('.qa-topic')?.value.trim() || 'Untitled Q&A'])),
           removedQa,
@@ -215,9 +246,7 @@ const photoShapes = new Map((await Promise.all(photoStreamNotes.map(async note =
         }
       };
 
-      try {
-        const saved = JSON.parse(localStorage.getItem(storageKey) || 'null') as Draft | null;
-        if (saved?.version === 1 && Array.isArray(saved.ids)) {
+      const restoreDraft = (saved: Draft) => {
           removedQa = Array.isArray(saved.removedQa) ? saved.removedQa.filter(id => originalIds.includes(id) && id.startsWith('qa:')) : [];
           removedPhotos = Array.isArray(saved.removedPhotos) ? [...new Set(saved.removedPhotos.filter(id => originalPhotoCards.has(id)))] : [];
           for (const id of removedQa) byId(id)?.remove();
@@ -235,9 +264,23 @@ const photoShapes = new Map((await Promise.all(photoStreamNotes.map(async note =
             const topic = saved.topics?.[card.dataset.id!];
             if (topic && card.dataset.kind === 'qa') card.querySelector<HTMLInputElement>('.qa-topic')!.value = topic;
           }
+        updatePages();
+        renderSetAside();
+        announce('Showing your saved browser draft');
+      };
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey) || 'null') as Draft | null;
+        if (saved?.version === 1 && Array.isArray(saved.ids)) {
+          if (saved.sourceSignature === sourceSignature) restoreDraft(saved);
+          else {
+            announce('Showing the current site layout. An older browser draft is available to restore.');
+            restoreDraftButton.hidden = false;
+            restoreDraftButton.addEventListener('click', () => { restoreDraft(saved); restoreDraftButton.hidden = true; });
+          }
         }
       } catch { announce('Could not read the saved draft; showing the current feed'); }
       renderSetAside();
+      updatePages();
 
       feed.addEventListener('click', event => {
         const target = event.target as HTMLElement;

@@ -5,7 +5,7 @@ import { categoriesForStory } from '../../lib/story-metadata';
 const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
 
 export async function getStaticPaths() {
-  const stories = await getCollection('stories');
+  const stories = await getCollection('stories', ({ data }) => !data.draft);
   const categories = new Set(stories.flatMap((story) => categoriesForStory(story.id, story.data.categories)));
   return [...categories].map((category) => ({
     params: { category: category.toLowerCase().replace(/\s+/g, '-') },

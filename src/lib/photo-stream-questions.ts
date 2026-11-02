@@ -32,7 +32,7 @@ export const allPhotoStreamQuestions: PhotoStreamQuestionBlock[] = [
   },
   {
     id: 'pictures',
-    beforeImage: 'matisse-castle-park-final.jpg',
+    beforeImage: 'matisse-refinds-1-4.jpg',
     label: 'Behind the pictures',
     layout: 'two-column',
     items: [

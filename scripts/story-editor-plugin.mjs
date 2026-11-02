@@ -44,7 +44,8 @@ export function storyEditorPlugin() {
     configureServer(server) {
       server.middlewares.use(async (request, response, next) => {
         const pathname = new URL(request.url || '/', 'http://localhost').pathname;
-        if (pathname !== '/melissakeizerphotos/__story-editor/save' && pathname !== '/__story-editor/save') return next();
+        const savePath = `${server.config.base.replace(/\/?$/, '/')}__story-editor/save`;
+        if (pathname !== savePath && pathname !== '/__story-editor/save') return next();
         if (request.method !== 'POST') return send(response, 405, { error: 'Method not allowed.' });
 
         try {

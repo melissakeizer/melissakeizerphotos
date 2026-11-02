@@ -1,4 +1,10 @@
 /* Tablet reading scale and layouts, between the phone and desktop compositions. */
+.archive-filter-mobile { display: none; }
+@media (max-width: 600px) {
+  .archive-filter-full { display: none; }
+  .archive-filter-mobile { display: inline; }
+  .archive-header .archive-filters { column-gap: .65rem; }
+}
 @media (min-width: 701px) and (max-width: 1280px) {
   [data-wrap-tablet="true"] { flex-wrap: wrap; gap: .75rem; }
   [data-wrap-tablet="true"] > .story-section__photo-item { flex: var(--photo-ratio, 1) 1 0 !important; min-width: 0; }
@@ -38,8 +44,8 @@
   }
   .story-header__title, .story-hero__title, .story-hero-split__title { font-size: var(--type-h1); text-wrap: balance; }
   .story-section__text, .type-paragraph--story, .story-intro { font-size: 1.125rem; line-height: 1.55; }
-  .story-section__text, .story-intro { max-width: 60ch; margin-inline: auto; }
-  .story-section__title { max-width: 60ch; margin-inline: auto; }
+  .story-section__text, .story-intro { max-width: 36rem; margin-inline: auto; }
+  .story-section__title { max-width: 36rem; margin-inline: auto; }
   .story-section { --story-beat-gap: 2.5rem; margin-bottom: 3.5rem; }
   .story-section__text p + p { margin-top: 1.25em; }
   .story-section__content { margin-bottom: 2.5rem; }
@@ -76,9 +82,9 @@
 }
 @media (min-width: 501px) and (max-width: 1180px) {
   .opening-home.opening-home .opening-spread { display: block; padding: 7.5rem var(--site-margin) 4rem; }
-  .opening-home.opening-home .opening-left { height: auto; min-height: 0; display: block; padding: 3rem 0; }
+  .opening-home.opening-home .opening-left { height: auto; min-height: 0; display: block; padding: 3rem 0 4rem; }
   .opening-home.opening-home .opening-copy { max-width: 36rem; padding: 0; }
-  .opening-home.opening-home .opening-copy > p { max-width: 34ch; margin-top: 1.25rem; }
+  .opening-home.opening-home.opening-home .opening-copy > p { max-width: 40ch; margin-top: 1.25rem; }
   .opening-home.opening-home .opening-more { margin-top: 1.5rem; }
   .opening-home.opening-home .opening-more .home-text-link--button { margin: 0; min-height: 44px; padding: .9rem 1.25rem; font-size: .7rem; }
   .opening-home.opening-home .opening-camera { width: 32rem; max-width: none; top: auto; bottom: -7rem; left: auto; right: -3rem; opacity: .36; }
@@ -97,8 +103,43 @@
   .story-section--split .story-section__content { width: 100%; margin-bottom: 0; }
   .story-section--split .story-section__split-photo { width: 100%; max-width: 46rem; margin-inline: auto; }
   .photostream-page { display: block; overflow-x: clip; padding-top: 10rem; }
-  :root .photostream-page.photostream-page.photostream-page .field-notes-header { position: relative; top: auto; height: 13rem; padding: 0; margin-bottom: 2rem; clip-path: none; }
+  :root .photostream-page.photostream-page.photostream-page .field-notes-header { position: relative; top: auto; height: 10rem; padding: 0; margin-bottom: 2rem; clip-path: none; }
   .photostream-page.photostream-page .photostream-intro-copy { padding-left: 12%; }
-  .photostream-page.photostream-page .photostream-phone { width: 12rem; top: 4.5rem; bottom: auto; left: auto; right: -3.5rem; opacity: .36; }
+  .photostream-page.photostream-page .photostream-phone { width: 12rem; top: 1.5rem; bottom: auto; left: auto; right: -3.5rem; opacity: .36; }
   .photostream-page .field-notes-feed { position: relative; z-index: 1; }
+}
+
+/* Keep the reading column narrower than the photography at every width.
+   A shared pixel measure aligns headings with the copy despite their type size. */
+.story-article .story-section__text,
+.story-article .story-section__title {
+  width: min(calc(100% - 2rem), 36rem);
+  max-width: 36rem;
+  margin-inline: auto;
+  text-align: left;
+}
+
+/* One continuous masonry surface, preserving the editorial reading sequence. */
+.masonry-gallery[data-ordered-gallery] {
+  --gallery-columns: 3;
+  display: grid;
+  grid-template-columns: repeat(var(--gallery-columns), minmax(0, 1fr));
+  column-gap: .35rem;
+  row-gap: 0;
+}
+.masonry-gallery[data-ordered-gallery].is-ordered { grid-auto-rows: 1px; }
+.masonry-gallery[data-ordered-gallery] > .masonry-gallery__item {
+  margin: 0;
+  align-self: start;
+}
+@media (min-width: 601px) and (max-width: 1280px) {
+  .masonry-gallery[data-ordered-gallery] { --gallery-columns: 2; column-gap: .75rem; }
+}
+@media (max-width: 600px) {
+  .masonry-gallery[data-ordered-gallery] { --gallery-columns: 1; column-gap: .75rem; }
+}
+.story-article .story-section__title {
+  font-size: clamp(1.4rem, 2.8vw, 1.85rem);
+  line-height: 1.18;
+  text-wrap: balance;
 }

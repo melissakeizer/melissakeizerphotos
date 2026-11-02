@@ -21,5 +21,13 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 
+# Keep Barcelona camera originals locally; publish the resized gallery copies.
+/public/photos/barcelona/*
+!/public/photos/barcelona/web/
+
+# Private planning notes stay on this computer, outside the public repository.
+/content-planning/ideas.json
+/content-planning/ideas.json.tmp
+
 # jetbrains setting folder
 .idea/

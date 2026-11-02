@@ -4,6 +4,7 @@ import '../styles/typography.css';
 import '../styles/tablet.css';
 import '../styles/entrances.css';
 import SiteFooter from '../components/SiteFooter.astro';
+import Fonts from '../components/Fonts.astro';
 
 interface Props {
   title?: string;
@@ -29,6 +30,7 @@ const isDev = import.meta.env.DEV;
 <!doctype html>
 <html lang="en" data-theme={theme} data-palette={palette}>
   <head>
+    <Fonts />
     <script is:inline>document.documentElement.classList.add('camera-draw-enabled');</script>
     <script is:inline>
       if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {

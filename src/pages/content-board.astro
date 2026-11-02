@@ -1,0 +1,142 @@
+---
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import Fonts from '../components/Fonts.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+if (!import.meta.env.DEV) return Astro.redirect(base);
+const ideas = JSON.parse(await fs.readFile(path.resolve('content-planning/ideas.json'), 'utf8')) as {
+  id: string; title: string; kind: string; status: string; notes: string;
+}[];
+const columns = [
+  { id: 'ideas', label: 'Ideas' },
+  { id: 'gathering', label: 'Gathering material' },
+  { id: 'ready', label: 'Ready' },
+  { id: 'published', label: 'Published' },
+];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <Fonts />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Website ideas · private planning board</title>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div><p class="eyebrow">Melissa’s photo journal · local planning board</p><h1>What’s next?</h1></div>
+        <a href={base}>Back to the site ↗</a>
+      </header>
+      <p class="intro">A place for the photos and stories still to come. Move a card as its material comes together, then tick it off when it’s published. Changes save to our project files.</p>
+      <p class="status" role="status" aria-live="polite">Private local board. These notes aren’t included in the live site.</p>
+      <div class="board">
+        {columns.map(column => (
+          <section class="column" data-column={column.id} aria-label={column.label}>
+            <h2>{column.label}<span class="count">{ideas.filter(idea => idea.status === column.id).length}</span></h2>
+            <div class="cards">
+              {ideas.filter(idea => idea.status === column.id).map(idea => (
+                <article class="plan-card" data-id={idea.id} data-status={idea.status} draggable="true">
+                  <p class="kind">{idea.kind}</p>
+                  <h3>{idea.title}</h3>
+                  <p class="notes">{idea.notes}</p>
+                  <label class="published"><input type="checkbox" checked={idea.status === 'published'} aria-label={`Mark ${idea.title} as published`} /> Published</label>
+                  <label class="move">Move to <select aria-label={`Status for ${idea.title}`}>
+                    {columns.map(option => <option value={option.id} selected={option.id === idea.status}>{option.label}</option>)}
+                  </select></label>
+                </article>
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+      <p class="footer-note">A Few Favourites is safely kept as a draft. Its photos can be reused in the new portfolios or PhotoStream.</p>
+    </main>
+    <script>
+      const board = document.querySelector<HTMLElement>('.board')!;
+      const status = document.querySelector<HTMLElement>('.status')!;
+      const updateCounts = () => board.querySelectorAll<HTMLElement>('.column').forEach(column => {
+        column.querySelector('.count')!.textContent = String(column.querySelectorAll('.plan-card').length);
+      });
+      const moveCard = async (card: HTMLElement, next: string) => {
+        const previous = card.dataset.status!;
+        if (previous === next || card.getAttribute('aria-busy') === 'true') return;
+        card.setAttribute('aria-busy', 'true');
+        card.querySelectorAll<HTMLInputElement | HTMLSelectElement>('input, select').forEach(control => control.disabled = true);
+        status.textContent = 'Saving…';
+        try {
+          const response = await fetch(`${import.meta.env.BASE_URL.replace(/\/?$/, '/')}__content-board/status`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: card.dataset.id, status: next, previousStatus: previous }),
+          });
+          const result = await response.json();
+          if (!response.ok) throw new Error(result.error);
+          card.dataset.status = next;
+          board.querySelector(`[data-column="${next}"] .cards`)!.append(card);
+          status.textContent = 'Saved to the project.';
+          updateCounts();
+        } catch (error) {
+          status.textContent = error instanceof Error ? error.message : 'Could not save. Please try again.';
+        } finally {
+          card.querySelector<HTMLSelectElement>('select')!.value = card.dataset.status!;
+          card.querySelector<HTMLInputElement>('input')!.checked = card.dataset.status === 'published';
+          card.querySelectorAll<HTMLInputElement | HTMLSelectElement>('input, select').forEach(control => control.disabled = false);
+          card.removeAttribute('aria-busy');
+        }
+      };
+      board.addEventListener('change', event => {
+        const control = event.target as HTMLInputElement | HTMLSelectElement;
+        const card = control.closest<HTMLElement>('.plan-card');
+        if (card) moveCard(card, control instanceof HTMLSelectElement ? control.value : control.checked ? 'published' : 'ready');
+      });
+      let dragging: HTMLElement | null = null;
+      board.addEventListener('dragstart', event => {
+        dragging = (event.target as HTMLElement).closest<HTMLElement>('.plan-card');
+        if (dragging) event.dataTransfer?.setData('text/plain', dragging.dataset.id!);
+      });
+      board.querySelectorAll<HTMLElement>('.column').forEach(column => {
+        column.addEventListener('dragover', event => { event.preventDefault(); column.classList.add('over'); });
+        column.addEventListener('dragleave', () => column.classList.remove('over'));
+        column.addEventListener('drop', event => {
+          event.preventDefault(); column.classList.remove('over');
+          if (dragging) moveCard(dragging, column.dataset.column!);
+        });
+      });
+      board.addEventListener('dragend', () => {
+        dragging = null; board.querySelectorAll('.over').forEach(column => column.classList.remove('over'));
+      });
+    </script>
+  </body>
+</html>
+<style is:global>
+  * { box-sizing: border-box; }
+  body { margin: 0; color: #e8e1d3; background: #1d1c1b; font: 15px/1.5 'Fakt Pro', Arial, sans-serif; }
+  main { max-width: 1600px; margin: auto; padding: 40px 28px; }
+  header { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+  .eyebrow { margin: 0 0 12px; color: #edc925; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
+  h1 { margin: 0; font: 48px/1.1 Cambon, Georgia, serif; }
+  a { color: #edc925; text-underline-offset: 5px; }
+  .intro { max-width: 72ch; color: #bdb5a7; margin: 24px 0 12px; }
+  .status, .footer-note { color: #aaa293; font-size: 12px; }
+  .board { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 24px; align-items: start; }
+  .column { min-height: 260px; padding: 14px; border: 1px solid #45413d; border-radius: 8px; background: #242220; }
+  .column.over { border-color: #edc925; }
+  h2 { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin: 0 0 18px; font-size: 14px; }
+  .count { color: #aaa293; font-size: 12px; }
+  .cards { display: grid; gap: 12px; }
+  .plan-card { padding: 16px; background: #302d29; border: 1px solid #4a443c; border-radius: 6px; cursor: grab; }
+  .plan-card[aria-busy="true"] { opacity: .65; }
+  .kind { margin: 0 0 8px; color: #d5bc76; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
+  h3 { margin: 0; font: 24px/1.15 Cambon, Georgia, serif; }
+  .notes { color: #c0b7a9; font-size: 13px; }
+  .published { display: flex; align-items: center; gap: 7px; margin: 16px 0 12px; color: #c0b7a9; font-size: 12px; }
+  input { accent-color: #edc925; }
+  .move { display: flex; align-items: center; gap: 8px; font-size: 11px; color: #aaa293; }
+  select { min-width: 0; width: 100%; padding: 6px; color: #e8e1d3; background: #242220; border: 1px solid #665e50; border-radius: 4px; font: inherit; }
+  :focus-visible { outline: 2px solid #edc925; outline-offset: 3px; }
+  .footer-note { margin-top: 24px; }
+  @media (max-width: 1000px) { .board { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 600px) { main { padding: 24px 16px; } header { align-items: start; } header a { font-size: 12px; } h1 { font-size: 36px; } .board { grid-template-columns: 1fr; } }
+</style>

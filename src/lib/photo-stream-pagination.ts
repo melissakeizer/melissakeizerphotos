@@ -1,4 +1,4 @@
-export const photoStreamPageSize = 10;
+export const photoStreamPageSize = 18;
 
 // Paginate complete visual rows, never splitting a pair of portraits.
 export function paginatePhotoStream<T extends { image: string }>(

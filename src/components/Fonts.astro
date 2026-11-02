@@ -1,0 +1,13 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const faces = [
+  ['Cambon', 'cambon-regular-webfont.woff2', 400],
+  ['Cambon', 'cambon-semibold-webfont.woff2', 600],
+  ['Fakt Pro', 'FaktPro-Normal.woff2', 400],
+  ['Fakt Pro', 'FaktPro-SemiBold.woff2', 600],
+];
+const css = faces.map(([family, file, weight]) =>
+  `@font-face { font-family: '${family}'; src: url('${base}fonts/${file}') format('woff2'); font-display: swap; font-style: normal; font-weight: ${weight}; }`
+).join('\n');
+---
+<style is:inline set:html={css} />
