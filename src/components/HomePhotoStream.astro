@@ -10,8 +10,8 @@ const previewPhotos = picks.map(image => fieldNotes.find(note => note.image === 
 <div class="photostream-home-strip">
     <section class="home-field-notes home-field-notes--preview home-field-notes--light-preview" id="field-notes" aria-labelledby="field-notes-title">
       <div class="home-field-notes__phone" aria-hidden="true">
-        <div class="home-phone-crop"><CameraDrawing variant="phone" /></div>
-        <div class="home-phone-full"><CameraDrawing variant="phone-full" id="home-phone-full-pencil" /></div>
+        <div class="home-phone-crop"><CameraDrawing variant="phone" duration={4.5} /></div>
+        <div class="home-phone-full"><CameraDrawing variant="phone-full" id="home-phone-full-pencil" duration={4.5} /></div>
       </div>
       <div class="home-field-notes__intro">
         <Heading as="h2" id="field-notes-title">PhotoStream</Heading>

@@ -8,8 +8,10 @@ import { lensStrokes, lensAccents } from '../lib/lens-drawing';
 import { cameraStrokes, cameraAccents, cameraDrawingDuration, cameraDrawingTimeScale } from '../lib/camera-drawing';
 import { cameraRightEdge } from '../lib/camera-right-edge';
 
-interface Props { id?: string; variant?: 'camera' | 'phone' | 'phone-full' | 'lens'; }
-const { variant = 'camera', id = `home-${variant}-pencil` } = Astro.props;
+interface Props { id?: string; variant?: 'camera' | 'phone' | 'phone-full' | 'lens'; duration?: number; }
+const { variant = 'camera', id = `home-${variant}-pencil`, duration = cameraDrawingDuration } = Astro.props;
+// Scale the entire stroke sequence, including its final grain reveal, together.
+const timeScale = cameraDrawingTimeScale * duration / cameraDrawingDuration;
 const drawings = {
   camera: { source: cameraSource, strokes: cameraStrokes, accents: cameraAccents, width: 1664, height: 1024, viewBox: '0 0 1536 1024' },
   phone: { source: phoneSource, strokes: phoneStrokes, accents: phoneAccents, width: 1230, height: 1278, viewBox: '0 0 1230 1278' },
@@ -28,8 +30,8 @@ if (!graphite || !yellow) throw new Error('Camera pencil SVG is missing its artw
   focusable="false"
   data-pencil-camera
   data-drawing={variant}
-  data-duration={cameraDrawingDuration}
-  style={`--drawing-speed:${cameraDrawingTimeScale}`}
+  data-duration={duration}
+  style={`--drawing-speed:${timeScale}`}
 >
   <defs>
     <mask id={`${id}-graphite`} maskUnits="userSpaceOnUse" x="0" y="0" width={width} height={height} style="mask-type: luminance">

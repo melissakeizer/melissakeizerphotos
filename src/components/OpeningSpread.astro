@@ -24,7 +24,7 @@ const selections = [
         <p>A home for little adventures, wet noses, beautiful places and moments worth remembering — from Northern Ireland <span class="opening-ending">and beyond.</span></p>
         <div class="opening-more"><a class="home-text-link home-text-link--button" href={`${base}posts/`}>See all stories <span aria-hidden="true">→</span></a></div>
       </header>
-      <div class="opening-camera" aria-hidden="true"><CameraDrawing id="opening-spread-camera" /></div>
+      <div class="opening-camera" aria-hidden="true"><CameraDrawing id="opening-spread-camera" duration={5.5} /></div>
     </div>
     <div class="opening-posts">
       {selections.map(post => {
