@@ -134,10 +134,11 @@ const questions = new Map(photoStreamQuestions.map(block => [
     .photostream-phone { width: 14.3rem; bottom: -6rem; }
   }
   @media (max-width: 700px) {
+    .photostream-page { overflow-x: clip; }
     .photostream-page .field-notes-header { height: 10rem; padding-right: 0; margin-bottom: 1.5rem; clip-path: none; }
     .photostream-intro-copy { padding-left: 12%; }
     .photostream-eyebrow { margin-bottom: .8rem; font-size: .62rem; }
-    .photostream-phone { top: 125px; bottom: auto; left: -12px; width: 150px; opacity: .36; }
+    .photostream-phone { top: 105px; bottom: auto; left: auto; right: -46px; width: 150px; opacity: .36; }
     .photostream-page .field-notes-feed { position: relative; z-index: 1; }
     .photostream-page .field-notes-interlude--qa { padding: 2rem 0 3rem; row-gap: 1.5rem; }
     .photostream-page .field-notes-interlude__heading .home-kicker { white-space: nowrap; font-size: 1.05rem; }
