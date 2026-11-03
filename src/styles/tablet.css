@@ -105,7 +105,7 @@
   .photostream-page { display: block; overflow-x: clip; padding-top: 10rem; }
   :root .photostream-page.photostream-page.photostream-page .field-notes-header { position: relative; top: auto; height: 10rem; padding: 0; margin-bottom: 2rem; clip-path: none; }
   .photostream-page.photostream-page .photostream-intro-copy { padding-left: 12%; }
-  .photostream-page.photostream-page .photostream-phone { width: 12rem; top: 1.5rem; bottom: auto; left: auto; right: -3.5rem; opacity: .36; }
+  .photostream-page.photostream-page .photostream-phone { width: 12rem; top: calc(100% + 2rem); bottom: auto; left: auto; right: -3.5rem; opacity: .36; }
   .photostream-page .field-notes-feed { position: relative; z-index: 1; }
 }
 

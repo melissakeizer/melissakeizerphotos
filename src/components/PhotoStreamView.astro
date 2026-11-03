@@ -28,9 +28,9 @@ function photoUrl(path: string) {
         {/* PhotoStream eyebrow hidden while reviewing the simpler title treatment. */}
         <DisplayHeading>For the girl<br />who misses Flickr.</DisplayHeading>
         <p class="photostream-intro-description">A photo journal of some shots I'm proud of, some everyday moments, and more than a few dogs.</p>
-      </div>
-      <div class="photostream-phone" aria-hidden="true">
-        <CameraDrawing variant="phone-full" id="photostream-phone-pencil" />
+        <div class="photostream-phone" aria-hidden="true">
+          <CameraDrawing variant="phone-full" id="photostream-phone-pencil" />
+        </div>
       </div>
     </header>
 
@@ -136,7 +136,8 @@ function photoUrl(path: string) {
   .photostream-phone {
     position: absolute;
     left: calc(-1 * var(--photostream-inset) - 1rem - 20px);
-    bottom: -4rem;
+    top: calc(100% + 2.5rem);
+    bottom: auto;
     width: clamp(15.4rem, calc((100svh - 22rem) * .55), 24.2rem);
     opacity: .48;
     filter: brightness(1.8);
@@ -152,14 +153,14 @@ function photoUrl(path: string) {
       clip-path: inset(0 -1rem 0 -100vw);
     }
     .photostream-intro-copy { padding-left: 35%; }
-    .photostream-phone { width: 14.3rem; bottom: -6rem; }
+    .photostream-phone { width: 14.3rem; }
   }
   @media (max-width: 700px) {
     .photostream-page { overflow-x: clip; }
     .photostream-page .field-notes-header { height: 10rem; padding-right: 0; margin-bottom: 1.5rem; clip-path: none; }
     .photostream-intro-copy { padding-left: 12%; }
     .photostream-eyebrow { margin-bottom: .8rem; font-size: .62rem; }
-    .photostream-phone { top: 105px; bottom: auto; left: auto; right: -46px; width: 150px; opacity: .36; }
+    .photostream-page.photostream-page .photostream-phone { top: calc(100% + 2rem); bottom: auto; left: auto; right: -46px; width: 150px; opacity: .36; }
     .photostream-page .field-notes-feed { position: relative; z-index: 1; }
     .photostream-page .field-notes-interlude--qa { padding: 2rem 0 3rem; row-gap: 1.5rem; }
     .photostream-page .field-notes-interlude__heading .home-kicker { white-space: nowrap; font-size: 1.05rem; }

@@ -65,6 +65,7 @@ const yellowUrl = base + await drawingLayer(yellow.replace(`id="${id}-yellow-art
      extend beyond that canvas without rescaling or repositioning the camera. */
   .pencil-camera[data-drawing="camera"] { overflow: visible; }
   .pencil-camera__pen { stroke-dasharray: 1; stroke-dashoffset: 0; }
+  :global(.camera-draw-enabled) .pencil-camera:not(.is-loaded) .pencil-camera__art { visibility: hidden; }
   /* Without JS the fully drawn vector stays visible. JS enables the replay
      only after the component is in view. */
   :global(.camera-draw-enabled) .pencil-camera__pen {
@@ -93,7 +94,7 @@ const yellowUrl = base + await drawingLayer(yellow.replace(`id="${id}-yellow-art
 
 <script>
   const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  function setupCamera(svg: SVGSVGElement) {
+  async function setupCamera(svg: SVGSVGElement) {
     if (svg.dataset.ready) return;
     svg.dataset.ready = 'true';
     let observer: IntersectionObserver | undefined;
@@ -108,6 +109,18 @@ const yellowUrl = base + await drawingLayer(yellow.replace(`id="${id}-yellow-art
       observer?.disconnect();
     };
     svg.querySelector('.pencil-camera__finish')?.addEventListener('animationend', finish, { once: true });
+    // SVG <image> can otherwise display its broken-image placeholder through
+    // an animated mask while its external vector layer is still loading.
+    try {
+      const urls = [...svg.querySelectorAll('image')].map(image => image.getAttribute('href')).filter((url): url is string => Boolean(url));
+      await Promise.all(urls.map(url => new Promise<void>((resolve, reject) => {
+        const artwork = new Image();
+        artwork.onload = () => resolve();
+        artwork.onerror = () => reject(new Error(`Drawing artwork could not load: ${url}`));
+        artwork.src = url;
+      })));
+    } catch (error) { console.warn(error); return; }
+    svg.classList.add('is-loaded');
     if (motion.matches || !('IntersectionObserver' in window) || !document.documentElement.classList.contains('camera-draw-enabled')) finish();
     else {
       observer = new IntersectionObserver(entries => {

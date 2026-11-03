@@ -33,6 +33,11 @@ const isDev = import.meta.env.DEV;
     <Fonts />
     <script is:inline>
       if (window.CSS && CSS.supports('translate', '0')) document.documentElement.classList.add('camera-draw-enabled');
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('video-autoplay-enabled');
+        // If enhancement JS cannot load, photos remain a dependable fallback.
+        window.cardVideoFallback = setTimeout(() => document.documentElement.classList.remove('video-autoplay-enabled'), 2000);
+      }
     </script>
     <script is:inline>
       if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window && window.CSS && CSS.supports('selector(:where(*))') && CSS.supports('translate', '0')) {

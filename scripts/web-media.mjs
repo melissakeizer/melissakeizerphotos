@@ -1,7 +1,7 @@
 import sharp from 'sharp';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
-import { createHash } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 
 // A generous high-DPI/lightbox copy, without enlarging or cropping. Originals
 // stay untouched in public/photos; only referenced web copies are deployed.
@@ -57,11 +57,25 @@ async function prepare(relative) {
   return { variants, largest: variants.at(-1).path, width, height, originalWidth, originalHeight };
 }
 
+const pendingDrawings = new Map();
 export async function drawingLayer(artwork, width, height) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}">${artwork}</svg>`;
   const key = createHash('sha256').update(svg).digest('hex').slice(0, 24);
   const relative = `_drawings/${key}.svg`;
-  await fs.mkdir(path.resolve('public/_drawings'), { recursive: true });
-  await fs.writeFile(path.resolve('public', relative), svg);
+  const output = path.resolve('public', relative);
+  if (!pendingDrawings.has(output)) {
+    const write = (async () => {
+      await fs.mkdir(path.dirname(output), { recursive: true });
+      if (await fs.readFile(output, 'utf8').catch(error => { if (error.code !== 'ENOENT') throw error; return null; }) === svg) return;
+      // Never truncate an SVG that the dev server may be serving to a browser.
+      // Concurrent renders share this promise; rename exposes only a complete file.
+      const temporary = `${output}.${randomUUID()}.tmp`;
+      try { await fs.writeFile(temporary, svg); await fs.rename(temporary, output); }
+      finally { await fs.rm(temporary, { force: true }); }
+    })();
+    pendingDrawings.set(output, write);
+    write.catch(() => pendingDrawings.delete(output));
+  }
+  await pendingDrawings.get(output);
   return relative;
 }

@@ -32,6 +32,13 @@ test('web media preserves originals, orientation, responsive widths, deduplicati
     await assert.rejects(webPhoto('photos/%2e%2e/%2e%2e/escape.jpg'), /Invalid photo path/);
     const layer = await drawingLayer('<g><path d="M0 0h10v10z"/></g>', 10, 10);
     assert.match(await fs.readFile('public/' + layer, 'utf8'), /viewBox="0 0 10 10"/);
+    const layerBytes = await fs.readFile('public/' + layer);
+    const layerStat = await fs.stat('public/' + layer);
+    const simultaneous = await Promise.all(Array.from({ length: 30 }, () => drawingLayer('<g><path d="M0 0h10v10z"/></g>', 10, 10)));
+    assert.ok(simultaneous.every(result => result === layer));
+    assert.deepEqual(await fs.readFile('public/' + layer), layerBytes);
+    assert.equal((await fs.stat('public/' + layer)).mtimeMs, layerStat.mtimeMs, 'page renders do not rewrite an artwork file being served');
+    assert.ok((await fs.readdir('public/_drawings')).every(file => file.endsWith('.svg')), 'no temporary files remain');
     await fs.mkdir('dist/photos', { recursive: true });
     await fs.copyFile('public/photos/test.jpg', 'dist/photos/test.jpg');
     await fs.copyFile('public/photos/unused.jpg', 'dist/photos/unused.jpg');

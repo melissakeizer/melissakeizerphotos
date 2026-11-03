@@ -24,9 +24,9 @@ const videoPosition = media?.position ?? Astro.props.videoPosition;
 
 <article class="project-card" data-categories={categories?.join('|')}>
   <a href={href}>
-    <div class="project-card__image">
+    <div class="project-card__image" data-video-state={video ? 'pending' : undefined}>
       {image && <Photo src={image} alt={title} sizes="(max-width: 600px) 46vw, (max-width: 1280px) 45vw, 30vw" style={videoPosition ? `object-position: ${videoPosition}` : undefined} loading="lazy" decoding="async" />}
-      {video && <video class="project-card__video" src={video} poster={image} style={videoPosition ? `object-position: ${videoPosition}` : undefined} muted loop playsinline webkit-playsinline preload="none" aria-hidden="true"></video>}
+      {video && <video class="project-card__video" src={video} style={videoPosition ? `object-position: ${videoPosition}` : undefined} muted loop playsinline webkit-playsinline preload="none" aria-hidden="true"></video>}
     </div>
     <div class="project-card__content">
       <Heading as="h3">{title}</Heading>
@@ -37,45 +37,40 @@ const videoPosition = media?.position ?? Astro.props.videoPosition;
 </article>
 
 <script>
+  import { createCardVideo } from '../lib/card-video.mjs';
+  clearTimeout((window as Window & { cardVideoFallback?: number }).cardVideoFallback);
+  const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const controllers = new Map<HTMLVideoElement, ReturnType<typeof createCardVideo>>();
+  const observer = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
+    entries.forEach(entry => controllers.get(entry.target as HTMLVideoElement)?.setVisible(entry.isIntersecting));
+  }, { rootMargin: '100px' }) : undefined;
   document.querySelectorAll<HTMLVideoElement>('.project-card__video').forEach(video => {
-    const showFrame = () => {
-      if ('requestVideoFrameCallback' in video) {
-        video.requestVideoFrameCallback(() => video.classList.add('is-playing'));
-      } else {
-        video.classList.add('is-playing');
-      }
-    };
-    video.muted = true;
-    video.defaultMuted = true;
-    video.addEventListener('playing', showFrame);
-    const hideVideo = () => video.classList.remove('is-playing');
-    video.addEventListener('error', hideVideo);
-    video.addEventListener('pause', hideVideo);
-    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const attempt = () => {
-      if (motion.matches) return;
-      const playback = video.play();
-      if (playback && typeof playback.catch === 'function') playback.catch(hideVideo);
-    };
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(entries => entries.forEach(entry => {
-        if (entry.isIntersecting) attempt();
-        else video.pause();
-      }), { rootMargin: '100px' }).observe(video);
-    } else attempt();
-    if (!video.paused && video.readyState >= 3) showFrame();
+    const controller = createCardVideo(video, { reducedMotion: () => motion.matches, pageVisible: () => !document.hidden });
+    controllers.set(video, controller);
+    if (observer) observer.observe(video);
+    else controller.setVisible(true);
   });
+  document.addEventListener('visibilitychange', () => controllers.forEach(controller => controller.sync()));
+  // Power-saving/autoplay policies can allow playback after a real interaction.
+  document.addEventListener('pointerup', () => controllers.forEach(controller => controller.retry()), { passive: true });
+  document.addEventListener('keydown', () => controllers.forEach(controller => controller.retry()));
+  const changed = () => controllers.forEach(controller => controller.sync());
+  if (motion.addEventListener) motion.addEventListener('change', changed);
+  else motion.addListener(changed);
 </script>
 
 <style>
   .project-card__type { transition: border-color .25s ease; }
   .project-card a:hover .project-card__type,
   .project-card a:focus-visible .project-card__type { border-top-color: var(--color-text); }
-  .project-card__image video { opacity: 0; transition: opacity .7s ease, transform .4s ease; }
-  .project-card__image video.is-playing { opacity: 1; }
+  .project-card__image video { opacity: 0; transition: transform .4s ease; }
+  :global(html.video-autoplay-enabled) .project-card__image[data-video-state="pending"] > img { opacity: 0; }
+  .project-card__image[data-video-state="playing"] > img { visibility: hidden; }
+  .project-card__image[data-video-state="playing"] video { opacity: 1; }
   .project-card a:hover :is(img, video),
   .project-card a:focus-visible :is(img, video) { transform: scale(1.02); }
   @media (prefers-reduced-motion: reduce) {
+    :global(html.video-autoplay-enabled) .project-card__image[data-video-state] > img { opacity: 1; visibility: visible; }
     .project-card a:hover :is(img, video),
     .project-card a:focus-visible :is(img, video) { transform: none; }
     .project-card__image :is(img, video), .project-card__type { transition: none; }
