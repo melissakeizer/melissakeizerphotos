@@ -2,7 +2,7 @@
 title: "Vegas, Baby"
 subtitle: null
 date: "December 21st, 2020"
-order: 4
+order: 6.5
 type: "story"
 theme: "dark"
 categories: []

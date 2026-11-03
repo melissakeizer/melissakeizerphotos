@@ -3,7 +3,7 @@ title: "A Few Favourites"
 draft: true
 subtitle: null
 date: null
-order: 11
+order: 10
 type: "gallery"
 galleryLayout: "fitted-grid"
 categories: []

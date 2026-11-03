@@ -6,6 +6,7 @@ const stories = defineCollection({
   schema: z.object({
     title: z.string(),
     draft: z.boolean().default(false),
+    previewLocally: z.boolean().default(false),
     subtitle: z.string().optional().nullable(),
     date: z.string().optional().nullable(),
     order: z.number().default(999),

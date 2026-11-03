@@ -2,7 +2,7 @@
 title: "Animals & Afternoon tea"
 subtitle: null
 date: "March 26th, 2019"
-order: 15
+order: 14
 type: "story"
 categories: []
 coverImage: "/photos/animals-afternoon-tea/000-photo.jpg"

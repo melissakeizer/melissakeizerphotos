@@ -1,0 +1,7 @@
+---
+import { responsivePhoto } from '../lib/responsive-photo';
+interface Props { src: string; alt: string; sizes?: string; [key: string]: any; }
+const { src, alt, sizes = '(max-width: 700px) 100vw, 90vw', ...attributes } = Astro.props;
+const photo = await responsivePhoto(src);
+---
+<img {...attributes} src={photo.src} srcset={photo.srcset} sizes={sizes} width={photo.width} height={photo.height} alt={alt} data-photo decoding="async" />

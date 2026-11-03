@@ -102,14 +102,16 @@ if (!graphite || !yellow) throw new Error('Camera pencil SVG is missing its artw
       observer?.disconnect();
     };
     svg.querySelector('.pencil-camera__finish')?.addEventListener('animationend', finish, { once: true });
-    if (motion.matches) finish();
+    if (motion.matches || !('IntersectionObserver' in window) || !document.documentElement.classList.contains('camera-draw-enabled')) finish();
     else {
       observer = new IntersectionObserver(entries => {
         if (entries.some(entry => entry.isIntersecting)) play();
       });
       observer.observe(svg);
     }
-    motion.addEventListener('change', event => { if (event.matches) { observer?.disconnect(); finish(); } });
+    const onMotionChange = (event: MediaQueryListEvent) => { if (event.matches) { observer?.disconnect(); finish(); } };
+    if (motion.addEventListener) motion.addEventListener('change', onMotionChange);
+    else motion.addListener(onMotionChange);
   }
   document.querySelectorAll<SVGSVGElement>('[data-pencil-camera]').forEach(setupCamera);
 </script>

@@ -1,4 +1,5 @@
 ---
+import Photo from './Photo.astro';
 import Layout from '../layouts/Layout.astro';
 import DisplayHeading from './DisplayHeading.astro';
 import Heading from './Heading.astro';
@@ -49,7 +50,7 @@ const questions = new Map(photoStreamQuestions.map(block => [
           )}
           <article class:list={['field-notes-entry', { 'field-notes-entry--landscape': landscapeNotes.has(note.image) }]}>
             <figure>
-              <img src={photoUrl(`/photos/00-photostream/${note.image}`)} alt={note.title} width={dimensions.get(note.image)?.width} height={dimensions.get(note.image)?.height} loading={index < 3 ? 'eager' : 'lazy'} decoding="async" />
+              <Photo src={photoUrl(`/photos/00-photostream/${note.image}`)} alt={note.title} width={dimensions.get(note.image)?.width} height={dimensions.get(note.image)?.height} loading={index < 3 ? 'eager' : 'lazy'} decoding="async" />
             </figure>
             <div class="field-notes-entry__details">
               <div class="field-notes-entry__caption">

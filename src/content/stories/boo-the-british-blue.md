@@ -2,7 +2,7 @@
 title: "Boo the British Blue"
 subtitle: null
 date: null
-order: 7
+order: 8
 type: "gallery"
 galleryLayout: "fitted-grid"
 categories: []

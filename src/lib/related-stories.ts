@@ -13,10 +13,5 @@ export function relatedStoryIds(current: RelatedCandidate, candidates: RelatedCa
     shared: item.categories.filter(category => current.categories.includes(category)).length,
     rank: rank(`${current.id}:${item.id}`),
   })).sort((a, b) => b.shared - a.shared || a.rank - b.rank || a.id.localeCompare(b.id));
-  const matches = ranked.filter(item => item.shared > 0).slice(0, 4);
-  const selected = new Set(matches.map(item => item.id));
-  const wildcards = ranked.filter(item => !selected.has(item.id))
-    .sort((a, b) => a.shared - b.shared || a.rank - b.rank || a.id.localeCompare(b.id))
-    .slice(0, 6 - matches.length);
-  return [...matches, ...wildcards].map(item => item.id);
+  return ranked.filter(item => item.shared > 0).slice(0, 4).map(item => item.id);
 }

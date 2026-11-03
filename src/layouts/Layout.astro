@@ -3,6 +3,7 @@ import '../styles/global.css';
 import '../styles/typography.css';
 import '../styles/tablet.css';
 import '../styles/entrances.css';
+import '../styles/media-loading.css';
 import SiteFooter from '../components/SiteFooter.astro';
 import Fonts from '../components/Fonts.astro';
 
@@ -31,9 +32,11 @@ const isDev = import.meta.env.DEV;
 <html lang="en" data-theme={theme} data-palette={palette}>
   <head>
     <Fonts />
-    <script is:inline>document.documentElement.classList.add('camera-draw-enabled');</script>
     <script is:inline>
-      if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+      if (window.CSS && CSS.supports('translate', '0')) document.documentElement.classList.add('camera-draw-enabled');
+    </script>
+    <script is:inline>
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window && window.CSS && CSS.supports('selector(:where(*))') && CSS.supports('translate', '0')) {
         document.documentElement.classList.add('entrances-enabled');
         // Fail open if the page script cannot load.
         window.entranceFallback = setTimeout(() => document.documentElement.classList.remove('entrances-enabled'), 4000);
@@ -74,6 +77,9 @@ const isDev = import.meta.env.DEV;
     <slot />
     <SiteFooter />
     <script>
+      import '../scripts/photo-loading';
+    </script>
+    <script>
       const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
       if (document.documentElement.classList.contains('entrances-enabled')) {
         clearTimeout((window as Window & { entranceFallback?: number }).entranceFallback);
@@ -94,11 +100,13 @@ const isDev = import.meta.env.DEV;
           const element = (event.target as HTMLElement).closest('.project-card, .site-footer__panel');
           if (element) { element.classList.add('entrance-visible'); observer.unobserve(element); }
         });
-        motion.addEventListener('change', event => {
+        const onMotionChange = (event: MediaQueryListEvent) => {
           if (!event.matches) return;
           observer.disconnect();
           document.documentElement.classList.remove('entrances-enabled');
-        });
+        };
+        if (motion.addEventListener) motion.addEventListener('change', onMotionChange);
+        else motion.addListener(onMotionChange);
       }
     </script>
     {isDev && (

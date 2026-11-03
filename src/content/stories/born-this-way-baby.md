@@ -2,7 +2,7 @@
 title: "Born This Way, Baby"
 subtitle: null
 date: "October 19th, 2014"
-order: 36
+order: 28.5
 type: "story"
 categories: []
 coverImage: "/photos/born-this-way-baby/000-photo.jpg"

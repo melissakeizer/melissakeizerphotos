@@ -14,7 +14,8 @@ interface Props {
 }
 
 const { slug, sections, effectiveLayouts } = Astro.props;
-const serialized = JSON.stringify({ slug, sections, effectiveLayouts }).replace(/</g, '\\u003c');
+const saveUrl = `${import.meta.env.BASE_URL.replace(/\/?$/, '/')}__story-editor/save`;
+const serialized = JSON.stringify({ slug, sections, effectiveLayouts, saveUrl }).replace(/</g, '\\u003c');
 ---
 
 <div class="story-editor" data-story-editor>
@@ -335,7 +336,7 @@ const serialized = JSON.stringify({ slug, sections, effectiveLayouts }).replace(
       save.disabled = true;
       status.textContent = 'Saving to the local story file…';
       try {
-        const response = await fetch(`${import.meta.env.BASE_URL.replace(/\/?$/, '/')}__story-editor/save`, {
+        const response = await fetch(original.saveUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ slug: original.slug, sections: nextSections, baseSections }),

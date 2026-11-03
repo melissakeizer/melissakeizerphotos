@@ -25,5 +25,6 @@ document.querySelectorAll<HTMLElement>('[data-ordered-gallery]').forEach(gallery
     gallery.classList.add('is-ordered');
   };
   layout();
-  new ResizeObserver(layout).observe(gallery);
+  if ('ResizeObserver' in window) new ResizeObserver(layout).observe(gallery);
+  else window.addEventListener('resize', layout);
 });

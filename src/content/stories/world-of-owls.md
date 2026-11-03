@@ -2,7 +2,7 @@
 title: "World of Owls"
 subtitle: null
 date: null
-order: 9
+order: 12
 type: "gallery"
 galleryLayout: "fitted-grid"
 categories: []

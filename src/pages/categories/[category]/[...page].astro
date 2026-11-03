@@ -1,0 +1,9 @@
+---
+import ArchiveView from '../../../components/ArchiveView.astro';
+import { archivePages } from '../../../lib/archive-pages';
+export async function getStaticPaths() {
+  const pages = await Promise.all(['animals', 'pet-sessions', 'adventures', 'live-music'].map(category => archivePages(category)));
+  return pages.flat().map(props => ({params: {category: props.category, page: props.currentPage === 1 ? undefined : String(props.currentPage)}, props}));
+}
+---
+<ArchiveView {...Astro.props} />

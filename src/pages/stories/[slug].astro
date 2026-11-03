@@ -1,4 +1,5 @@
 ---
+import Photo from '../../components/Photo.astro';
 import Layout from '../../layouts/Layout.astro';
 import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 import sharp from 'sharp';
@@ -11,7 +12,7 @@ import Heading from '../../components/Heading.astro';
 const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
 
 export async function getStaticPaths() {
-  const stories = await getCollection('stories', ({ data }) => !data.draft);
+  const stories = await getCollection('stories', ({ data }) => !data.draft || (import.meta.env.DEV && data.previewLocally));
   return stories.map((story) => ({
     params: { slug: story.id },
     props: { story },
@@ -32,7 +33,7 @@ interface Section {
 }
 
 type Chunk =
-  | { type: 'separator'; photo: string; sectionIndex: number }
+  | { type: 'separator'; photo: string; sectionIndex: number; parallax: boolean }
   | { type: 'article'; sections: Section[] };
 
 // Route props can outlive a local editor save in development. Read the current
@@ -121,7 +122,7 @@ if (sections.length > 0) {
         chunks.push({ type: 'article', sections: currentArticle });
         currentArticle = [];
       }
-      chunks.push({ type: 'separator', photo: section.photos[0], sectionIndex });
+      chunks.push({ type: 'separator', photo: section.photos[0], sectionIndex, parallax: section.layout === 'parallax' });
     } else {
       currentArticle.push(section);
     }
@@ -159,7 +160,7 @@ function photoLayoutClass(count: number) {
   {StoryEditor && <StoryEditor slug={story.id} sections={sourceSections} effectiveLayouts={sections.map((section) => section.layout || '')} />}
   {isStory && cover && coverStyle === 'full' && (
     <div class="story-hero-wrapper">
-      <img
+      <Photo
         class="story-hero"
         src={photoUrl(cover)}
         alt={data.title}
@@ -170,7 +171,7 @@ function photoLayoutClass(count: number) {
           {subtitle && <p class="story-hero__subtitle">{subtitle}</p>}
         </div>
         <div class="story-hero__author">
-          <img
+          <Photo
             class="story-hero__author-stamp"
             src={`${base}melissa-keizer-avatar.jpeg`}
             alt="Melissa Keizer"
@@ -184,7 +185,7 @@ function photoLayoutClass(count: number) {
   {isStory && cover && coverStyle === 'split' && (
     <div class="story-hero-wrapper story-hero-wrapper--split">
       <div class="story-hero-split__photo">
-        <img src={photoUrl(cover)} alt={data.title} style={story.id === 'an-afternoon-with-angus' ? '--mobile-hero-position: center bottom' : undefined} />
+        <Photo src={photoUrl(cover)} alt={data.title} style={story.id === 'an-afternoon-with-angus' ? '--mobile-hero-position: center bottom' : undefined} />
       </div>
       <div class="story-hero-split__content">
         <div class="story-hero-split__body">
@@ -192,7 +193,7 @@ function photoLayoutClass(count: number) {
           {subtitle && <p class="story-hero-split__subtitle">{subtitle}</p>}
         </div>
         <div class="story-hero-split__author">
-          <img
+          <Photo
             class="story-hero-split__author-stamp"
             src={`${base}melissa-keizer-avatar.jpeg`}
             alt="Melissa Keizer"
@@ -236,7 +237,7 @@ function photoLayoutClass(count: number) {
               tabindex="0"
               aria-label={`View photo ${i + 1}`}
             >
-              <img
+              <Photo
                 src={photoUrl(photo)}
                 alt={`${data.title} — photo ${i + 1}`}
                 style={orderedGallery ? `aspect-ratio: ${photoRatios.get(photo)}` : undefined}
@@ -253,8 +254,8 @@ function photoLayoutClass(count: number) {
   {/* ── STORY LAYOUT ────────────────────────────────────────────────── */}
   {isStory && chunks.length > 0 && chunks.map((chunk, chunkIndex) => (
     chunk.type === 'separator' ? (
-      <div class="story-separator story-separator--parallax" style={`--parallax-image: url("${photoUrl(chunk.photo)}")`} data-editor-section={editorEnabled ? chunk.sectionIndex : undefined} data-editor-layout="parallax" data-editor-photos="1">
-        <img
+      <div class:list={['story-separator', chunk.parallax ? 'story-separator--parallax' : 'story-separator--static']} style={`--parallax-image: url("${photoUrl(chunk.photo)}")`} data-editor-section={editorEnabled ? chunk.sectionIndex : undefined} data-editor-layout={chunk.parallax ? 'parallax' : 'full-bleed'} data-editor-photos="1">
+        <Photo
           src={photoUrl(chunk.photo)}
           alt=""
           loading="lazy"
@@ -276,7 +277,7 @@ function photoLayoutClass(count: number) {
                 {section.title && <h2 class="story-section__title">{section.title}</h2>}
                 {section.text && <div class="story-section__text" set:html={section.text} />}
                 <div class="story-section__photo-item story-section__photo-item--spotlight" data-src={photoUrl(section.photos[0])} role="button" tabindex="0" aria-label="View photo">
-                  <img src={photoUrl(section.photos[0])} alt={section.title || data.title} loading="lazy" decoding="async" />
+                  <Photo src={photoUrl(section.photos[0])} alt={section.title || data.title} loading="lazy" decoding="async" />
                 </div>
                 {section.caption && <p class="story-photo-caption">{section.caption}</p>}
               </section>
@@ -285,7 +286,7 @@ function photoLayoutClass(count: number) {
                 {section.title && <h2 class="story-section__title">{section.title}</h2>}
                 {section.text && <div class="story-section__text" set:html={section.text} />}
                 <div class="story-section__photo-item story-section__photo-item--stacked" data-src={photoUrl(section.photos[0])} role="button" tabindex="0" aria-label="View photo">
-                  <img src={photoUrl(section.photos[0])} alt={section.title || data.title} loading="lazy" decoding="async" />
+                  <Photo src={photoUrl(section.photos[0])} alt={section.title || data.title} loading="lazy" decoding="async" />
                 </div>
                 {section.caption && <p class="story-photo-caption">{section.caption}</p>}
               </section>
@@ -296,7 +297,7 @@ function photoLayoutClass(count: number) {
                   {section.text && <div class="story-section__text" set:html={section.text} />}
                 </div>
                 <div class="story-section__full-bleed-photo" data-src={photoUrl(section.photos[0])} role="button" tabindex="0" aria-label="View photo">
-                  <img src={photoUrl(section.photos[0])} alt={section.title || data.title} loading="lazy" decoding="async" />
+                  <Photo src={photoUrl(section.photos[0])} alt={section.title || data.title} loading="lazy" decoding="async" />
                 </div>
                 {section.caption && <p class="story-photo-caption">{section.caption}</p>}
               </section>
@@ -307,7 +308,7 @@ function photoLayoutClass(count: number) {
                   {section.text && <div class="story-section__text" set:html={section.text} />}
                 </div>
                 <div class="story-section__edge-to-edge-photo" data-src={photoUrl(section.photos[0])} role="button" tabindex="0" aria-label="View photo">
-                  <img src={photoUrl(section.photos[0])} alt={section.title || data.title} loading="lazy" decoding="async" />
+                  <Photo src={photoUrl(section.photos[0])} alt={section.title || data.title} loading="lazy" decoding="async" />
                 </div>
                 {section.caption && <p class="story-photo-caption">{section.caption}</p>}
               </section>
@@ -318,7 +319,7 @@ function photoLayoutClass(count: number) {
                   {section.text && <div class="story-section__text" set:html={section.text} />}
                 </div>
                 <div class="story-separator story-separator--parallax" style={`--parallax-image: url("${photoUrl(section.photos[0])}")`} data-src={photoUrl(section.photos[0])} role="button" tabindex="0" aria-label="View photo">
-                  <img src={photoUrl(section.photos[0])} alt={section.title || data.title} loading="lazy" decoding="async" />
+                  <Photo src={photoUrl(section.photos[0])} alt={section.title || data.title} loading="lazy" decoding="async" />
                 </div>
                 {section.caption && <p class="story-photo-caption">{section.caption}</p>}
               </section>
@@ -329,7 +330,7 @@ function photoLayoutClass(count: number) {
                   <div class="story-section__text" set:html={section.text} />
                 </div>
                 <div class="story-section__split-photo" data-src={photoUrl(section.photos[0])} role="button" tabindex="0" aria-label="View photo">
-                  <img src={photoUrl(section.photos[0])} alt={section.title || data.title} loading="lazy" decoding="async" />
+                  <Photo src={photoUrl(section.photos[0])} alt={section.title || data.title} loading="lazy" decoding="async" />
                 </div>
                 {section.caption && <p class="story-photo-caption">{section.caption}</p>}
               </section>
@@ -360,7 +361,7 @@ function photoLayoutClass(count: number) {
                                 aria-label="View photo"
                                 style={`--photo-ratio: ${photoRatios.get(photo) ?? 1.5}; flex: ${photoRatios.get(photo) ?? 1.5} 1 0`}
                               >
-                                <img src={photoUrl(photo)} alt={section.title || data.title} loading="lazy" decoding="async" />
+                                <Photo src={photoUrl(photo)} alt={section.title || data.title} loading="lazy" decoding="async" />
                               </div>
                             ))}
                           </div>
@@ -384,7 +385,7 @@ function photoLayoutClass(count: number) {
                                 aria-label="View photo"
                                 style={`--photo-ratio: ${photoRatios.get(photo) ?? 1.5}; flex: ${photoRatios.get(photo) ?? 1.5} 1 0`}
                               >
-                                <img
+                                <Photo
                                   src={photoUrl(photo)}
                                   alt={section.title || data.title}
                                   loading="lazy"
@@ -413,7 +414,7 @@ function photoLayoutClass(count: number) {
                                 aria-label="View photo"
                                 style={`--photo-ratio: ${photoRatios.get(photo) ?? 1.5}; flex: ${photoRatios.get(photo) ?? 1.5} 1 0`}
                               >
-                                <img src={photoUrl(photo)} alt={section.title || data.title} loading="lazy" decoding="async" />
+                                <Photo src={photoUrl(photo)} alt={section.title || data.title} loading="lazy" decoding="async" />
                               </div>
                             ))}
                           </div>
@@ -433,7 +434,7 @@ function photoLayoutClass(count: number) {
                           aria-label="View photo"
                           style={useFlexRatio ? `--photo-ratio: ${photoRatios.get(photo) ?? 1.5}; flex: ${photoRatios.get(photo) ?? 1.5} 1 0` : undefined}
                         >
-                          <img
+                          <Photo
                             src={photoUrl(photo)}
                             alt={section.title || data.title}
                             loading="lazy"
@@ -479,7 +480,7 @@ function photoLayoutClass(count: number) {
         <div class="masonry-gallery" id="gallery">
           {galleryPhotos.map((photo, i) => (
             <div class="masonry-gallery__item" data-index={i} data-src={photoUrl(photo)} role="button" tabindex="0" aria-label={`View photo ${i + 1}`}>
-              <img src={photoUrl(photo)} alt={`${data.title} — photo ${i + 1}`} loading="lazy" decoding="async" />
+              <Photo src={photoUrl(photo)} alt={`${data.title} — photo ${i + 1}`} loading="lazy" decoding="async" />
             </div>
           ))}
         </div>

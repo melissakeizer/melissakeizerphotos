@@ -1,5 +1,6 @@
 # build output
 dist/
+/public/_responsive/
 # generated types
 .astro/
 .local/
@@ -24,6 +25,10 @@ pnpm-debug.log*
 # Keep Barcelona camera originals locally; publish the resized gallery copies.
 /public/photos/barcelona/*
 !/public/photos/barcelona/web/
+
+# Keep music originals locally; use optimized copies in the story.
+/public/photos/portfolio-live-music/*
+!/public/photos/portfolio-live-music/web/
 
 # Private planning notes stay on this computer, outside the public repository.
 /content-planning/ideas.json

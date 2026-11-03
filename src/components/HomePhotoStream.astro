@@ -1,5 +1,6 @@
 ---
 import CameraDrawing from './CameraDrawing.astro';
+import Photo from './Photo.astro';
 import Heading from './Heading.astro';
 import { fieldNotes } from '../lib/field-notes';
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
@@ -21,7 +22,7 @@ const previewPhotos = picks.map(image => fieldNotes.find(note => note.image === 
       <div class="home-field-notes__grid">
         {previewPhotos.map((fieldNote) => (
           <figure class="field-note-card">
-            <img src={photoUrl(`/photos/00-photostream/${fieldNote.image}`)} alt={fieldNote.title} loading="lazy" decoding="async" />
+            <Photo src={photoUrl(`/photos/00-photostream/${fieldNote.image}`)} alt={fieldNote.title} sizes="(max-width: 700px) 46vw, 24vw" loading="lazy" decoding="async" />
             <figcaption>
               <Heading as="h4">{fieldNote.title}</Heading>
               <span>{fieldNote.camera ? `${fieldNote.camera}${fieldNote.lens ? ` · ${fieldNote.lens}` : ''}` : fieldNote.metadataNote || fieldNote.date}</span>
