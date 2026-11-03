@@ -1,0 +1,51 @@
+---
+import '../../../styles/global.css';
+import '../../../styles/typography.css';
+import '../../../styles/site-refinements.css';
+import Fonts from '../../../components/Fonts.astro';
+import Button from '../../../components/Button.astro';
+
+export function getStaticPaths() {
+  return import.meta.env.DEV ? [{ params: { mode: 'check' } }] : [];
+}
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+---
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Button alignment check</title>
+    <Fonts />
+  </head>
+  <body>
+    <main>
+      <h1>Button alignment check</h1>
+      <p>Short, longer and wrapping labels share one layout. The faint line marks each button’s centre.</p>
+      <section aria-label="Cap-trim enhancement">
+        <h2>Current browser</h2>
+        <Button href={base}>Stories</Button>
+        <Button href={base}>Browse PhotoStream</Button>
+        <div class="narrow"><Button href={base}>Browse all photography stories and galleries</Button></div>
+      </section>
+      <section class="metrics-only" aria-label="Font metrics fallback">
+        <h2>Without cap trimming</h2>
+        <Button href={base}>Stories</Button>
+        <Button href={base}>Browse PhotoStream</Button>
+        <div class="narrow"><Button href={base}>Browse all photography stories and galleries</Button></div>
+      </section>
+    </main>
+  </body>
+</html>
+<style>
+  main { padding: 2rem; max-width: 48rem; }
+  h1 { font: 400 2rem/1.15 var(--font-serif); }
+  p { margin-top: 1rem; max-width: 40ch; }
+  section { display: flex; flex-direction: column; align-items: flex-start; gap: 1rem; margin-top: 2rem; }
+  h2 { font-size: 1rem; }
+  section :global(.home-text-link--button) { position: relative; margin: 0; }
+  section :global(.home-text-link--button)::after { content: ''; position: absolute; top: 50%; inset-inline: 0; border-top: 1px solid #0002; pointer-events: none; }
+  .narrow { width: 10rem; max-width: 100%; }
+  .metrics-only :global(.button__label), .metrics-only :global(.button__arrow) { text-box-trim: none; }
+</style>

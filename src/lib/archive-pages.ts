@@ -1,6 +1,6 @@
 import { getCollection } from 'astro:content';
 import { categoriesForStory } from './story-metadata';
-export const archivePageSize = 18;
+export const archivePageSize = 20;
 export async function archivePages(category = 'all') {
   const stories = await getCollection('stories', ({ data }) => !data.draft || (import.meta.env.DEV && data.previewLocally));
   const filtered = stories.filter(story => category === 'all' || categoriesForStory(story.id, story.data.categories).some(c => c.replace(/\s+/g, '-') === category));

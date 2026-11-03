@@ -1,5 +1,6 @@
 ---
 import CameraDrawing from './CameraDrawing.astro';
+import Heading from './Heading.astro';
 const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
 ---
 
@@ -9,10 +10,8 @@ const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
       <img src={`${base}melissa-keizer-avatar.jpeg`} alt="Melissa Keizer" />
     </div>
     <div class="site-footer__introduction">
-      <p class="site-footer__introduction-copy">
-        <strong>Hi, I’m Melissa Keizer.</strong>
-        <span>I’m a photographer and product designer based in Bangor, Northern Ireland. Usually found following dogs into good light or making one more tiny adjustment in Lightroom.</span>
-      </p>
+      <Heading as="h4">Hi, I’m Melissa Keizer.</Heading>
+      <p class="project-card__caption">I’m a photographer and product designer based in Bangor, Northern Ireland. Usually found following dogs into good light or making one more tiny adjustment in Lightroom.</p>
     </div>
     <div class="site-footer__navigation">
       <p class="site-footer__label">Explore</p>

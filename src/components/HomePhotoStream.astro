@@ -2,11 +2,18 @@
 import CameraDrawing from './CameraDrawing.astro';
 import Photo from './Photo.astro';
 import Heading from './Heading.astro';
+import Button from './Button.astro';
 import { fieldNotes } from '../lib/field-notes';
+import { getPhotoStreamPages } from '../lib/photo-stream-pages';
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const photoUrl = (path: string) => base + path.replace(/^\//, '');
+const { locations } = await getPhotoStreamPages();
+const entryUrl = (image: string) => {
+  const location = locations.get(image)!;
+  return `${base}photostream/${location.page === 1 ? '' : `${location.page}/`}#${location.id}`;
+};
 const picks = ['auditt.jpg', 'pale-waves-belfast.jpg', 'orca-castle-park.jpg', 'barcelona-parakeet.jpeg'];
-const previewPhotos = picks.map(image => fieldNotes.find(note => note.image === image)).filter((note): note is NonNullable<typeof note> => Boolean(note));
+const previewPhotos = picks.filter(image => locations.has(image)).map(image => fieldNotes.find(note => note.image === image)).filter((note): note is NonNullable<typeof note> => Boolean(note));
 ---
 <div class="photostream-home-strip">
     <section class="home-field-notes home-field-notes--preview home-field-notes--light-preview" id="field-notes" aria-labelledby="field-notes-title">
@@ -17,12 +24,14 @@ const previewPhotos = picks.map(image => fieldNotes.find(note => note.image === 
       <div class="home-field-notes__intro">
         <Heading as="h2" id="field-notes-title">PhotoStream</Heading>
         <p>Everyday frames without a bigger story.</p>
-        <a class="home-text-link home-text-link--browse" href={`${base}photostream/`}>Browse PhotoStream <span aria-hidden="true">→</span></a>
+        <Button href={`${base}photostream/`}>Browse PhotoStream</Button>
       </div>
       <div class="home-field-notes__grid">
         {previewPhotos.map((fieldNote) => (
           <figure class="field-note-card">
-            <Photo src={photoUrl(`/photos/00-photostream/${fieldNote.image}`)} alt={fieldNote.title} sizes="(max-width: 700px) 46vw, 24vw" loading="lazy" decoding="async" />
+            <a class="field-note-card__photo-link" href={entryUrl(fieldNote.image)} aria-label={`View ${fieldNote.title} in PhotoStream`}>
+              <Photo src={photoUrl(`/photos/00-photostream/${fieldNote.image}`)} alt={fieldNote.title} sizes="(max-width: 700px) 46vw, 24vw" loading="lazy" decoding="async" />
+            </a>
             <figcaption>
               <Heading as="h4">{fieldNote.title}</Heading>
               <span>{fieldNote.camera ? `${fieldNote.camera}${fieldNote.lens ? ` · ${fieldNote.lens}` : ''}` : fieldNote.metadataNote || fieldNote.date}</span>
@@ -33,20 +42,17 @@ const previewPhotos = picks.map(image => fieldNotes.find(note => note.image === 
     </section>
 </div>
 <style>
+.field-note-card__photo-link { display: block; }
+.field-note-card__photo-link:focus-visible { outline: 2px solid var(--color-text); outline-offset: 4px; }
 .home-phone-full { display: none; }
 @media (max-width: 700px) {
   .home-phone-crop { display: none; }
   .home-phone-full { display: block; }
   .photostream-home-strip .home-field-notes--preview { padding-top: 2.5rem; }
   .photostream-home-strip .home-field-notes__intro > p { margin-top: .75rem; max-width: 19rem; }
-  .photostream-home-strip .home-text-link--browse { margin-top: 1rem; }
+  .photostream-home-strip .home-text-link--button { margin-top: .75rem; min-height: 44px; padding: .65rem .9rem; }
   .photostream-home-strip .home-field-notes__grid { margin-top: 1.75rem; }
   .photostream-home-strip .home-field-notes__phone { top: 125px; bottom: auto; left: auto; right: -55px; width: 190px; height: auto; transform: none; opacity: .32; }
 }
-.home-text-link--browse { transition: color .2s ease, border-color .2s ease; }
-.home-text-link--browse:hover, .home-text-link--browse:focus-visible { color: #766027; border-color: currentColor; }
-.home-text-link--browse:hover span, .home-text-link--browse:focus-visible span { animation: arrow-nudge .65s ease-in-out 2; }
-@keyframes arrow-nudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(5px); } }
-@media (prefers-reduced-motion: reduce) { .home-text-link--browse:hover span, .home-text-link--browse:focus-visible span { animation: none; } }
 .photostream-home-strip { --color-text: #1a1918; --color-muted: #6b6560; color: #1a1918; }
 </style>

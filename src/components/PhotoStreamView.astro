@@ -7,6 +7,7 @@ import CameraDrawing from './CameraDrawing.astro';
 import PhotoStreamPagination from './PhotoStreamPagination.astro';
 import { getPhotoStreamPages } from '../lib/photo-stream-pages';
 import { photoStreamQuestions } from '../lib/photo-stream-questions';
+import { photoStreamAnchor } from '../lib/photo-stream-links';
 
 const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
 interface Props { currentPage?: number; }
@@ -28,7 +29,7 @@ const questions = new Map(photoStreamQuestions.map(block => [
   <main class="field-notes-page photostream-page">
     <header class="field-notes-header">
       <div class="photostream-intro-copy">
-        <p class="photostream-eyebrow">PhotoStream</p>
+        {/* PhotoStream eyebrow hidden while reviewing the simpler title treatment. */}
         <DisplayHeading>For the girl<br />who misses Flickr.</DisplayHeading>
       </div>
       <div class="photostream-phone" aria-hidden="true">
@@ -48,7 +49,7 @@ const questions = new Map(photoStreamQuestions.map(block => [
               {questions.get(note.image)?.items.map(item => <div class="field-notes-interlude__item"><h3>{item.question}</h3><p>{item.answer}</p></div>)}
             </aside>
           )}
-          <article class:list={['field-notes-entry', { 'field-notes-entry--landscape': landscapeNotes.has(note.image) }]}>
+          <article id={photoStreamAnchor(note.image)} class:list={['field-notes-entry', { 'field-notes-entry--landscape': landscapeNotes.has(note.image) }]}>
             <figure>
               <Photo src={photoUrl(`/photos/00-photostream/${note.image}`)} alt={note.title} width={dimensions.get(note.image)?.width} height={dimensions.get(note.image)?.height} loading={index < 3 ? 'eager' : 'lazy'} decoding="async" />
             </figure>
@@ -101,8 +102,8 @@ const questions = new Map(photoStreamQuestions.map(block => [
   }
   .photostream-page { --photostream-inset: max(var(--site-gutter), calc((100vw - var(--site-canvas)) / 2 + var(--site-gutter))); }
   .photostream-page .field-notes-header {
-    top: 8rem;
-    height: calc(100svh - 8rem);
+    top: 16rem;
+    height: calc(100svh - 16rem);
     padding: 2rem 1.5rem 0 0;
     /* Let the complete phone scroll into view as this sticky column releases. */
     clip-path: inset(0 -1rem -8rem -100vw);

@@ -4,24 +4,23 @@ import '../styles/typography.css';
 import '../styles/tablet.css';
 import '../styles/entrances.css';
 import '../styles/media-loading.css';
+import '../styles/site-refinements.css';
 import SiteFooter from '../components/SiteFooter.astro';
 import Fonts from '../components/Fonts.astro';
+import SiteNavigation from '../components/SiteNavigation.astro';
 
 interface Props {
   title?: string;
   description?: string;
   image?: string;
   theme?: 'light' | 'dark';
-  hideNav?: boolean;
   brandImage?: string;
 }
 
 const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
-const { title = 'Photography by Melissa Keizer', description = 'Freelance pet & event photographer based in Bangor, Northern Ireland.', image, theme = 'light', hideNav = false, brandImage = 'melissa-keizer-sticker.png' } = Astro.props;
+const { title = 'Photography by Melissa Keizer', description = 'Freelance pet & event photographer based in Bangor, Northern Ireland.', image, theme = 'light', brandImage = 'melissa-keizer-sticker.png' } = Astro.props;
 const fullTitle = title === 'Photography by Melissa Keizer' ? title : `${title} — Melissa Keizer Photography`;
 const pathname = Astro.url.pathname;
-const storiesActive = pathname.includes('/stories') || pathname.includes('/posts');
-const photoStreamActive = pathname.includes('/photostream') || pathname.includes('/field-notes');
 const homeActive = pathname.replace(/\/$/, '') === base.replace(/\/$/, '');
 const palette = homeActive || pathname.includes('/photostream/') || pathname.includes('/previews/homepage/')
   ? 'warm-dark' : pathname.includes('/posts') ? 'warm-light' : undefined;
@@ -56,16 +55,7 @@ const isDev = import.meta.env.DEV;
     <link rel="apple-touch-icon" href={`${base}apple-touch-icon.png`} sizes="180x180" />
   </head>
   <body>
-    <nav class="site-nav" class:list={[{ 'site-nav--hidden': hideNav }]} aria-label="Primary navigation">
-      <a class:list={['site-nav__brand', { 'site-nav__brand--sticker': brandImage }]} href={base} aria-label="Melissa Keizer Photography home">
-        <img src={`${base}${brandImage}`} alt="" />
-      </a>
-      <div class="site-nav__links">
-        <a class:list={{ 'is-active': homeActive }} href={base} aria-current={homeActive ? 'page' : undefined}>Home</a>
-        <a class:list={{ 'is-active': storiesActive }} href={`${base}posts/`} aria-current={storiesActive ? 'page' : undefined}>Stories</a>
-        <a class:list={{ 'is-active': photoStreamActive }} href={`${base}photostream/`} aria-current={photoStreamActive ? 'page' : undefined}>PhotoStream</a>
-      </div>
-    </nav>
+    <SiteNavigation brandImage={brandImage} />
     {isDev && (
       <>
         <button class="debug-grid-toggle" type="button" aria-pressed="true" data-debug-grid-toggle>Hide grid</button>

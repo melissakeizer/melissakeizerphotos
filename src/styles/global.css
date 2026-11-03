@@ -322,20 +322,7 @@ img {
   max-width: 100%;
 }
 
-/* Nav */
-.site-nav {
-  position: absolute;
-  top: 0;
-  z-index: 100;
-  left: 0;
-  width: 100%;
-  height: auto;
-  display: flex;
-  align-items: center;
-  padding: 1.5rem;
-  pointer-events: none;
-}
-
+/* Shared navigation geometry lives in site-navigation.css. */
 .site-nav__brand {
   display: flex;
   align-items: center;
@@ -357,8 +344,6 @@ img {
 }
 
 .site-nav__brand--sticker {
-  width: clamp(4.75rem, 7vw, 6.5rem);
-  height: clamp(4.75rem, 7vw, 6.5rem);
   overflow: hidden;
   border-radius: 50%;
   box-shadow: none;
@@ -2038,11 +2023,6 @@ html {
   }
 }
 
-/* Story page: hide nav, show minimal home button */
-.site-nav--hidden {
-  display: none;
-}
-
 .story-home-btn {
   position: fixed;
   top: 1.25rem;
@@ -2521,8 +2501,6 @@ html {
   .site-footer__contact { grid-column: 4 / span 3; }
   .site-footer__colophon { grid-column: 1 / -1; }
   .site-footer__bottom { grid-column: 1 / -1; align-items: flex-start; padding-right: 0; padding-left: 0; }
-  .site-nav { padding: 0.85rem; }
-  .site-nav__brand--sticker { width: 4.25rem; height: 4.25rem; }
 }
 
 /* Temporary layout switcher while the PhotoStream direction is explored. */
@@ -2548,8 +2526,6 @@ html {
 .gallery-page h2,
 .project-card__title,
 .archive-feature h2 { text-wrap: balance; }
-
-[data-theme="dark"] .site-nav { position: fixed; }
 
 .home-field-notes__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .home-field-notes__grid .field-note-card img { aspect-ratio: 3 / 4; object-fit: cover; }
@@ -3322,12 +3298,6 @@ html[data-palette="warm-light"] {
   color: var(--color-yellow);
 }
 
-/* Navigation uses the same outer bounds as the editorial canvas. */
-.site-nav {
-  padding-right: var(--site-margin);
-  padding-left: var(--site-margin);
-}
-
 /* All primary page content now uses the exact same grid bounds. */
 .home-page--selected .home-concept-hero,
 .home-page--selected .home-featured-posts,
@@ -3591,8 +3561,6 @@ html[data-palette="warm-light"] {
 }
 
 .site-nav {
-  padding-right: clamp(1.5rem, 2.6vw, 3rem);
-  padding-left: clamp(1.5rem, 2.6vw, 3rem);
   background: transparent !important;
   border-bottom: 0 !important;
   box-shadow: none !important;
@@ -4076,19 +4044,6 @@ html[data-palette="warm-light"] {
 
 @media (max-width: 700px) {
   :root { --site-gutter: 1rem; }
-
-  .site-nav {
-    position: absolute;
-    padding: 0.8rem 1rem;
-  }
-
-  html[data-theme="dark"] .site-nav,
-  [data-theme="dark"] .site-nav { position: absolute; }
-
-  .site-nav__brand--sticker {
-    width: 3.8rem;
-    height: 3.8rem;
-  }
 
   .site-nav__links { gap: 0.9rem; }
   .site-nav__links a { font-size: 0.61rem; }

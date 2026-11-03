@@ -54,7 +54,7 @@ const editorEnabled = import.meta.env.DEV && isStory;
 const StoryEditor = editorEnabled ? (await import('../../components/StoryEditor.astro')).default : null;
 const allStories = await getCollection('stories', ({ data }) => !data.draft);
 const relatedStories = relatedStoryIds({ id: story.id, categories }, allStories.map(candidate => ({
-  id: candidate.id, categories: categoriesForStory(candidate.id, candidate.data.categories),
+  id: candidate.id, categories: categoriesForStory(candidate.id, candidate.data.categories), order: candidate.data.order,
 }))).map(id => allStories.find(candidate => candidate.id === id)!);
 
 // Parse sections from markdown body for story type posts

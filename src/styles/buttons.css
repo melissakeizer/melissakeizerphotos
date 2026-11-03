@@ -1,0 +1,37 @@
+/* The UI face uses the same Fakt outlines, but consistent cap-centred metrics.
+   Keep this separate from prose: changing its metrics must not reflow stories. */
+:root { --font-button: 'Fakt Pro UI', 'Fakt Pro', Arial, sans-serif; }
+
+:root button:not(.lightbox__close):not(.lightbox__prev):not(.lightbox__next),
+:root .home-text-link.home-text-link--button,
+:root .story-editor__toggle,
+:root .archive-pagination a,
+:root .archive-pagination span {
+  font-family: var(--font-button);
+  line-height: 1.2;
+}
+
+.home-text-link.home-text-link--button,
+.contact-form button,
+.story-editor__toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  max-width: 100%;
+  height: auto;
+  text-align: center;
+}
+
+.home-text-link--button .button__label { min-width: 0; }
+.home-text-link--button .button__arrow { flex: 0 0 auto; }
+
+/* Newer engines can trim to actual capital ink; older engines use the
+   normalised font metrics above, without device checks or pixel nudges. */
+@supports (text-box-trim: trim-both) and (text-box-edge: cap alphabetic) {
+  .home-text-link--button .button__label,
+  .home-text-link--button .button__arrow {
+    text-box-trim: trim-both;
+    text-box-edge: cap alphabetic;
+  }
+}

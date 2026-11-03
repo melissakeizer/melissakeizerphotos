@@ -4,6 +4,7 @@ import ProjectCard from './ProjectCard.astro';
 import CameraDrawing from './CameraDrawing.astro';
 import HomePhotoStream from './HomePhotoStream.astro';
 import Heading from './Heading.astro';
+import Button from './Button.astro';
 import { subtitleForStory } from '../lib/story-metadata';
 
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
@@ -22,7 +23,7 @@ const selections = [
       <header class="opening-copy">
         <Heading class="opening-title"><span>I’m Melissa, this is</span>{' '}<span>my photo journal</span></Heading>
         <p>A home for little adventures, wet noses, beautiful places and moments worth remembering — from Northern Ireland <span class="opening-ending">and beyond.</span></p>
-        <div class="opening-more"><a class="home-text-link home-text-link--button" href={`${base}posts/`}>See all stories <span aria-hidden="true">→</span></a></div>
+        <div class="opening-more"><Button href={`${base}posts/`}>See all stories</Button></div>
       </header>
       <div class="opening-camera" aria-hidden="true"><CameraDrawing id="opening-spread-camera" duration={5.5} /></div>
     </div>
@@ -49,7 +50,7 @@ const selections = [
   .opening-card { min-width: 0; background: transparent; }
   .opening-card:nth-child(even) { transform: translateY(64px); }
   .opening-posts :global(.project-card__image) { aspect-ratio: 3 / 4; }
-  .opening-more { margin-top: 24px; }
+  .opening-more { margin-top: 18px; }
   @media (max-width: 900px) {
     .opening-spread { grid-template-columns: 1fr; padding: 150px var(--site-margin) 70px; gap: 36px; }
     .opening-left { grid-column: 1; min-height: 490px; height: auto; display: block; }
@@ -61,8 +62,8 @@ const selections = [
     .opening-spread { padding: 112px 1rem 48px; gap: 22px; }
     .opening-copy p { max-width: none; margin-top: 1rem; }
     .opening-left { min-height: 300px; }
-    .opening-more { margin-top: 18px; }
-    .opening-more .home-text-link--button { margin-top: 0; padding: .8rem 1rem; min-height: 44px; }
+    .opening-more { margin-top: 14px; }
+    .opening-more .home-text-link--button { margin-top: 0; padding: .65rem .9rem; min-height: 44px; }
     .opening-camera { top: 130px; width: 115%; max-width: none; left: -5%; opacity: .42; }
     .opening-posts { gap: 28px 14px; padding-bottom: 24px; align-items: stretch; }
     .opening-card:nth-child(even) { transform: none; }

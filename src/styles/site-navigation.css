@@ -1,0 +1,37 @@
+/* One positioning implementation for every public route, regardless of theme.
+   Keep colours/hero overlays in the existing palette rules. */
+:root {
+  --site-nav-logo-size: clamp(4.75rem, 7vw, 6.5rem);
+  --site-nav-padding-block: 1.5rem;
+  --site-nav-padding-inline: clamp(1.5rem, 2.6vw, 3rem);
+  --site-nav-height: calc(var(--site-nav-logo-size) + var(--site-nav-padding-block) + var(--site-nav-padding-block));
+  --site-nav-clearance: calc(var(--site-nav-height) + 1rem);
+}
+
+html { scroll-padding-top: var(--site-nav-clearance); }
+
+.site-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  padding: var(--site-nav-padding-block) var(--site-nav-padding-inline);
+  pointer-events: none;
+}
+
+.site-nav__brand--sticker {
+  width: var(--site-nav-logo-size);
+  height: var(--site-nav-logo-size);
+}
+
+@media (max-width: 700px) {
+  :root {
+    --site-nav-logo-size: 3.8rem;
+    --site-nav-padding-block: .8rem;
+    --site-nav-padding-inline: 1rem;
+  }
+}

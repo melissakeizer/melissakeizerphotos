@@ -3,6 +3,7 @@ import { resolve } from 'node:path';
 import { photoStreamNotes } from './field-notes';
 import { photoStreamQuestions } from './photo-stream-questions';
 import { paginatePhotoStream } from './photo-stream-pagination';
+import { photoStreamLocations } from './photo-stream-links';
 
 export async function getPhotoStreamPages() {
   const landscapeImages = new Set<string>();
@@ -15,10 +16,13 @@ export async function getPhotoStreamPages() {
     if (width && height) dimensions.set(note.image, { width, height });
     if ((width ?? 0) >= (height ?? 0)) landscapeImages.add(note.image);
   }));
+  const pages = paginatePhotoStream(photoStreamNotes, landscapeImages,
+    new Set(photoStreamQuestions.map(block => block.beforeImage)));
+  const locations = photoStreamLocations(pages);
   return {
     landscapeImages,
     dimensions,
-    pages: paginatePhotoStream(photoStreamNotes, landscapeImages,
-      new Set(photoStreamQuestions.map(block => block.beforeImage))),
+    pages,
+    locations,
   };
 }

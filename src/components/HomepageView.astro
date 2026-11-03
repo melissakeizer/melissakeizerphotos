@@ -5,6 +5,7 @@ import ProjectCard from './ProjectCard.astro';
 import DisplayHeading from './DisplayHeading.astro';
 import CameraDrawing from './CameraDrawing.astro';
 import HomePhotoStream from './HomePhotoStream.astro';
+import Button from './Button.astro';
 import { subtitleForStory } from '../lib/story-metadata';
 
 const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
@@ -106,7 +107,7 @@ function photoUrl(path: string) {
       </div>
 
       <div class="home-section__more">
-        <a class="home-text-link home-text-link--button" href={`${base}posts/`}>See all stories <span aria-hidden="true">→</span></a>
+        <Button href={`${base}posts/`}>See all stories</Button>
       </div>
       </section>
     </div>

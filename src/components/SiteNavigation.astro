@@ -1,0 +1,34 @@
+---
+import '../styles/site-navigation.css';
+
+interface Props { brandImage?: string; }
+const { brandImage = 'melissa-keizer-sticker.png' } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const pathname = Astro.url.pathname;
+const storiesActive = /\/(stories|posts|categories)(\/|$)/.test(pathname);
+const photoStreamActive = /\/(photostream|field-notes(?:-b)?)(\/|$)/.test(pathname);
+const homeActive = pathname.replace(/\/$/, '') === base.replace(/\/$/, '');
+---
+
+<nav class="site-nav" aria-label="Primary navigation" data-site-navigation>
+  <a class:list={['site-nav__brand', { 'site-nav__brand--sticker': brandImage }]} href={base} aria-label="Melissa Keizer Photography home">
+    <img src={`${base}${brandImage}`} alt="" />
+  </a>
+  <div class="site-nav__links">
+    <a class:list={{ 'is-active': homeActive }} href={base} aria-current={homeActive ? 'page' : undefined}>Home</a>
+    <a class:list={{ 'is-active': storiesActive }} href={`${base}posts/`} aria-current={storiesActive ? 'page' : undefined}>Stories</a>
+    <a class:list={{ 'is-active': photoStreamActive }} href={`${base}photostream/`} aria-current={photoStreamActive ? 'page' : undefined}>PhotoStream</a>
+  </div>
+</nav>
+
+<script>
+  // CSS supplies the initial anchor offset, even with JS disabled. Measure the
+  // real header as well so zoom, font loading or wrapped links remain safe.
+  const navigation = document.querySelector<HTMLElement>('[data-site-navigation]');
+  if (navigation) {
+    const measure = () => document.documentElement.style.setProperty('--site-nav-height', `${navigation.getBoundingClientRect().height}px`);
+    measure();
+    if ('ResizeObserver' in window) new ResizeObserver(measure).observe(navigation);
+    else window.addEventListener('resize', measure, { passive: true });
+  }
+</script>

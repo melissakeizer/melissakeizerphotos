@@ -1,0 +1,23 @@
+/* Refine the existing square button without changing its type scale. */
+.home-text-link.home-text-link--button { padding: .85rem 1.15rem; min-height: 44px; border-radius: 0; transition: background-color 180ms ease, border-color 180ms ease; }
+.home-text-link.home-text-link--button .button__arrow { display: inline-block; transition: transform 180ms ease; }
+.home-text-link.home-text-link--button:hover,
+.home-text-link.home-text-link--button:focus-visible { background: #ddba17; border-color: #ddba17; color: #171611; }
+.home-text-link.home-text-link--button:hover .button__arrow,
+.home-text-link.home-text-link--button:focus-visible .button__arrow { transform: translateX(3px); }
+.opening-more .home-text-link--button { margin-top: 0; }
+.photostream-home-strip .home-field-notes__intro .home-text-link--button { margin-top: .9rem; }
+.photostream-page .field-notes-entry[id]:target { outline: none; }
+
+.site-footer .site-footer__introduction > .project-card__caption { font-family: var(--font-serif); font-size: var(--type-small); font-weight: 400; line-height: 1.4; color: var(--color-dark-muted); margin-top: .55rem; }
+.archive-pagination { margin-top: 1.5rem; }
+.stories-grid.stories-grid--archive { padding-bottom: 1.5rem; }
+@media (max-width: 700px) {
+  .site-footer .site-footer__introduction > .project-card__caption { font-size: .8rem; line-height: 1.3; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-text-link.home-text-link--button,
+  .home-text-link.home-text-link--button .button__arrow { transition: none; }
+  .home-text-link.home-text-link--button:hover .button__arrow,
+  .home-text-link.home-text-link--button:focus-visible .button__arrow { transform: none; }
+}

@@ -1,0 +1,15 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'a'> {
+  href: string;
+  arrow?: boolean;
+}
+
+const { href, arrow = true, class: className, ...attributes } = Astro.props;
+---
+
+<a href={href} class:list={['home-text-link', 'home-text-link--button', className]} {...attributes}>
+  <span class="button__label"><slot /></span>
+  {arrow && <span class="button__arrow" aria-hidden="true">→</span>}
+</a>
