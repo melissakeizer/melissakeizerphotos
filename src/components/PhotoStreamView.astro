@@ -6,13 +6,12 @@ import Heading from './Heading.astro';
 import CameraDrawing from './CameraDrawing.astro';
 import PhotoStreamPagination from './PhotoStreamPagination.astro';
 import { getPhotoStreamPages } from '../lib/photo-stream-pages';
-import { photoStreamQuestions } from '../lib/photo-stream-questions';
 import { photoStreamAnchor } from '../lib/photo-stream-links';
 
 const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
 interface Props { currentPage?: number; }
 const { currentPage = 1 } = Astro.props;
-const { pages, landscapeImages: landscapeNotes, dimensions } = await getPhotoStreamPages();
+const { pages, landscapeImages: landscapeNotes, dimensions, questionsByImage: questions, rowsByImage } = await getPhotoStreamPages();
 const totalPages = pages.length;
 const pageNotes = pages[currentPage - 1];
 
@@ -20,9 +19,6 @@ function photoUrl(path: string) {
   return `${base}${path.replace(/^\//, '')}`;
 }
 
-const questions = new Map(photoStreamQuestions.map(block => [
-  block.beforeImage, block,
-]));
 ---
 
 <Layout title={currentPage === 1 ? 'PhotoStream' : `PhotoStream — Page ${currentPage}`} description="A stream of single photographs, passing encounters and camera notes by Melissa Keizer." theme="dark">
@@ -31,6 +27,7 @@ const questions = new Map(photoStreamQuestions.map(block => [
       <div class="photostream-intro-copy">
         {/* PhotoStream eyebrow hidden while reviewing the simpler title treatment. */}
         <DisplayHeading>For the girl<br />who misses Flickr.</DisplayHeading>
+        <p class="photostream-intro-description">A photo journal of some shots I'm proud of, some everyday moments, and more than a few dogs.</p>
       </div>
       <div class="photostream-phone" aria-hidden="true">
         <CameraDrawing variant="phone-full" id="photostream-phone-pencil" />
@@ -40,16 +37,16 @@ const questions = new Map(photoStreamQuestions.map(block => [
     <div class="field-notes-feed" data-field-notes-feed>
       {pageNotes.map((note, index) => (
         <>
-          {questions.has(note.image) && (
-            <aside class:list={['field-notes-interlude', 'field-notes-interlude--qa', { 'field-notes-interlude--two-column': questions.get(note.image)?.layout === 'two-column' }]} aria-label="Quick-fire Q&A">
+          {(questions.get(note.image) ?? []).map(block => (
+            <aside class:list={['field-notes-interlude', 'field-notes-interlude--qa', { 'field-notes-interlude--two-column': block.layout === 'two-column', 'field-notes-interlude--staggered': block.layout === 'staggered' }]} aria-label="Quick-fire Q&A" data-qa-id={block.id}>
               <div class="field-notes-interlude__heading">
-                <p class="home-kicker">{questions.get(note.image)?.layout === 'two-column' ? 'Quick-fire Q&A' : <>Quick-fire<br />Q&amp;A</>}</p>
-                {questions.get(note.image)?.layout !== 'two-column' && <p class="field-notes-interlude__topic">{questions.get(note.image)?.label}</p>}
+                <p class="home-kicker">{block.layout === 'two-column' ? 'Quick-fire Q&A' : <>Quick-fire<br class="qa-desktop-break" /> Q&amp;A</>}</p>
+                <p class="field-notes-interlude__topic">{block.label}</p>
               </div>
-              {questions.get(note.image)?.items.map(item => <div class="field-notes-interlude__item"><h3>{item.question}</h3><p>{item.answer}</p></div>)}
+              {block.items.map(item => <div class="field-notes-interlude__item"><h3>{item.question}</h3><p>{item.answer}</p></div>)}
             </aside>
-          )}
-          <article id={photoStreamAnchor(note.image)} class:list={['field-notes-entry', { 'field-notes-entry--landscape': landscapeNotes.has(note.image) }]}>
+          ))}
+          <article id={photoStreamAnchor(note.image)} data-feed-row={rowsByImage.get(note.image)} class:list={['field-notes-entry', { 'field-notes-entry--landscape': landscapeNotes.has(note.image) }]}>
             <figure>
               <Photo src={photoUrl(`/photos/00-photostream/${note.image}`)} alt={note.title} sizes={landscapeNotes.has(note.image) ? '(max-width: 900px) 94vw, 62vw' : '(max-width: 600px) 94vw, (max-width: 900px) 46vw, 30vw'} width={dimensions.get(note.image)?.width} height={dimensions.get(note.image)?.height} loading={index < 3 ? 'eager' : 'lazy'} decoding="async" />
             </figure>
@@ -86,6 +83,13 @@ const questions = new Map(photoStreamQuestions.map(block => [
   .photostream-page .field-notes-interlude--two-column .field-notes-interlude__heading { grid-column: 1 / -1; }
   .photostream-page .field-notes-interlude--two-column .field-notes-interlude__item { grid-column: auto; }
   .photostream-page .field-notes-interlude--two-column .field-notes-interlude__item :is(h3, p) { max-width: none; }
+  .photostream-page .field-notes-interlude--two-column .field-notes-interlude__heading { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .photostream-page .field-notes-interlude--two-column .field-notes-interlude__topic { margin-top: 0; }
+  .photostream-page .field-notes-interlude--staggered { grid-template-columns: repeat(8, minmax(0, 1fr)); row-gap: 2.5rem; }
+  .photostream-page .field-notes-interlude--staggered .field-notes-interlude__heading { grid-column: 1 / span 2; grid-row: 1; }
+  .photostream-page .field-notes-interlude--staggered .field-notes-interlude__item { grid-column: 3 / span 3; }
+  .photostream-page .field-notes-interlude--staggered .field-notes-interlude__item:nth-child(3) { grid-column: 6 / span 3; }
+  .photostream-page .field-notes-interlude--staggered .field-notes-interlude__item :is(h3, p) { max-width: none; }
   @media (max-width: 700px) { .photostream-page .field-notes-interlude--two-column { grid-template-columns: 1fr; } }
   .photostream-page .field-notes-interlude__heading .home-kicker {
     font-size: clamp(1.1rem, 1.8vw, 1.7rem);
@@ -109,6 +113,18 @@ const questions = new Map(photoStreamQuestions.map(block => [
     clip-path: inset(0 -1rem -8rem -100vw);
   }
   .photostream-intro-copy { position: relative; z-index: 1; }
+  .photostream-intro-description {
+    max-width: 30ch;
+    margin: 1rem 0 0;
+    font: 400 var(--type-paragraph)/1.45 var(--font-serif);
+    color: var(--color-dark-muted);
+  }
+  @media (max-width: 1180px) {
+    :root .photostream-page.photostream-page.photostream-page .field-notes-header {
+      height: auto;
+      min-height: 10rem;
+    }
+  }
   .photostream-eyebrow {
     margin: 0 0 1.1rem;
     font: 500 .68rem/1.4 var(--font-sans);
@@ -147,6 +163,13 @@ const questions = new Map(photoStreamQuestions.map(block => [
     .photostream-page .field-notes-feed { position: relative; z-index: 1; }
     .photostream-page .field-notes-interlude--qa { padding: 2rem 0 3rem; row-gap: 1.5rem; }
     .photostream-page .field-notes-interlude__heading .home-kicker { white-space: nowrap; font-size: 1.05rem; }
-    .photostream-page .field-notes-interlude__topic { display: none; }
+    .photostream-page .field-notes-interlude__heading .qa-desktop-break { display: none; }
+    .photostream-page .field-notes-interlude--qa .field-notes-interlude__item :is(h3, p) { max-width: none; }
+    .photostream-page .field-notes-interlude--staggered { grid-template-columns: 1fr; }
+    .photostream-page .field-notes-interlude--qa .field-notes-interlude__heading,
+    .photostream-page .field-notes-interlude--qa .field-notes-interlude__item { grid-column: 1; grid-row: auto; }
+    .photostream-page .field-notes-interlude--staggered .field-notes-interlude__item:nth-child(3) { grid-column: 1; }
+    .photostream-page .field-notes-interlude--qa .field-notes-interlude__heading { display: flex; align-items: baseline; justify-content: space-between; gap: .75rem; flex-wrap: wrap; }
+    .photostream-page .field-notes-interlude__topic { margin-top: 0; }
   }
 </style>

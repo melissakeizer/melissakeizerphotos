@@ -1,12 +1,13 @@
 import sharp from 'sharp';
 import { resolve } from 'node:path';
 import { photoStreamNotes } from './field-notes';
-import { photoStreamQuestions } from './photo-stream-questions';
-import { paginatePhotoStream } from './photo-stream-pagination';
+import { allPhotoStreamQuestions } from './photo-stream-questions';
+import photoStreamPlan from '../data/photo-stream-plan.json';
+import { resolvePhotoStreamPlan } from './photo-stream-plan.mjs';
 import { photoStreamLocations } from './photo-stream-links';
 
 export async function getPhotoStreamPages() {
-  const landscapeImages = new Set<string>();
+  const layout = resolvePhotoStreamPlan(photoStreamPlan, photoStreamNotes, allPhotoStreamQuestions);
   const dimensions = new Map<string, { width: number; height: number }>();
   await Promise.all(photoStreamNotes.map(async note => {
     const metadata = await sharp(resolve('public/photos/00-photostream', note.image)).metadata();
@@ -14,15 +15,11 @@ export async function getPhotoStreamPages() {
     const width = rotated ? metadata.height : metadata.width;
     const height = rotated ? metadata.width : metadata.height;
     if (width && height) dimensions.set(note.image, { width, height });
-    if ((width ?? 0) >= (height ?? 0)) landscapeImages.add(note.image);
   }));
-  const pages = paginatePhotoStream(photoStreamNotes, landscapeImages,
-    new Set(photoStreamQuestions.map(block => block.beforeImage)));
-  const locations = photoStreamLocations(pages);
+  const locations = photoStreamLocations(layout.pages);
   return {
-    landscapeImages,
+    ...layout,
     dimensions,
-    pages,
     locations,
   };
 }
