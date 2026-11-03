@@ -51,7 +51,7 @@ const questions = new Map(photoStreamQuestions.map(block => [
           )}
           <article id={photoStreamAnchor(note.image)} class:list={['field-notes-entry', { 'field-notes-entry--landscape': landscapeNotes.has(note.image) }]}>
             <figure>
-              <Photo src={photoUrl(`/photos/00-photostream/${note.image}`)} alt={note.title} width={dimensions.get(note.image)?.width} height={dimensions.get(note.image)?.height} loading={index < 3 ? 'eager' : 'lazy'} decoding="async" />
+              <Photo src={photoUrl(`/photos/00-photostream/${note.image}`)} alt={note.title} sizes={landscapeNotes.has(note.image) ? '(max-width: 900px) 94vw, 62vw' : '(max-width: 600px) 94vw, (max-width: 900px) 46vw, 30vw'} width={dimensions.get(note.image)?.width} height={dimensions.get(note.image)?.height} loading={index < 3 ? 'eager' : 'lazy'} decoding="async" />
             </figure>
             <div class="field-notes-entry__details">
               <div class="field-notes-entry__caption">

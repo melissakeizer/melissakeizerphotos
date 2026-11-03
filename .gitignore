@@ -1,6 +1,8 @@
 # build output
 dist/
 /public/_responsive/
+/public/_media/
+/public/_drawings/
 # generated types
 .astro/
 .local/
