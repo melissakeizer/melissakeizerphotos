@@ -3,7 +3,7 @@ import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 
-// Approved shared artwork: /previews/social-home-v2/ (v4 export), 1200 × 630.
+// Shared artwork: /previews/social-home-v2/ (v5 export), 1200 × 630.
 // Homepage, archives and PhotoStream use this; individual stories supply a cover.
 export const homepagePreview = '/social-home.jpg';
 export async function socialImage(source) {
