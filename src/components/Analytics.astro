@@ -1,0 +1,45 @@
+---
+const id = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID || '';
+const src = import.meta.env.PUBLIC_UMAMI_SCRIPT_URL || '';
+const enabled = import.meta.env.PROD && import.meta.env.PUBLIC_UMAMI_ENABLED === 'true' && /^[a-f\d-]{36}$/i.test(id) && /^https:\/\//.test(src);
+---
+{enabled && <script is:inline define:vars={{ id, src }}>
+  (() => {
+    const excluded = () => {
+      try { return localStorage.getItem('umami.disabled') === '1'; } catch { return true; }
+    };
+    if (location.hostname !== 'melissakeizer.photos' || excluded() || navigator.doNotTrack === '1' || navigator.globalPrivacyControl) return;
+    // Restrict data to public route names. Never send query strings, fragments,
+    // form fields, email addresses, custom identities or full external URLs.
+    window.mkAnalyticsBeforeSend = (type, payload) => {
+      if (excluded()) return false;
+      const clean = { ...payload, url: location.pathname };
+      try { clean.referrer = payload.referrer ? new URL(payload.referrer).origin : ''; } catch { clean.referrer = ''; }
+      delete clean.query;
+      delete clean.hash;
+      return clean;
+    };
+    const script = document.createElement('script');
+    script.src = src; script.defer = true;
+    script.dataset.websiteId = id;
+    script.dataset.domains = 'melissakeizer.photos';
+    script.dataset.beforeSend = 'mkAnalyticsBeforeSend';
+    script.dataset.doNotTrack = 'true';
+    script.dataset.excludeSearch = 'true';
+    script.dataset.excludeHash = 'true';
+    document.head.append(script);
+    document.addEventListener('click', event => {
+      if (excluded()) return;
+      const a = event.target.closest?.('a[href]');
+      if (!a || !window.umami) return;
+      const url = new URL(a.href, location.href);
+      let name;
+      if (a.closest('.opening-more')) name = 'see_all_stories';
+      else if (a.closest('.home-field-notes__intro')) name = 'browse_photostream';
+      else if (a.matches('.field-note-card__photo-link')) name = 'homepage_photostream_photo';
+      else if (a.closest('.related-stories')) name = 'related_story';
+      else if (a.closest('.site-footer__links') && ['www.linkedin.com', 'www.instagram.com', 'unsplash.com'].includes(url.hostname)) name = 'outbound_social';
+      if (name) window.umami.track(name, { destination: url.origin === location.origin ? url.pathname + (name === 'homepage_photostream_photo' ? url.hash : '') : url.hostname });
+    });
+  })();
+</script>}

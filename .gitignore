@@ -3,6 +3,7 @@ dist/
 /public/_responsive/
 /public/_media/
 /public/_drawings/
+/public/social/
 # generated types
 .astro/
 .local/

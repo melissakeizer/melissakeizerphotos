@@ -33,7 +33,7 @@ const previewPhotos = picks.filter(image => locations.has(image)).map(image => f
               <Photo src={photoUrl(`/photos/00-photostream/${fieldNote.image}`)} alt={fieldNote.title} sizes="(max-width: 700px) 46vw, 24vw" loading="lazy" decoding="async" />
             </a>
             <figcaption>
-              <Heading as="h4">{fieldNote.title}</Heading>
+              <Heading as="h3" size="h4">{fieldNote.title}</Heading>
               <span>{fieldNote.camera ? `${fieldNote.camera}${fieldNote.lens ? ` · ${fieldNote.lens}` : ''}` : fieldNote.metadataNote || fieldNote.date}</span>
             </figcaption>
           </figure>

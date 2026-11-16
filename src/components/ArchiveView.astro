@@ -12,7 +12,7 @@ const categorySlug = (value: string) => value.toLowerCase().replace(/\s+/g, '-')
 const pageRoot = category === 'all' ? `${base}posts/` : `${base}categories/${category}/`;
 const pageUrl = (n: number) => n === 1 ? pageRoot : `${pageRoot}${n}/`;
 ---
-<Layout title="All Posts">
+<Layout title={`${category === 'all' ? 'All Stories' : category.replace(/-/g, ' ')}${currentPage > 1 ? ` — Page ${currentPage}` : ''}`} description={`Browse ${category === 'all' ? 'personal photo stories and galleries' : category.replace(/-/g, ' ') + ' photo stories'} by Melissa Keizer. Animals, adventures and everyday moments.${currentPage > 1 ? ` Page ${currentPage}.` : ''}`}>
   <header class="archive-header">
     <Heading>All Posts</Heading>
     <div class="archive-filters" aria-label="Filter posts">

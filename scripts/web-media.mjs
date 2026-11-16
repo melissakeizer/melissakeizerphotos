@@ -34,10 +34,13 @@ async function prepare(relative) {
   const scale = Math.min(1, MAX_PHOTO_EDGE / Math.max(originalWidth, originalHeight));
   const width = Math.round(originalWidth * scale);
   const height = Math.round(originalHeight * scale);
-  const key = createHash('sha256').update(input).update('web-mozjpeg88-progressive-edge3200-v2').digest('hex').slice(0, 24);
+  const key = createHash('sha256').update(input).update('web-mozjpeg88-progressive-edge3200-v3-private').digest('hex').slice(0, 24);
   // Most older gallery exports are 1600px already: one 800px copy covers tablets
   // and small cards without storing three near-duplicate encodings per photo.
-  const widths = [...[800, 1600, 2400].filter(w => w <= width / 1.25), width];
+  // Only card/stream/portrait sources need a thumbnail below 800px. Avoid
+  // adding another stored variant to every full-width gallery photograph.
+  const smallPreview = relative.includes('00-photostream/') || /\/000[-.]/.test(relative) || relative === 'melissa-keizer-avatar.jpeg';
+  const widths = [...[...(smallPreview ? [400] : []), 800, 1600, 2400].filter(w => w <= width / 1.25), width];
   const variants = [];
   for (const w of widths) {
     const relativeOutput = `_media/${key}-${w}.jpg`;
@@ -48,7 +51,7 @@ async function prepare(relative) {
       await limited(async () => {
         const encoded = await sharp(input).rotate().resize({ width: w, withoutEnlargement: true })
           .jpeg({ quality: 88, mozjpeg: true, progressive: true, chromaSubsampling: w === width && metadata.chromaSubsampling === '4:4:4' ? '4:4:4' : '4:2:0' }).toBuffer();
-        const unchanged = w === originalWidth && metadata.format === 'jpeg' && (!metadata.orientation || metadata.orientation === 1) && metadata.isProgressive;
+        const unchanged = w === originalWidth && metadata.format === 'jpeg' && (!metadata.orientation || metadata.orientation === 1) && metadata.isProgressive && !metadata.exif && !metadata.iptc && !metadata.xmp;
         await fs.writeFile(output, unchanged && input.length < encoded.length ? input : encoded);
       });
     }

@@ -1,0 +1,36 @@
+---
+import Layout from '../layouts/Layout.astro';
+const analyticsEnabled = import.meta.env.PUBLIC_UMAMI_ENABLED === 'true' && Boolean(import.meta.env.PUBLIC_UMAMI_WEBSITE_ID && import.meta.env.PUBLIC_UMAMI_SCRIPT_URL);
+---
+<Layout title="Privacy" description="How MK Fotos handles visitor information and optional website analytics.">
+  <main class="contact-page">
+    <h1>Privacy</h1>
+    <p>MK Fotos is Melissa Keizer’s personal photo journal. Contact: <a href="mailto:hi@melissakeizer.com">hi@melissakeizer.com</a>.</p>
+    <h2>Visiting this site</h2>
+    <p>GitHub Pages hosts this website and may process connection information, including IP addresses, to deliver and protect the service. See <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub’s privacy statement</a>.</p>
+    <h2>Website statistics</h2>
+    <p>{analyticsEnabled ? 'This site uses Umami Cloud to understand which pages people enjoy and improve the website.' : 'Visitor analytics are currently switched off. Umami Cloud is being prepared for future use.'}</p>
+    <p>When enabled, statistics include page visits, referring websites, device and browser types, approximate location and a small set of navigation clicks. Analytics do not use advertising cookies, record sessions or capture form contents. This site does not send names, email addresses, precise locations, query strings or personal identifiers to analytics.</p>
+    <p>Statistics are used only to improve this site, with no advertising profiles or decisions about individual visitors. Umami’s free hosted plan retains analytics for six months. We honour Do Not Track and Global Privacy Control where available.</p>
+    <p>You can object to analytics at any time using the button below. Your choice is saved in this browser’s local storage; this preference is not sent as an analytics event. <a href="https://umami.is/privacy">Umami privacy information</a>.</p>
+    <button type="button" id="analytics-preference">Turn off analytics in this browser</button>
+    <p id="analytics-status" role="status"></p>
+    <h2>Contact and external links</h2>
+    <p>If you email me, I use the details you provide to respond. External links open services with their own privacy policies. For privacy questions or requests about your information, please email me.</p>
+  </main>
+</Layout>
+<script>
+  const button = document.querySelector<HTMLButtonElement>('#analytics-preference');
+  const status = document.querySelector('#analytics-status');
+  function render() {
+    try {
+      const off = localStorage.getItem('umami.disabled') === '1';
+      if (button) button.textContent = off ? 'Allow analytics in this browser' : 'Turn off analytics in this browser';
+      if (status) status.textContent = off ? 'Analytics are off in this browser.' : 'Analytics are allowed if enabled on this site.';
+    } catch { if (status) status.textContent = 'Your browser blocks preference storage. Analytics stay off.'; }
+  }
+  button?.addEventListener('click', () => {
+    try { localStorage.setItem('umami.disabled', localStorage.getItem('umami.disabled') === '1' ? '0' : '1'); render(); } catch {}
+  });
+  render();
+</script>

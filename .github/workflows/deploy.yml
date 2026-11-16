@@ -32,9 +32,17 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          PUBLIC_UMAMI_ENABLED: ${{ vars.PUBLIC_UMAMI_ENABLED }}
+          PUBLIC_UMAMI_WEBSITE_ID: ${{ vars.PUBLIC_UMAMI_WEBSITE_ID }}
+          PUBLIC_UMAMI_SCRIPT_URL: ${{ vars.PUBLIC_UMAMI_SCRIPT_URL }}
+          PUBLIC_GOOGLE_SITE_VERIFICATION: ${{ vars.PUBLIC_GOOGLE_SITE_VERIFICATION }}
 
       - name: Verify deployed media and size budget
         run: npm run check:deployment
+
+      - name: Verify SEO, internal links and public metadata
+        run: npm run check:launch
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

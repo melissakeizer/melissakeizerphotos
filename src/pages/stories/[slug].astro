@@ -156,7 +156,8 @@ function photoLayoutClass(count: number) {
 }
 ---
 
-<Layout title={data.title} description={description || undefined} image={cover ? photoUrl(cover) : undefined} theme={data.theme ?? 'light'}>
+<Layout title={data.title} description={description || `${data.title}${subtitle ? `: ${subtitle}` : ''}. A photo ${isStory ? 'story' : 'gallery'} by Melissa Keizer.`} image={cover ? photoUrl(cover) : undefined} article={isStory} theme={data.theme ?? 'light'}>
+  <main>
   {StoryEditor && <StoryEditor slug={story.id} sections={sourceSections} effectiveLayouts={sections.map((section) => section.layout || '')} />}
   {isStory && cover && coverStyle === 'full' && (
     <div class="story-hero-wrapper">
@@ -454,7 +455,7 @@ function photoLayoutClass(count: number) {
           <aside class="story-footnotes">
             {data.footnotes && (
               <>
-                <h4 class="story-footnotes__title">Footnotes</h4>
+                <Heading as="h2" size="h4" class="story-footnotes__title">Footnotes</Heading>
                 <p>{data.footnotes}</p>
               </>
             )}
@@ -499,6 +500,7 @@ function photoLayoutClass(count: number) {
           const relatedCover = thumbnailForStory(relatedStory.id, relatedStory.data.coverImage || relatedStory.data.photos[0]);
           return (
             <ProjectCard
+              headingLevel="h3"
               href={`${base}stories/${relatedStory.id}`}
               image={relatedCover ? photoUrl(relatedCover) : undefined}
               title={relatedStory.data.title}
@@ -518,6 +520,7 @@ function photoLayoutClass(count: number) {
     <img class="lightbox__img" id="lightbox-img" src="" alt="" />
     <button class="lightbox__next" id="lightbox-next" aria-label="Next photo">&#8250;</button>
   </div>
+  </main>
 </Layout>
 
 <script>

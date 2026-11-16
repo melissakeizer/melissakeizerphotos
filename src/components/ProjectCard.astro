@@ -11,9 +11,10 @@ interface Props {
   type: string;
   caption?: string | null;
   categories?: string[];
+  headingLevel?: 'h2' | 'h3';
 }
 
-const { href, title, type, caption, categories } = Astro.props;
+const { href, title, type, caption, categories, headingLevel = 'h2' } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const slug = href.split('/stories/')[1]?.replace(/\/$/, '');
 const media = slug ? storyCardMedia[slug] : undefined;
@@ -25,11 +26,11 @@ const videoPosition = media?.position ?? Astro.props.videoPosition;
 <article class="project-card" data-categories={categories?.join('|')}>
   <a href={href}>
     <div class="project-card__image" data-video-state={video ? 'pending' : undefined}>
-      {image && <Photo src={image} alt={title} sizes="(max-width: 600px) 46vw, (max-width: 1280px) 45vw, 30vw" style={videoPosition ? `object-position: ${videoPosition}` : undefined} loading="lazy" decoding="async" />}
+      {image && <Photo src={image} alt={media?.alt ?? title} sizes="(max-width: 600px) 46vw, (max-width: 1280px) 45vw, 30vw" style={videoPosition ? `object-position: ${videoPosition}` : undefined} loading="lazy" decoding="async" />}
       {video && <video class="project-card__video" src={video} style={videoPosition ? `object-position: ${videoPosition}` : undefined} muted loop playsinline webkit-playsinline preload="none" aria-hidden="true"></video>}
     </div>
     <div class="project-card__content">
-      <Heading as="h3">{title}</Heading>
+      <Heading as={headingLevel} size="h3">{title}</Heading>
       {caption && <p class="project-card__caption">{caption}</p>}
       <p class="project-card__type">{type}</p>
     </div>
@@ -63,7 +64,10 @@ const videoPosition = media?.position ?? Astro.props.videoPosition;
   .project-card__type { transition: border-color .25s ease; }
   .project-card a:hover .project-card__type,
   .project-card a:focus-visible .project-card__type { border-top-color: var(--color-text); }
-  .project-card__image video { opacity: 0; transition: transform .4s ease; }
+  /* Video layers round fractional card edges independently during compositing.
+     Bleed one pixel behind the clip, so sibling hover repaints expose no seam. */
+  .project-card__image[data-video-state] { background: var(--color-bg); }
+  .project-card__image video { display: block; inset: -1px; width: calc(100% + 2px); height: calc(100% + 2px); opacity: 0; transition: transform .4s ease; }
   :global(html.video-autoplay-enabled) .project-card__image[data-video-state="pending"] > img { opacity: 0; }
   .project-card__image[data-video-state="playing"] > img { visibility: hidden; }
   .project-card__image[data-video-state="playing"] video { opacity: 1; }

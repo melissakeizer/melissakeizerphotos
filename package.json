@@ -11,6 +11,7 @@
     "preview": "astro preview",
     "check:content": "node scripts/check-content.mjs",
     "check:deployment": "node scripts/audit-deployment.mjs dist --verify",
+    "check:launch": "node scripts/audit-launch.mjs dist",
     "test:media": "node --test scripts/web-media.test.mjs",
     "astro": "astro"
   },

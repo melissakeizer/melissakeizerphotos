@@ -1,16 +1,17 @@
 ---
 import CameraDrawing from './CameraDrawing.astro';
 import Heading from './Heading.astro';
+import Photo from './Photo.astro';
 const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
 ---
 
 <footer class="site-footer" id="contact" style={`--footer-photo: url('${base}photos/road-to-sligo/000-photo.jpg')`}>
   <div class="site-footer__panel">
     <div class="site-footer__portrait">
-      <img src={`${base}melissa-keizer-avatar.jpeg`} alt="Melissa Keizer" />
+      <Photo src={`${base}melissa-keizer-avatar.jpeg`} alt="Melissa Keizer" sizes="120px" loading="lazy" />
     </div>
     <div class="site-footer__introduction">
-      <Heading as="h4">Hi, I’m Melissa Keizer.</Heading>
+      <Heading as="h2" size="h4">Hi, I’m Melissa Keizer.</Heading>
       <p class="project-card__caption">I’m a photographer and product designer based in Bangor, Northern Ireland. Usually found following dogs into good light or making one more tiny adjustment in Lightroom.</p>
     </div>
     <div class="site-footer__navigation">
@@ -19,6 +20,7 @@ const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
         <a href={base}>Home</a>
         <a href={`${base}posts/`}>All posts</a>
         <a href={`${base}photostream/`}>PhotoStream</a>
+        <a href={`${base}privacy/`}>Privacy</a>
         <a href="mailto:hi@melissakeizer.com">Email</a>
         <a href="https://www.linkedin.com/in/melissakeizer/" target="_blank" rel="noreferrer">LinkedIn</a>
         <a href="https://www.instagram.com/KeizGoesBoom/" target="_blank" rel="noreferrer">Instagram</a>
