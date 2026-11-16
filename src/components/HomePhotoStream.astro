@@ -24,7 +24,7 @@ const previewPhotos = picks.filter(image => locations.has(image)).map(image => f
       <div class="home-field-notes__intro">
         <Heading as="h2" id="field-notes-title">PhotoStream</Heading>
         <p>Everyday frames without a bigger story.</p>
-        <Button href={`${base}photostream/`}>Browse PhotoStream</Button>
+        <Button href={`${base}photostream/`} data-adaptive-photostream><span class="button__optional-word">Browse </span>PhotoStream</Button>
       </div>
       <div class="home-field-notes__grid">
         {previewPhotos.map((fieldNote) => (
@@ -42,6 +42,7 @@ const previewPhotos = picks.filter(image => locations.has(image)).map(image => f
     </section>
 </div>
 <style>
+.home-field-notes__intro :global(.home-text-link--button.is-compact .button__optional-word) { display: none; }
 .field-note-card__photo-link { display: block; }
 .field-note-card__photo-link:focus-visible { outline: 2px solid var(--color-text); outline-offset: 4px; }
 .home-phone-full { display: none; }
@@ -56,3 +57,19 @@ const previewPhotos = picks.filter(image => locations.has(image)).map(image => f
 }
 .photostream-home-strip { --color-text: #1a1918; --color-muted: #6b6560; color: #1a1918; }
 </style>
+
+<script>
+  const button = document.querySelector<HTMLAnchorElement>('[data-adaptive-photostream]');
+  if (button?.parentElement) {
+    const measure = () => {
+      button.classList.remove('is-compact');
+      // Measure the complete label before deciding whether its optional word fits.
+      const label = button.querySelector<HTMLElement>('.button__label');
+      button.classList.toggle('is-compact', button.scrollWidth > button.clientWidth + 1 || Boolean(label && label.scrollWidth > label.clientWidth + 1));
+    };
+    if ('ResizeObserver' in window) new ResizeObserver(measure).observe(button.parentElement);
+    else window.addEventListener('resize', measure, { passive: true });
+    document.fonts?.ready.then(measure);
+    measure();
+  }
+</script>

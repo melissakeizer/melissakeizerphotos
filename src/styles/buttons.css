@@ -21,9 +21,11 @@
   max-width: 100%;
   height: auto;
   text-align: center;
+  white-space: nowrap;
+  flex-wrap: nowrap;
 }
 
-.home-text-link--button .button__label { min-width: 0; }
+.home-text-link--button .button__label { min-width: 0; white-space: nowrap; }
 .home-text-link--button .button__arrow { flex: 0 0 auto; }
 
 /* Newer engines can trim to actual capital ink; older engines use the

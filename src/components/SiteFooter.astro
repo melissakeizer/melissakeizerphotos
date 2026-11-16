@@ -32,3 +32,26 @@ const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
     </div>
   </div>
 </footer>
+
+<style>
+  .site-footer__navigation.is-compact > .site-footer__label { display: none; }
+</style>
+<script>
+  const navigation = document.querySelector<HTMLElement>('.site-footer__navigation');
+  const links = navigation?.querySelector<HTMLElement>('.site-footer__links');
+  if (navigation && links) {
+    const measure = () => {
+      // Restore the label only for measurement, then hide it before paint if
+      // keeping it would force links onto another line (or into overflow).
+      navigation.classList.remove('is-compact');
+      const items = [...links.querySelectorAll('a')];
+      const gap = parseFloat(getComputedStyle(links).columnGap) || 0;
+      const required = items.reduce((sum, item) => sum + item.getBoundingClientRect().width, 0) + gap * Math.max(0, items.length - 1);
+      navigation.classList.toggle('is-compact', required > links.clientWidth + 1);
+    };
+    if ('ResizeObserver' in window) new ResizeObserver(measure).observe(navigation);
+    else window.addEventListener('resize', measure, { passive: true });
+    document.fonts?.ready.then(measure);
+    measure();
+  }
+</script>
