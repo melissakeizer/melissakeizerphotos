@@ -1,22 +1,22 @@
 # Launch setup — 16 November 2026
 
-## Analytics (prepared; disabled by default)
+## Analytics (enabled 16 November 2026)
 
-Create a free Umami Cloud **Hobby** account and add `melissakeizer.photos`. Current public pricing: one website, 100,000 events/month, six months retention. Page views, custom events and stored properties consume the allowance. No paid plan or account has been created.
+Melissa created her Umami account and supplied the website ID. At her request, the official Cloud tracker is now enabled and deployed. No account or paid service was created by Codex. Current Hobby allowance: one website, 100,000 events/month and six months retention; page views and custom events consume it.
 
 In GitHub repository Settings → Secrets and variables → Actions → Variables, add:
 
 ```
-PUBLIC_UMAMI_WEBSITE_ID = your actual website UUID
-PUBLIC_UMAMI_SCRIPT_URL = the HTTPS script URL supplied by Umami
+PUBLIC_UMAMI_WEBSITE_ID = f1395150-4422-4217-9c52-71b016326278
+PUBLIC_UMAMI_SCRIPT_URL = https://cloud.umami.is/script.js
 PUBLIC_UMAMI_ENABLED = true
 ```
 
-Keep ENABLED unset until you review Umami’s current DPA, subprocessors, data location, international transfers and this site's privacy wording. Re-run the Pages workflow after adding variables. The website ID is public, not an API credential. Never paste an account API key into these variables.
+These repository variables are configured and deployed. Browser inspection confirmed the live script loads without console errors; dashboard ingestion still needs Melissa's account-side check. The website ID is public, not an API credential. Never paste an API key into these variables. To pause later, set ENABLED to false and rebuild.
 
 Page views provide sources, popular stories and device/browser breakdown. Events: `see_all_stories`, `browse_photostream`, `homepage_photostream_photo`, `related_story`, `outbound_social`. Only public route/anchor or social hostname is attached. No identify calls, session replay, heatmaps, forms, query strings or full referrer paths. Local previews and other domains never track. Do Not Track, Global Privacy Control and browser opt-out are honoured. Privacy link is in the footer.
 
-The ICO's current statistical-purpose exception requires sole use for aggregate service-improvement statistics, clear information and an easy objection mechanism. Cookie-free alone does not establish exemption: scripts accessing devices also count. Confirm the actual configured Umami processing meets those conditions before enabling; if it does not, prior consent is required. This integration therefore remains off pending that review. Review the privacy page after choosing the account/data region. Allowing analytics again takes effect on the next page navigation.
+The ICO's current statistical-purpose exception requires sole use for aggregate service-improvement statistics, clear information and an easy objection mechanism. Cookie-free alone does not establish exemption: scripts accessing devices also count. Review the actual account's DPA, subprocessors, data location and transfers alongside the privacy wording; activation at Melissa's request is not a compliance certification. If processing does not meet the exception, prior consent is required. Allowing analytics again takes effect on the next page navigation; it clears Umami's opt-out key.
 
 Sources checked 16 November 2026:
 - https://umami.is/pricing
@@ -31,7 +31,7 @@ Add a Domain property for `melissakeizer.photos` and complete Google's DNS TXT v
 
 ## Social preview replacement
 
-Each published story automatically gets a 1200 × 630 JPEG generated from its existing hero image. Homepage currently uses the wolf photograph. To replace it, add `public/social-home.jpg` (your branded 1200 × 630 design) and change `homepagePreview` in `src/lib/social-image.mjs` to `/social-home.jpg`. Share previews may be cached by individual apps; test with their inspector or a new message after deployment. Original photographs remain untouched.
+Each published story automatically gets a 1200 × 630 JPEG from its hero image. Homepage, Stories archives and PhotoStream use Melissa's approved branded design from `public/social-home.jpg`; replace that source file to update it. `homepagePreview` in `src/lib/social-image.mjs` already selects it. Platforms may cache previews; use their inspector or a new message after deployment. Original photographs remain untouched.
 
 ## Editorial checks
 

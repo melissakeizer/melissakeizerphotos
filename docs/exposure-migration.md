@@ -1,22 +1,67 @@
-# Exposure migration — preparation only
+# Exposure migration — preparation only, 16 November 2026
 
-No DNS, subscriptions or domain settings have been changed.
+No DNS, Exposure settings, plans or subscriptions have changed. No support contact is required by this plan.
 
-## Evidence and boundaries
+## Scope and evidence
 
-Public search evidence links Melissa's old stories to `melissakeizer.exposure.co` (including `/cat-colony-of-cala-bona` and `/designers-explorers`). The Exposure host currently returns HTTP 403 to automated requests, so its complete inventory/captions could not be compared reliably. The candidate custom domain `melissakeizerphotography.com` has `www` CNAME `domains.exposure.co` and apex A `174.129.25.170`; its HTTPS request timed out. These DNS records are consistent with Exposure, but **Melissa must confirm the exact old domain** before any changes. Do not confuse `melissakeizer.com`, which is also used for email, with the photography domain.
+Melissa confirmed that BigWetFish manages `melissakeizerphotography.com`. Preserve HTTP/HTTPS and www/apex. Do not change `melissakeizer.com`, a separate website/email domain. Both legacy story forms are in [the URL map](exposure-url-map.csv):
 
-## Before cancellation
+- `https://www.melissakeizerphotography.com/finn-pointer-puppy`
+- `https://melissakeizer.exposure.co/finn-pointer-puppy`
+- Destination: `https://melissakeizer.photos/stories/finn-pointer-puppy/`
 
-1. Confirm the old custom domain, registrar login and Exposure account. Export/download all originals, text, captions, dates, ordering, cover selections and URL slugs using Exposure's account tools; retain at least two independent backups. Local imports are not proof the account is fully backed up.
-2. Export the full public and private story inventory, including drafts/unlisted work. Compare with the local story files and `exposure-url-map.csv`. Mark missing stories/photos/captions and verify each intended replacement visually. Resolve public drafts intentionally; do not automatically publish private work.
-3. Check the old sitemap, Search Console and backlinks for aliases, trailing slash differences and renamed slugs. Preserve existing story slugs when possible. The CSV is a candidate mapping based on local slugs, **not a verified old-site inventory**.
-4. Select a redirect-capable host/service for the retained domain. DNS alone cannot issue HTTP redirects. GitHub Pages cannot provide arbitrary server-side 301 mapping for another domain; a static meta-refresh page is not equivalent. Choose a provider with HTTPS for both apex and www and explicit permanent path mapping. Review availability/cost with Melissa before adopting any service.
-5. Configure and test redirects before disconnecting Exposure: old homepage → new homepage; each matched story → exact new story; unmigrated content → closest relevant page only if genuinely relevant. Avoid redirecting all old stories to home. Avoid chains/loops. Keep query strings only if useful; do not carry personal tokens.
-6. Test HTTP and HTTPS, apex and www variants; valid TLS must exist before an HTTPS redirect can be read. Record actual 301 status + Location for representative paths. Check email MX/TXT records are preserved.
-7. Verify old/new Search Console ownership, submit the new sitemap and use Change of Address if applicable. Update social/profile links and important backlinks. Monitor 404s and indexing. Retain domain and redirects for at least a year, preferably longer while traffic/backlinks remain.
-8. Only cancel Exposure after exports, inventory comparison, missing content decisions, redirects and certificate tests are complete. Confirm what cancellation does to the Exposure subdomain; redirects for that subdomain require Exposure cooperation.
+The owned domain is the priority; Exposure links are best effort and must not block migration.
+
+Verified today:
+
+- DNS: www CNAME `domains.exposure.co`; apex A `174.129.25.170`.
+- Browser navigation from the Exposure Finn URL reached the corresponding HTTPS www story. Its canonical names that custom-domain URL. This verifies forwarding, **not the redirect status code**.
+- Automated requests to Exposure and www returned 403. HTTP apex returned **301** to HTTP www, then 403. HTTPS apex timed out after 20 seconds. Raw results: `.local/exposure-http-audit-2026-11-16.json`. These blocks do not establish that regular visitors cannot view the site.
+- All five public archive pages were inspected: **42 stories**, all with local counterparts. [Inventory](exposure-public-inventory.json) records observed URLs and counts.
+- **987 legacy photo IDs** match local source filenames and story references; none missing. This checks identity/presence, not pixel equality or original resolution.
+- **41** are published on the new site. **A Few Favourites** is public on Exposure but a local draft: hold its redirect. **From the Front Row** is another local draft, not seen in the public archive. Barcelona and Wild Ireland are new-site publications not seen there; no legacy existence is assumed.
+- Some old photo/group captions are absent locally. Review Dubrovnik & Cavtat, Pet Expo Belfast, Creatures, Mutley & Dexter, Hybrid Conf, Stablemates and Designers/Explorers. Examples include Mutley's silver ears and numerous Hybrid Conf captions. Saved text was not silently inserted or rewritten.
+
+Public text, caption/location observations, photo references, inventory and comparisons are saved privately in `.local/exposure-migration-2026-11-16/`. Some captured HTML is truncated. This is a research backup, **not a complete account/original-media export**. Gallery photo IDs were read from rendered elements because initial images can be lazy placeholders. Private/unlisted work remains outside this audit.
+
+## Google visibility
+
+Actual Google Search was inspected in the browser. A combined `site:` search showed custom-domain results including the homepage, Claws Out, Vegas, Candy & Basil, Sky & Odin, Electric Pup and categories. A separate `site:melissakeizer.exposure.co` search showed Melissa's Exposure profile and Dubrovnik & Cavtat. Both legacy forms have visible search results worth preserving.
+
+These sampled results are not a complete index/backlink inventory or proof about Finn specifically. Visible result text is saved privately. Search Console is needed for complete indexing, selected canonicals, links and image-search reports.
+
+## Exposure policy findings
+
+- [Custom-domain overview](https://support.exposure.co/en/articles/2342913-an-overview-on-using-your-own-custom-domain-name/): username URLs forward to the connected domain. No promise is given for forwarding after DNS moves away or paid access ends.
+- [Cancellation](https://support.exposure.co/en/articles/2350132-cancelling-subscription-payments/): stories stay available through the paid period, then become unavailable to visitors. They remain stored for possible resubscription.
+- [Free access](https://support.exposure.co/en/articles/4257244-what-you-get-for-free/): **no ongoing free plan**, only a trial. Historical three-free-story advice is not a dependable migration strategy.
+- [Domain removal](https://support.exposure.co/en/articles/2343047-removing-or-changing-custom-domain/): old-domain forwarding must be arranged outside Exposure. The statement about username URLs remaining accessible when removing a custom domain does not override cancellation restrictions.
+
+No publicly documented permanent external redirect service after cancellation was found. Exposure → owned domain → new story could continue while the current forwarding survives: this is an inference, not a persistence guarantee. Accept eventual Exposure URL loss. Do not connect the new primary domain to Exposure in pursuit of redirects. No support cooperation is assumed.
+
+## BigWetFish redirect preparation
+
+[Apache example](exposure-redirects.apache.conf.example), generated by `node scripts/prepare-migration.mjs` after a production build, contains 41 explicit published-story rules, optional trailing slashes, host guard, homepage/archive/category/contact mappings and query removal. Drafts/unobserved slugs are excluded. It is **not installed or ready for cutover** until the checklist below is complete.
+
+The example assumes Apache 2.4/mod_rewrite in a dedicated legacy-domain document root. Confirm the existing BigWetFish plan provides suitable hosting, both-domain certificates and those controls; registration alone is insufficient. Translate rules if the server differs. Do not purchase services without agreement. References: [cPanel manual redirects](https://docs.cpanel.net/knowledge-base/general-systems-administration/how-to-configure-redirects-manually/), [Apache flags](https://httpd.apache.org/docs/2.4/en/rewrite/flags.html).
+
+All four scheme/host variants should go directly to the final HTTPS destination. TLS must work before an HTTPS redirect can be read. Old archive queries `?page=1` through `?page=5` go to the archive because page sizes differ; Travel maps to Adventures. Unknown stories remain genuine 404s. Subscription/feed/search/accessibility paths, unseen categories and aliases need decisions before adding rules; do not send all of them to home.
+
+## URLs we cannot control
+
+Exposure subdomain paths, embeds/share links/feeds and CDN URLs belong to Exposure. Observed images use `exposure.accelerator.net/production/photos/<id>/original.jpg;…` and `/production/gallery_<id>/photos/ph_<id>/photo.jpg;…`, plus avatars/transformed variants. We cannot redirect these hosts or guarantee continued availability. Disqus comments and external video/embed services are separate backup concerns.
+
+Owned-domain redirects preserve routes we control, but cannot transfer every CDN image URL or guarantee image rankings. Keep local media, crawlable markup and the image sitemap, and monitor image-search results after moving.
+
+## Before cutover and cancellation
+
+1. Use Exposure's [self-service exports](https://support.exposure.co/en/articles/13275941-exporting-your-data/) in Settings → Account: writing plus full/per-story exports. For large libraries, use per-story exports without support. Full export supplies 2000px images, not guaranteed originals, and excludes video/audio. Back up actual originals/videos independently, plus private work, captions, dates, covers and order. Keep two independent backups and inspect failed downloads.
+2. Decide whether to publish, replace or retire A Few Favourites. Reconcile saved captions and authenticated inventory, old sitemap, aliases and Search Console with the map. Photo-ID matches alone do not complete these checks.
+3. Confirm hosting features, export DNS and preserve email MX/TXT. Prepare redirects and certificates on the target host before any DNS change; test using an explicit host override where supported. Keep Exposure connected and subscribed during preparation.
+4. When separately authorised, change only required web records. Verify 301 Location, TLS, every destination, four variants, trailing slashes, archive queries, unknown paths, chains and loops. Re-test Exposure forwarding as a bonus, not a dependency.
+5. Verify old/new Search Console properties, use Change of Address where applicable, submit the new sitemap, update controlled links and monitor 404/search/referral traffic. [Google recommends](https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes) relevant permanent redirects, generally kept at least a year; prefer longer while traffic/backlinks remain.
+6. Only cancel after backups, content decisions and redirect/live tests pass. Record paid-access end date and retain the account rather than deleting it. No Exposure support contact is needed.
 
 ## New domain age
 
-Authoritative public RDAP (`https://rdap.identitydigital.services/rdap/domain/melissakeizer.photos`) returned registration **2 November 2026, 13:16:51 UTC** and expiry 2 November 2027. Thirty elapsed days falls on **2 December 2026, around 13:17 UK time**. Defender may still block it after that: domain age is only one possible reputation/policy input. Retest on the work network then; request the organisation's approved review/allow-list process if needed. Do not bypass endpoint protection.
+Authoritative [RDAP](https://rdap.identitydigital.services/rdap/domain/melissakeizer.photos) returned registration **2 November 2026, 13:16:51 UTC**. Thirty days is **2 December 2026, around 13:17 UK time**. Defender access is not guaranteed then; retest or use the organisation's approved review process.

@@ -1,5 +1,14 @@
 # MK Fotos technical launch audit — 16 November 2026
 
+## Follow-up status later on 16 November
+
+- Approved branded sharing artwork now serves homepage, Stories archives and PhotoStream; individual stories retain automatic hero previews. Static owl/hound thumbnails, Tea Party replacement and responsive spacing/labels are published.
+- Umami enabled at Melissa's request; live official tracker loading checked. Privacy spacing/copy and the analytics preference correction deployed successfully in run `43914307964`. Dashboard ingestion remains an owner check. 41 regression tests pass.
+- Latest deployment: about 669MB of output, 657,793,685-byte uploaded artifact; 71 HTML outputs, 55 indexable pages, clean media/metadata audits.
+- Legacy domain confirmed through BigWetFish. Browser audit found 42 public legacy stories and 987 matching photo IDs/references. Both URL forms are mapped; 41 published destinations return HTTP 200. Migration report supersedes the initial candidate-only findings below. No DNS or Exposure changes.
+
+The original sprint baseline and limitations follow for comparison.
+
 ## Completed
 
 - Shared canonical URLs on the HTTPS primary domain; distinct archive/category/pagination titles and descriptions; shorter plain-text metadata, with contextual story fallbacks instead of the old commercial description.
@@ -37,7 +46,7 @@
 
 See [launch setup](launch-admin.md) for Umami variables/privacy review, Search Console and homepage card replacement. See [Exposure migration](exposure-migration.md) and [candidate URL map](exposure-url-map.csv) before cancelling anything.
 
-- Confirm the old custom domain and supply/export the complete Exposure inventory. Existing local content is not proof of a complete account backup; originals still need an independent backup before cancellation.
+- Export the complete authenticated Exposure inventory and media; the custom domain is now confirmed and the public archive audited. Public/local content is not proof of a complete account backup. Review A Few Favourites and saved legacy caption differences before cancellation.
 - Finish/review unpublished `From the Front Row` and `A Few Favourites`; neither has been silently published.
 - Confirm the contact email, missing dates/ISO already recorded in the PhotoStream review notes and individual alt descriptions as time allows.
 - Retest work access around **2 December 2026**, after the authoritative RDAP registration reaches 30 days. Access is not guaranteed to be restored then.

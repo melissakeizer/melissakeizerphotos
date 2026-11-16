@@ -1,0 +1,280 @@
+{
+  "checked": "2026-11-16",
+  "method": "Browser navigation of all five public archive pages; photo identities from rendered story/gallery DOM. Not an authenticated account export.",
+  "pages": [
+    {
+      "url": "https://www.melissakeizerphotography.com/",
+      "stories": 9
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/?page=2",
+      "stories": 9
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/?page=3",
+      "stories": 9
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/?page=4",
+      "stories": 9
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/?page=5",
+      "stories": 6
+    }
+  ],
+  "stories": [
+    {
+      "url": "https://www.melissakeizerphotography.com/dubshed-northern-irelands-largest-car-show",
+      "title": "DUBSHED - NORTHERN IRELAND'S LARGEST CAR SHOW",
+      "photoIds": 25,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/sky-odin",
+      "title": "SKY & ODIN",
+      "photoIds": 15,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/finn-pointer-puppy",
+      "title": "YOUNG FINN THE GSP",
+      "photoIds": 18,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/vegas-baby",
+      "title": "VEGAS, BABY",
+      "photoIds": 61,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/road-to-sligo",
+      "title": "ROAD TO SLIGO",
+      "photoIds": 59,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/an-afternoon-with-angus",
+      "title": "AN AFTERNOON WITH ANGUS",
+      "photoIds": 18,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/boo-the-british-blue",
+      "title": "BOO THE BRITISH BLUE",
+      "photoIds": 13,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/dubrovnik-and-cavtat",
+      "title": "DUBROVNIK & CAVTAT",
+      "photoIds": 49,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/world-of-owls",
+      "title": "WORLD OF OWLS",
+      "photoIds": 22,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/pet-expo-belfast",
+      "title": "PET EXPO BELFAST",
+      "photoIds": 32,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/a-few-favourites",
+      "title": "A FEW FAVOURITES",
+      "photoIds": 26,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/dogs-of-dubrovnik",
+      "title": "DOGS OF DUBROVNIK",
+      "photoIds": 34,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/eckles",
+      "title": "MEET ECKLES",
+      "photoIds": 10,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/barks-and-bows",
+      "title": "BARKS & BOWS",
+      "photoIds": 19,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/animals-afternoon-tea",
+      "title": "ANIMALS & AFTERNOON TEA",
+      "photoIds": 30,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/746862776d2576268afc65758bbab369",
+      "title": "CLAWS OUT",
+      "photoIds": 21,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/creatures",
+      "title": "CREATURES",
+      "photoIds": 30,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/poppy-the-labrador",
+      "title": "POPPY THE LABRADOR",
+      "photoIds": 16,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/electric-pup",
+      "title": "ELECTRIC PUP",
+      "photoIds": 12,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/my-crufts-experience-2017",
+      "title": "MY CRUFTS EXPERIENCE 2017",
+      "photoIds": 42,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/aint-nothin-but-a-hound-dog",
+      "title": "AIN'T NOTHIN' BUT A HOUND DOG",
+      "photoIds": 16,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/dogease",
+      "title": "DOGEASE",
+      "photoIds": 15,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/buffy-tess",
+      "title": "BUFFY & TESS",
+      "photoIds": 14,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/bring-your-dog-to-work-day",
+      "title": "BRING YOUR DOG TO WORK DAY",
+      "photoIds": 14,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/the-lunatinks",
+      "title": "THE LUNATINKS",
+      "photoIds": 21,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/roaming-rome",
+      "title": "ROAMING ROME",
+      "photoIds": 50,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/candy-basil",
+      "title": "CANDY & BASIL",
+      "photoIds": 17,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/mutley-and-dexter",
+      "title": "MUTLEY & DEXTER",
+      "photoIds": 13,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/playtime-with-bubba",
+      "title": "PLAYTIME WITH BUBBA",
+      "photoIds": 18,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/cat-colony-of-cala-bona",
+      "title": "CAT COLONY OF CALA BONA",
+      "photoIds": 14,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/hybrid-conf",
+      "title": "HYBRID CONF",
+      "photoIds": 33,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/the-saltydog-dog-show",
+      "title": "THE SALTY-DOG DOG SHOW",
+      "photoIds": 26,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/stablemates",
+      "title": "STABLEMATES",
+      "photoIds": 21,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/designers-explorers",
+      "title": "DESIGNERS/EXPLORERS",
+      "photoIds": 16,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/take-a-walk-with-me",
+      "title": "TAKE A WALK WITH ME",
+      "photoIds": 15,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/born-this-way-baby",
+      "title": "BORN THIS WAY, BABY",
+      "photoIds": 10,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/lights",
+      "title": "LIGHTS",
+      "photoIds": 15,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/a-story-of-ice-and-fire",
+      "title": "A STORY OF ICE & FIRE",
+      "photoIds": 31,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/the-city-of-dublin",
+      "title": "THE CITY OF DUBLIN",
+      "photoIds": 25,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/fall",
+      "title": "FALL",
+      "photoIds": 13,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/the-ark",
+      "title": "THE ARK",
+      "photoIds": 31,
+      "missingSourcePhotoIds": []
+    },
+    {
+      "url": "https://www.melissakeizerphotography.com/big-world-little-dog",
+      "title": "BIG WORLD, LITTLE DOG",
+      "photoIds": 7,
+      "missingSourcePhotoIds": []
+    }
+  ]
+}
