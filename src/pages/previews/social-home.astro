@@ -1,0 +1,55 @@
+---
+// Editable, deterministic source for the exported homepage sharing image.
+import Fonts from '../../components/Fonts.astro';
+import Photo from '../../components/Photo.astro';
+import cameraSource from '../../../public/camera-pencil-traced.svg?raw';
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+if (!import.meta.env.DEV) return Astro.redirect(base, 302);
+const stillCamera = cameraSource.replace('fill="#262523"', 'fill="#b9ad91"');
+---
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>MK Fotos — Homepage Sharing Artwork</title>
+    <link rel="icon" href={`${base}favicon.ico`} />
+    <Fonts />
+  </head>
+  <body>
+    <main class="sharing-card">
+      <div class="grid" aria-hidden="true"></div>
+      <img class="logo" src={`${base}melissa-keizer-sticker.png`} alt="Photography by Melissa Keizer" />
+      <div class="camera" aria-hidden="true" set:html={stillCamera}></div>
+      <div class="copy">
+        <h1>I’m Melissa,<br />this is my<br />photo journal.</h1>
+        <p>A home for little adventures, wet noses,<br />beautiful places and moments worth remembering.</p>
+      </div>
+      <span class="domain">melissakeizer.photos</span>
+      <div class="photos">
+        <Photo class="photo photo--eckles" src={`${base}photos/eckles/000-photo.jpg`} alt="Eckles" sizes="230px" loading="eager" />
+        <Photo class="photo photo--orca" src={`${base}photos/00-photostream/orca-castle-park.jpg`} alt="Outlandish Orca" sizes="230px" loading="eager" />
+        <Photo class="photo photo--gaga" src={`${base}photos/born-this-way-baby/thumbnail-raised.jpg`} alt="Lady Gaga — Born This Way, Baby" sizes="230px" loading="eager" />
+      </div>
+    </main>
+  </body>
+</html>
+<style>
+  :global(*) { box-sizing: border-box; }
+  :global(html), :global(body) { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: #1d1c1b; }
+  .sharing-card { position: relative; width: 1200px; height: 630px; overflow: hidden; background: #1d1c1b; color: #e8e1d3; }
+  .grid { position: absolute; inset: 0 46px 0 64px; opacity: .23; background-image: repeating-linear-gradient(90deg, #aaa29344 0, #aaa29344 1px, transparent 1px, transparent 90.8px); }
+  .logo { position: absolute; left: 62px; top: 45px; width: 100px; height: 100px; border-radius: 50%; }
+  .copy { position: absolute; left: 64px; top: 198px; z-index: 2; }
+  h1 { margin: 0; font: 400 65px/1.06 'Cambon', Georgia, serif; letter-spacing: -.035em; }
+  p { margin: 28px 0 0; max-width: 440px; color: #aaa293; font: 400 20px/1.45 'Cambon', Georgia, serif; }
+  .domain { position: absolute; bottom: 43px; left: 65px; color: #f0d21d; font: 400 15px/1 'Fakt Pro', sans-serif; letter-spacing: .045em; }
+  .camera { position: absolute; left: -40px; top: 42px; width: 1000px; opacity: .58; mask-image: linear-gradient(90deg, transparent 44%, #000 65%); }
+  .camera :global(svg) { display: block; width: 100%; height: auto; }
+  .photos { position: absolute; top: -93px; right: 46px; width: 218px; display: flex; flex-direction: column; gap: 20px; }
+  .photos :global(.photo) { display: block; width: 218px; height: 273px; object-fit: cover; flex: none; }
+  .photos :global(.photo--eckles) { object-position: 48% center; }
+  .photos :global(.photo--orca) { object-position: center 64%; }
+  .photos :global(.photo--gaga) { object-position: center top; }
+</style>

@@ -2,7 +2,7 @@
 export const storyCardMedia: Record<string, { image: string; video?: string; position?: string; alt?: string }> = {
   'from-the-front-row': { image: 'photos/portfolio-live-music/web/thumbnail-katy.jpg', position: 'center top' },
   'born-this-way-baby': { image: 'photos/born-this-way-baby/thumbnail-raised.jpg' },
-  'aint-nothin-but-a-hound-dog': { image: 'photos/aint-nothin-but-a-hound-dog/001-40et0gy0ko61f4gbbtw3tkycumqb68zvslk6.jpg', video: 'videos/basset-hound.mp4', position: 'center bottom' },
+  'aint-nothin-but-a-hound-dog': { image: 'photos/aint-nothin-but-a-hound-dog/001-40et0gy0ko61f4gbbtw3tkycumqb68zvslk6.jpg', position: 'center bottom' },
   'dogs-of-dubrovnik': { image: 'photos/dogs-of-dubrovnik/007-b4fab7enpt90tr1jeyt0fxudqjjafoa3fzuz.jpg', position: '80% center' },
   'electric-pup': { image: 'photos/electric-pup/000-ph_fljeuilmkre5rlsa.jpg', position: '60% center' },
   'a-few-favourites': { image: 'photos/a-few-favourites/011-ph_vcisl1j3v9b0savf.jpg', position: 'center' },
@@ -11,7 +11,7 @@ export const storyCardMedia: Record<string, { image: string; video?: string; pos
   'the-ark': { image: 'photos/the-ark/010-gkm6qkslvglgcik9gju7v3p63ggsc3di56n7rr7x.jpg' },
   'dogease': { image: 'photos/dogease/000-ph_f9ux66noqfw3q7fw.jpg', position: '30% center' },
   'wild-ireland': { image: 'photos/wild-ireland/000-cover.jpg', video: 'videos/wolf-looking-toward-camera.mp4', position: 'center 20%', alt: 'A wolf looking towards the camera at Wild Ireland' },
-  'world-of-owls': { image: 'photos/world-of-owls/011-ph_lqfa3al2vfqnk4ie.jpg', video: 'videos/eagle-world-of-owls.mp4' },
+  'world-of-owls': { image: 'photos/world-of-owls/005-ph_ypai7gnedks4pqp3.jpg', alt: 'An owl perched on a branch at World of Owls' },
   'cat-colony-of-cala-bona': { image: 'videos/kitten-cala-bona-poster.jpg', video: 'videos/kitten-cala-bona.mp4', alt: 'A kitten in the cat colony at Cala Bona' },
   'a-story-of-ice-and-fire': { image: 'videos/storyboard-reflections-poster.jpg', video: 'videos/storyboard-reflections.mp4' },
   'dubrovnik-and-cavtat': { image: 'videos/dubrovnik-harbour-poster.jpg', video: 'videos/dubrovnik-harbour.mp4' },

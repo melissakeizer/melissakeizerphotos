@@ -3,8 +3,9 @@ import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 
-// Replace this one path with /social-home.jpg for a custom 1200 × 630 card.
-export const homepagePreview = '/photos/wild-ireland/000-cover.jpg';
+// Approved shared artwork: /previews/social-home-v2/ (v4 export), 1200 × 630.
+// Homepage, archives and PhotoStream use this; individual stories supply a cover.
+export const homepagePreview = '/social-home.jpg';
 export async function socialImage(source) {
   const relative = decodeURIComponent(source).replace(/^\//, '');
   const input = path.resolve('public', relative);

@@ -1,0 +1,60 @@
+---
+import Fonts from '../../components/Fonts.astro';
+import Photo from '../../components/Photo.astro';
+import cameraSource from '../../../public/camera-pencil-traced.svg?raw';
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+if (!import.meta.env.DEV) return Astro.redirect(base, 302);
+const stillCamera = cameraSource.replace('fill="#262523"', 'fill="#b9ad91"');
+---
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>MK Fotos — Sharing Artwork, Variation 2</title>
+    <link rel="icon" href={`${base}favicon.ico`} />
+    <Fonts />
+  </head>
+  <body>
+    <main class="sharing-card">
+      <div class="grid" aria-hidden="true"></div>
+      <img class="logo" src={`${base}melissa-keizer-sticker.png`} alt="Photography by Melissa Keizer" />
+      <div class="camera" aria-hidden="true" set:html={stillCamera}></div>
+      <div class="copy">
+        <h1><span>I’m Melissa, this is</span><br />my photo journal.</h1>
+        <p class="domain">melissakeizer.photos</p>
+      </div>
+      <div class="photos">
+        <div class="column column--orca">
+          <Photo class="photo photo--orca" src={`${base}photos/00-photostream/orca-castle-park.jpg`} alt="Outlandish Orca" sizes="280px" loading="eager" />
+        </div>
+        <div class="column column--stories">
+          <Photo class="photo photo--eckles" src={`${base}photos/eckles/000-photo.jpg`} alt="Eckles" sizes="280px" loading="eager" />
+          <Photo class="photo photo--gaga" src={`${base}photos/born-this-way-baby/thumbnail-raised.jpg`} alt="Lady Gaga — Born This Way, Baby" sizes="280px" loading="eager" />
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
+<style>
+  :global(*) { box-sizing: border-box; }
+  :global(html), :global(body) { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: #1d1c1b; }
+  .sharing-card { position: relative; width: 1200px; height: 630px; overflow: hidden; background: #1d1c1b; color: #e8e1d3; }
+  .grid { position: absolute; inset: 0 64px; opacity: .16; background-image: repeating-linear-gradient(90deg, #aaa29344 0, #aaa29344 1px, transparent 1px, transparent 90.8px); }
+  .logo { position: absolute; left: 62px; top: 52px; width: 100px; height: 100px; border-radius: 50%; }
+  .copy { position: absolute; left: 64px; top: 259px; z-index: 2; }
+  h1 { margin: 0; font: 400 46px/1.16 'Cambon', Georgia, serif; letter-spacing: -.035em; }
+  h1 span { white-space: nowrap; }
+  .domain { margin: 34px 0 0; color: #f0d21d; font: 400 16px/1 'Fakt Pro', sans-serif; letter-spacing: .045em; }
+  .camera { position: absolute; left: -100px; top: 90px; width: 900px; opacity: .27; mask-image: linear-gradient(90deg, transparent 44%, #000 65%); }
+  .camera :global(svg) { display: block; width: 100%; height: auto; }
+  .photos { position: absolute; inset: 0 64px 0 640px; display: grid; grid-template-columns: 1fr 1fr; gap: 44px; }
+  .column { min-width: 0; }
+  .column--orca { padding-top: 145px; }
+  .column--stories { display: flex; flex-direction: column; gap: 52px; transform: translateY(-74px); }
+  .photos :global(.photo) { display: block; width: 100%; object-fit: cover; flex: none; }
+  .photos :global(.photo--orca) { height: 339px; object-position: center; }
+  .photos :global(.photo--eckles) { height: 285px; object-position: 48% center; }
+  .photos :global(.photo--gaga) { height: 339px; object-position: center top; }
+</style>

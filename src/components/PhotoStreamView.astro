@@ -21,7 +21,7 @@ function photoUrl(path: string) {
 
 ---
 
-<Layout title={currentPage === 1 ? 'PhotoStream' : `PhotoStream — Page ${currentPage}`} description={`A stream of single photographs, passing encounters and camera notes by Melissa Keizer.${currentPage > 1 ? ` Page ${currentPage}.` : ''}`} image={photoUrl(`/photos/00-photostream/${pageNotes[0].image}`)} theme="dark">
+<Layout title={currentPage === 1 ? 'PhotoStream' : `PhotoStream — Page ${currentPage}`} description={`A stream of single photographs, passing encounters and camera notes by Melissa Keizer.${currentPage > 1 ? ` Page ${currentPage}.` : ''}`} theme="dark">
   <main class="field-notes-page photostream-page">
     <header class="field-notes-header">
       <div class="photostream-intro-copy">

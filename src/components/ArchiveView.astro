@@ -25,7 +25,7 @@ const pageUrl = (n: number) => n === 1 ? pageRoot : `${pageRoot}${n}/`;
       {sorted.map((story) => {
         const cover = thumbnailForStory(story.id, story.data.coverImage || story.data.photos[0]);
         const archiveCover = story.id === 'world-of-owls'
-          ? '/photos/world-of-owls/011-ph_lqfa3al2vfqnk4ie.jpg'
+          ? '/photos/world-of-owls/005-ph_ypai7gnedks4pqp3.jpg'
           : story.id === 'cat-colony-of-cala-bona'
             ? '/videos/kitten-cala-bona-poster.jpg'
           : story.id === 'a-story-of-ice-and-fire'
@@ -39,9 +39,7 @@ const pageUrl = (n: number) => n === 1 ? pageRoot : `${pageRoot}${n}/`;
           : cover;
         const archiveVideo = story.id === 'wild-ireland'
           ? 'videos/wolf-looking-toward-camera.mp4'
-          : story.id === 'world-of-owls'
-            ? 'videos/eagle-world-of-owls.mp4'
-            : story.id === 'cat-colony-of-cala-bona'
+          : story.id === 'cat-colony-of-cala-bona'
               ? 'videos/kitten-cala-bona.mp4'
             : story.id === 'a-story-of-ice-and-fire'
               ? 'videos/storyboard-reflections.mp4'
