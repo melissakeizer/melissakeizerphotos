@@ -2,6 +2,15 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { runInNewContext } from 'node:vm';
+import { toggleAnalyticsPreference } from '../src/lib/analytics-preference.mjs';
+test('allowing analytics clears the SDK opt-out key rather than saving a truthy zero', () => {
+  const values = new Map();
+  const storage = { getItem: key => values.get(key) ?? null, setItem: (key, value) => values.set(key, value), removeItem: key => values.delete(key) };
+  toggleAnalyticsPreference(storage);
+  assert.equal(storage.getItem('umami.disabled'), '1');
+  toggleAnalyticsPreference(storage);
+  assert.equal(storage.getItem('umami.disabled'), null);
+});
 const source = await readFile(new URL('../src/components/Analytics.astro', import.meta.url), 'utf8');
 const script = source.match(/<script is:inline define:vars=\{\{ id, src \}\}>([\s\S]*?)<\/script>/)[1];
 function setup({ host = 'melissakeizer.photos', disabled = false, dnt = false, gpc = false } = {}) {

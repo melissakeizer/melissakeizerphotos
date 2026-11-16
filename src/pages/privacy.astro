@@ -38,6 +38,7 @@ const analyticsEnabled = import.meta.env.PUBLIC_UMAMI_ENABLED === 'true' && Bool
   .privacy-page > :last-child { margin-bottom: 0; }
 </style>
 <script>
+  import { toggleAnalyticsPreference } from '../lib/analytics-preference.mjs';
   const button = document.querySelector<HTMLButtonElement>('#analytics-preference');
   const status = document.querySelector('#analytics-status');
   function render() {
@@ -48,7 +49,7 @@ const analyticsEnabled = import.meta.env.PUBLIC_UMAMI_ENABLED === 'true' && Bool
     } catch { if (status) status.textContent = 'Your browser blocks preference storage. Analytics stay off.'; }
   }
   button?.addEventListener('click', () => {
-    try { localStorage.setItem('umami.disabled', localStorage.getItem('umami.disabled') === '1' ? '0' : '1'); render(); } catch {}
+    try { toggleAnalyticsPreference(localStorage); render(); } catch {}
   });
   render();
 </script>

@@ -5,6 +5,8 @@ const enabled = import.meta.env.PROD && import.meta.env.PUBLIC_UMAMI_ENABLED ===
 ---
 {enabled && <script is:inline define:vars={{ id, src }}>
   (() => {
+    // Older versions saved "0" for permission; Umami treats any stored value as off.
+    try { if (localStorage.getItem('umami.disabled') === '0') localStorage.removeItem('umami.disabled'); } catch {}
     const excluded = () => {
       try { return localStorage.getItem('umami.disabled') === '1'; } catch { return true; }
     };
