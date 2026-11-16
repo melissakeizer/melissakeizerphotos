@@ -1,13 +1,23 @@
-# Legacy photography-domain redirects — prepared, not deployed
+# Legacy photography-domain redirects — preview deployed
 
 The source website remains on GitHub Pages. This small Cloudflare Worker answers only the **old** domain, plus its temporary `workers.dev` preview, with fixed 301 destinations. No origin hosting, photography copy or connection to Exposure is required.
 
 ## Current state
 
-- Free Cloudflare zone onboarding started by the owner on 16 November 2026; nameserver change has not been verified or authorised here.
-- `worker.mjs`, generated `redirect-map.mjs` and preview-only `wrangler.jsonc` are ready for account-side deployment.
-- No account IDs, credentials or custom-domain bindings are stored in this folder.
+- Free Cloudflare zone onboarding started by the owner on 16 November 2026. The zone is still Pending and public nameservers remain with the previous DNS provider; no registrar change has been made here.
+- `worker.mjs`, generated `redirect-map.mjs` and preview-only `wrangler.jsonc` are deployed to https://melissa-photography-redirects.melissakeizer.workers.dev. The old domain is not attached yet.
+- No account IDs, credentials or custom-domain bindings are checked into this folder.
 - The Pages workflow does not deploy these files. Nothing in this preparation changes DNS or cancels Exposure.
+
+## Preview verification — 16 November 2026
+
+Deployment version `4daeb7eb-7834-4c2f-98cc-efc75d5bf619`, upload 5.90KiB (1.64KiB gzip), reported startup 1ms. The new preview certificate became ready before the HTTPS checks; no certificate validation was bypassed.
+
+- All 53 mappings checked using GET and HEAD, plus trailing slash, archive/query, robots, unsupported-method and genuine 404 cases: **162/162 checks passed over HTTP and 162/162 over HTTPS**.
+- All **47 distinct new-site destination URLs** returned HTTP 200 directly over HTTPS.
+- Public nameservers remain the four previous Orderbox names. Direct queries to Cloudflare's assigned nameserver return the two existing root A addresses and the existing www CNAME, preserving the current origin for the initial delegation step. No parent DNSSEC DS record was found in the latest public preflight check.
+
+These are preview results, not evidence that the old domain redirects yet. After nameserver delegation and both Custom Domain bindings, repeat the live checks on the actual old hostnames before cancelling Exposure.
 
 ## Behaviour and checks
 
