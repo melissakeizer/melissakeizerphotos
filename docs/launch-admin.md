@@ -35,7 +35,7 @@ Each published story automatically gets a 1200 × 630 JPEG from its hero image. 
 
 ## Editorial checks
 
-- `From the Front Row` remains a local-preview draft, intentionally unpublished. Finish its story copy and explicitly publish when ready.
+- `From the Front Row` remains a local-preview draft, intentionally unpublished. Finish its story copy and explicitly publish when ready. `A Few Favourites` was intentionally retired on 16 November; retain source photography and omit it from the redirect request.
 - Existing personal stories were not rewritten. Review historic service/promotional copy and whether `hi@melissakeizer.com` remains the right public contact.
 - Existing `docs/photostream-content-todo.md` and `docs/photostream-content-review.md` list uncertain capture dates/ISO and provisional content. Do not infer dates from Finder's “last opened”.
 - Many older gallery photos have a story/section label rather than individual descriptive alt text. Accurate per-photo descriptions need editorial review; no species, identities or locations have been invented.

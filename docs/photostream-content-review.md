@@ -1,5 +1,7 @@
 # PhotoStream content review
 
+> Historical snapshot from 1 November 2026, retained for reference. It predates Melissa's later titles, captions, locations, EXIF, ordering and Q&A edits; do not use it as an outstanding-task list or overwrite current source content with it.
+
 Current live feed order · 1 November 2026. Dates and EXIF values are omitted here. “—” means that field is not currently shown. The order has been left for the arranger.
 
 ## Photos

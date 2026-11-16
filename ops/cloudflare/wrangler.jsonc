@@ -1,0 +1,11 @@
+{
+  "$schema": "https://unpkg.com/wrangler/config-schema.json",
+  "name": "melissa-photography-redirects",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-11-16",
+  "workers_dev": true,
+  "preview_urls": false,
+  "observability": { "enabled": false }
+  // Deliberately no account IDs or custom-domain routes yet.
+  // Initial deployment is a workers.dev test only; bind both old-domain hosts later.
+}

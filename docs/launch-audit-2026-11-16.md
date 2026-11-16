@@ -46,8 +46,8 @@ The original sprint baseline and limitations follow for comparison.
 
 See [launch setup](launch-admin.md) for Umami variables/privacy review, Search Console and homepage card replacement. See [Exposure migration](exposure-migration.md) and [candidate URL map](exposure-url-map.csv) before cancelling anything.
 
-- Export the complete authenticated Exposure inventory and media; the custom domain is now confirmed and the public archive audited. Public/local content is not proof of a complete account backup. Review A Few Favourites and saved legacy caption differences before cancellation.
-- Finish/review unpublished `From the Front Row` and `A Few Favourites`; neither has been silently published.
+- Later owner decision: no additional Exposure export is required; Melissa considers her local images/text sufficient. A Few Favourites is retired, and optional legacy-caption restoration is not a migration blocker. Proceed with the BigWetFish redirect handover and verify redirects before cancellation.
+- Finish/review unpublished `From the Front Row` when ready. A Few Favourites is intentionally retired; neither has been silently published.
 - Confirm the contact email, missing dates/ISO already recorded in the PhotoStream review notes and individual alt descriptions as time allows.
 - Retest work access around **2 December 2026**, after the authoritative RDAP registration reaches 30 days. Access is not guaranteed to be restored then.
 
