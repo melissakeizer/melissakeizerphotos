@@ -2,6 +2,7 @@
 export const storyCardMedia: Record<string, { image: string; video?: string; position?: string; alt?: string }> = {
   'from-the-front-row': { image: 'photos/portfolio-live-music/web/thumbnail-katy.jpg', position: 'center top' },
   'born-this-way-baby': { image: 'photos/born-this-way-baby/thumbnail-raised.jpg' },
+  'road-to-sligo': { image: 'photos/road-to-sligo/thumbnail-fox-in-grass.jpg', alt: 'A fox cub peering through tall grass' },
   'aint-nothin-but-a-hound-dog': { image: 'photos/aint-nothin-but-a-hound-dog/001-40et0gy0ko61f4gbbtw3tkycumqb68zvslk6.jpg', position: 'center bottom' },
   'dogs-of-dubrovnik': { image: 'photos/dogs-of-dubrovnik/007-b4fab7enpt90tr1jeyt0fxudqjjafoa3fzuz.jpg', position: '80% center' },
   'electric-pup': { image: 'photos/electric-pup/000-ph_fljeuilmkre5rlsa.jpg', position: '60% center' },
