@@ -38,7 +38,7 @@ export function pruneResponsiveOutput() {
       document.text = rewritten;
     }
     const text = documents.map(document => document.text).join('\n');
-    const generated = new Set([...text.matchAll(/\/((?:_media|_drawings)\/[a-f0-9-]+\.(?:jpg|svg))/g)].map(match => match[1]));
+    const generated = new Set([...text.matchAll(/\/((?:_media|_drawings|social)\/[a-f0-9-]+\.(?:jpg|svg))/g)].map(match => match[1]));
     for (const relative of generated) {
       const output = path.join(root, relative);
       await fs.mkdir(path.dirname(output), { recursive: true });

@@ -7,6 +7,7 @@ import { pathToFileURL } from 'node:url';
 import sharp from 'sharp';
 import { webPhoto, drawingLayer } from './web-media.mjs';
 import { pruneResponsiveOutput } from './prune-responsive-output.mjs';
+import { socialImage } from '../src/lib/social-image.mjs';
 
 test('web media preserves originals, orientation, responsive widths, deduplication and referenced-only output', async () => {
   const previous = process.cwd();
@@ -27,6 +28,7 @@ test('web media preserves originals, orientation, responsive widths, deduplicati
       assert.equal(metadata.width, variant.width);
       assert.equal(metadata.height, variant.width * 2);
       assert.equal(metadata.isProgressive, true);
+      assert.equal(metadata.exif, undefined, 'public photo variants strip private EXIF');
     }
     await assert.rejects(webPhoto('../escape.jpg'), /Invalid photo path/);
     await assert.rejects(webPhoto('photos/%2e%2e/%2e%2e/escape.jpg'), /Invalid photo path/);
@@ -42,7 +44,9 @@ test('web media preserves originals, orientation, responsive widths, deduplicati
     await fs.mkdir('dist/photos', { recursive: true });
     await fs.copyFile('public/photos/test.jpg', 'dist/photos/test.jpg');
     await fs.copyFile('public/photos/unused.jpg', 'dist/photos/unused.jpg');
-    await fs.writeFile('dist/index.html', `<img src="/${photo.variants[0].path}"><div data-src="/photos/test.jpg" style="background:url(&quot;/photos/test.jpg&quot;)"></div><svg><image href="/${layer}"/></svg>`);
+    // Render-time social images don't exist during Astro's public copy step.
+    const social = await socialImage('/photos/test.jpg');
+    await fs.writeFile('dist/index.html', `<meta property="og:image" content="https://melissakeizer.photos${social}"><img src="/${photo.variants[0].path}"><div data-src="/photos/test.jpg" style="background:url(&quot;/photos/test.jpg&quot;)"></div><svg><image href="/${layer}"/></svg>`);
     await pruneResponsiveOutput().hooks['astro:build:done']({ dir: pathToFileURL(root + '/dist/') });
     const html = await fs.readFile('dist/index.html', 'utf8');
     assert.ok(!html.includes('/photos/'));
@@ -50,6 +54,9 @@ test('web media preserves originals, orientation, responsive widths, deduplicati
     await fs.access('dist/' + photo.largest);
     await fs.access('dist/' + photo.variants[0].path);
     await fs.access('dist/' + layer);
+    const preview = await sharp('dist' + social).metadata();
+    assert.equal(preview.width, 1200); assert.equal(preview.height, 630);
+    assert.equal(preview.exif, undefined);
     await assert.rejects(fs.access('dist/photos/test.jpg'));
     await assert.rejects(fs.access('dist/photos/unused.jpg'));
     assert.deepEqual(await fs.readFile('public/photos/test.jpg'), original);
