@@ -12,6 +12,19 @@ The source website remains on GitHub Pages. This small Cloudflare Worker answers
 
 ## Live verification — 17 November 2026
 
+Claws Out update: version `fa1824e4-255b-4b6b-acba-c1ac113866bd`, upload
+5.88KiB (1.65KiB gzip), reported startup 2ms. Published after the new
+`/stories/claws-out/` page passed GitHub Pages deployment **44068745720**.
+The repeated 53-mapping suite passed **648/648 checks** through Cloudflare with
+normal hostname/TLS verification. An ordinary www request also returned a direct
+301 to the new Claws Out address. The new page, canonical, sitemap, archive link
+and old `.photos` compatibility page were checked live; browser navigation from
+that compatibility page reached the new address. All 21 gallery photographs and
+their order are unchanged. Other mappings, DNS settings and domain bindings are
+unchanged; previously noted local DNS-cache limitations still apply.
+
+Initial cutover verification:
+
 Deployment version `a78d13f7-d1b8-4f15-b000-9d24ab436a0b`, upload 5.90KiB (1.64KiB gzip), reported startup 1ms.
 
 - **53 mappings, 648/648 checks passed** across HTTP/HTTPS and www/apex: GET/HEAD, optional trailing slashes, archive queries, stripped query values, robots, unsupported methods and real unknown-page 404s.
