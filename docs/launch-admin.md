@@ -27,7 +27,11 @@ Sources checked 16 November 2026:
 
 ## Google Search Console
 
-Add a Domain property for `melissakeizer.photos` and complete Google's DNS TXT verification in your registrar account. No DNS has been changed. Alternatively, use a URL-prefix property and set `PUBLIC_GOOGLE_SITE_VERIFICATION` to the HTML verification token in the same GitHub Variables screen, then rebuild. Submit `https://melissakeizer.photos/sitemap.xml` after verification. Inspect homepage, one story, archive pagination and both PhotoStream pages. Search results/indexing are not guaranteed by metadata alone.
+Add a Domain property for `melissakeizer.photos` and complete Google's DNS TXT verification in its Porkbun DNS account. No Search Console verification record has been added by Codex. Alternatively, use a URL-prefix property and set `PUBLIC_GOOGLE_SITE_VERIFICATION` to the HTML verification token in the same GitHub Variables screen, then rebuild. Submit `https://melissakeizer.photos/sitemap.xml` after verification. Inspect homepage, one story, archive pagination and both PhotoStream pages. Search results/indexing are not guaranteed by metadata alone.
+
+## Legacy redirects — activated 17 November 2026
+
+BigWetFish updated the old domain's nameservers; registration/renewal stay there. Cloudflare now serves direct 301s for both old-domain variants. All 53 mappings passed 648 HTTP/HTTPS checks through Cloudflare and all 47 destination pages returned 200. See [live redirect configuration](../ops/cloudflare/README.md) for test scope and maintenance. Some DNS caches still returned the former apex addresses during verification: keep Exposure active while those update, then recheck important old links before cancelling it. Exposure's own subdomain remains outside our control. After verifying both domains in Search Console, review Google's Change of Address process for the owned-domain migration.
 
 ## Social preview replacement
 

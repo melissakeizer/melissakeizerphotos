@@ -60,7 +60,7 @@ npm run astro -- preferences disable devToolbar
 | `src/components/`, `src/styles/`, `src/pages/` | Shared components, styles and routes. |
 | `src/components/Analytics.astro` | Configurable Umami loader and navigation events. |
 | `public/social-home.jpg` | Shared homepage/archive/PhotoStream social artwork. Individual story cards are generated from their hero photographs. |
-| `ops/cloudflare/` | Separate, prepared legacy-domain redirect service. Not deployed by the GitHub Pages workflow. |
+| `ops/cloudflare/` | Live legacy-domain redirect service. Deployed separately from the GitHub Pages workflow. |
 
 Read [Adding a story or gallery](docs/ADDING-A-STORY.md) before creating content. Narrative stories use `type: "story"`; galleries use `type: "gallery"` and a gallery layout. Drafts remain unpublished until intentionally changed. Narrative section bodies use the project’s existing JSON format inside the Markdown file; use a similar existing story as the starting point.
 

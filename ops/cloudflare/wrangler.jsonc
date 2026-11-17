@@ -5,7 +5,9 @@
   "compatibility_date": "2026-11-16",
   "workers_dev": true,
   "preview_urls": false,
-  "observability": { "enabled": false }
-  // Deliberately no account IDs or custom-domain routes yet.
-  // Initial deployment is a workers.dev test only; bind both old-domain hosts later.
+  "observability": { "enabled": false },
+  "routes": [
+    { "pattern": "melissakeizerphotography.com", "custom_domain": true, "zone_name": "melissakeizerphotography.com" },
+    { "pattern": "www.melissakeizerphotography.com", "custom_domain": true, "zone_name": "melissakeizerphotography.com" }
+  ]
 }

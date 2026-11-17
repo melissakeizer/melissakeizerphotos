@@ -1,12 +1,12 @@
-# Exposure migration — preparation only, 16 November 2026
+# Exposure migration — redirects live, 17 November 2026
 
-No DNS, Exposure settings, plans or subscriptions have changed. No support contact is required by this plan.
+The owned legacy domain now redirects through Cloudflare. BigWetFish retains domain registration/renewal; GitHub Pages retains the new website. Exposure settings, plans and subscriptions have not been changed by Codex. No Exposure support contact is required.
 
 ## Selected implementation
 
-Cloudflare Free is now the chosen redirect platform. The Worker, preview-only configuration and account-side checklist are in [ops/cloudflare](../ops/cloudflare/README.md). Six dedicated regression tests cover all mapped URLs, host/scheme variants, archive queries, trailing slashes, unknown/retired pages and preview isolation. The temporary preview was deployed and verified on 16 November 2026: all 53 mappings passed 324 HTTP/HTTPS checks, and all 47 distinct new-site destinations returned 200. Nameserver delegation, both old-domain hostname bindings and live HTTPS/redirect verification remain pending. The Apache/provider handover below is retained as background, not the current installation route.
+Cloudflare Free is the live redirect platform. Configuration, verification detail and maintenance instructions are in [ops/cloudflare](../ops/cloudflare/README.md). The initial preview passed 324 HTTP/HTTPS checks on 16 November. On 17 November, after the owner approved replacement of the three Exposure DNS records, both old-domain hosts were connected and passed **648/648 checks for 53 mappings**, with valid HTTPS and direct 301 responses. The full suite used Cloudflare's authoritative address with hostname/certificate validation preserved; all 47 new-site destinations separately returned 200. Major public resolvers show Cloudflare, while one local resolver still cached old apex addresses. Allow that propagation to finish before cancelling Exposure. The Apache/provider handover below is historical background, not the current installation route.
 
-Owner decisions confirmed later on 16 November: Melissa considers her existing local images/text sufficient and declines any further Exposure export or backup. Extra exports and optional legacy-caption restoration are not migration blockers. **A Few Favourites is retired**; preserve its local source files and omit it from the redirect request. Unmapped URLs can return the host's normal 404 response. The next step is a polite support enquiry with the simplified owned-domain CSV; the longer [handover](bigwetfish-handover.md) and server example are optional internal references.
+Owner decisions confirmed on 16 November: Melissa considers her existing local images/text sufficient and declines further Exposure export or backup. Extra exports and optional legacy-caption restoration are not migration blockers. **A Few Favourites is retired**; preserve its local source files and omit its redirect. Unmapped URLs return real 404s. BigWetFish has completed the requested nameserver change; no A/CNAME or web-redirect work is required from it. Search Console migration steps and the owner's later Exposure cancellation remain separate tasks.
 
 ## Scope and evidence
 
@@ -18,7 +18,7 @@ Melissa confirmed that BigWetFish manages `melissakeizerphotography.com`. Preser
 
 The owned domain is the priority; Exposure links are best effort and must not block migration.
 
-Verified today:
+Historic pre-cutover audit — 16 November 2026 (the live results above supersede its DNS/redirect observations):
 
 - DNS: www CNAME `domains.exposure.co`; apex A `174.129.25.170`.
 - Browser navigation from the Exposure Finn URL reached the corresponding HTTPS www story. Its canonical names that custom-domain URL. This verifies forwarding, **not the redirect status code**.

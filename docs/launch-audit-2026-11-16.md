@@ -1,5 +1,7 @@
 # MK Fotos technical launch audit — 16 November 2026
 
+Update 17 November: owned-domain Cloudflare redirects are live; 53 mappings passed 648 checks and all 47 destinations returned 200. See [migration status](exposure-migration.md) for propagation limits and remaining owner steps. The original audit and 16 November notes below are retained as historical evidence. The photo-card hover transition was also restored and verified live in deployment `43968538555`.
+
 ## Follow-up status later on 16 November
 
 - Approved branded sharing artwork now serves homepage, Stories archives and PhotoStream; individual stories retain automatic hero previews. Static owl/hound thumbnails, Tea Party replacement and responsive spacing/labels are published.
