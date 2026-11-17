@@ -1,0 +1,16 @@
+---
+interface Props { selector: string; media?: string; }
+const { selector, media } = Astro.props;
+---
+
+<div class="lightbox" id="lightbox" data-photo-lightbox data-lightbox-selector={selector} data-lightbox-media={media} role="dialog" aria-modal="true" aria-hidden="true" aria-label="Photo viewer">
+  <button type="button" class="lightbox__close" id="lightbox-close" aria-label="Close">&times;</button>
+  <button type="button" class="lightbox__prev" id="lightbox-prev" aria-label="Previous photo">&#8249;</button>
+  <img class="lightbox__img" id="lightbox-img" alt="" decoding="async" />
+  <button type="button" class="lightbox__next" id="lightbox-next" aria-label="Next photo">&#8250;</button>
+</div>
+
+<script>
+  import { initPhotoLightbox } from '../lib/photo-lightbox.mjs';
+  document.querySelectorAll<HTMLElement>('[data-photo-lightbox]').forEach(initPhotoLightbox);
+</script>

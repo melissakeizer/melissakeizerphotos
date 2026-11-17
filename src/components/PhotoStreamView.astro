@@ -5,6 +5,7 @@ import DisplayHeading from './DisplayHeading.astro';
 import Heading from './Heading.astro';
 import CameraDrawing from './CameraDrawing.astro';
 import PhotoStreamPagination from './PhotoStreamPagination.astro';
+import PhotoLightbox from './PhotoLightbox.astro';
 import { getPhotoStreamPages } from '../lib/photo-stream-pages';
 import { photoStreamAnchor } from '../lib/photo-stream-links';
 
@@ -47,7 +48,7 @@ function photoUrl(path: string) {
             </aside>
           ))}
           <article id={photoStreamAnchor(note.image)} data-feed-row={rowsByImage.get(note.image)} class:list={['field-notes-entry', { 'field-notes-entry--landscape': landscapeNotes.has(note.image) }]}>
-            <figure>
+            <figure data-photostream-photo data-src={photoUrl(`/photos/00-photostream/${note.image}`)} data-lightbox-label={`View ${note.title} larger`}>
               <Photo src={photoUrl(`/photos/00-photostream/${note.image}`)} alt={note.title} sizes={landscapeNotes.has(note.image) ? '(max-width: 900px) 94vw, 62vw' : '(max-width: 600px) 94vw, (max-width: 900px) 46vw, 30vw'} width={dimensions.get(note.image)?.width} height={dimensions.get(note.image)?.height} loading={index < 3 ? 'eager' : 'lazy'} decoding="async" />
             </figure>
             <div class="field-notes-entry__details">
@@ -70,10 +71,13 @@ function photoUrl(path: string) {
 
     <PhotoStreamPagination currentPage={currentPage} totalPages={totalPages} />
   </main>
+  <PhotoLightbox selector="[data-photostream-photo]" media="(min-width: 601px)" />
   {import.meta.env.DEV && <div class="story-editor"><a class="story-editor__toggle" href={`${base}photostream-arranger/`}>Arrange this feed ↗</a></div>}
 </Layout>
 
 <style>
+  [data-photostream-photo][role="button"] { cursor: zoom-in; }
+  [data-photostream-photo][role="button"]:focus-visible { outline: 2px solid var(--color-yellow); outline-offset: 5px; }
   /* Captions size to their content in the feed; the old side-by-side layout
      reserved 20rem here at intermediate widths. */
   .photostream-page .field-notes-entry__details { min-height: 0; }

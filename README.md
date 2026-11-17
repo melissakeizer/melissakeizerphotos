@@ -79,6 +79,12 @@ Open **http://127.0.0.1:4323/** for production preview. Local editing tools are 
 
 The media pipeline generates responsive web copies, removes unnecessary source/cache files from `dist` only, and preserves aspect ratios/orientation. It checks images, videos, internal links and metadata. The project enforces a **750MB** deployment budget to leave room below GitHub Pages’ 1GB limit. See [media delivery](docs/media-delivery.md).
 
+Stories and PhotoStream share the same photo lightbox, with previous/next, arrow
+keys, Escape, and focus returned to the selected photo when closed. PhotoStream
+enables it only above 600px, where its feed uses columns; at 600px and below the
+full-width photos remain ordinary images. Resizing into the mobile layout closes
+an open PhotoStream lightbox. Story lightboxes remain available at every width.
+
 Do not manually edit `dist`, `public/_media`, `public/_drawings`, `public/_responsive` or `public/social`: they are generated output/caches. Replacing a source photograph or social image changes its generated cache identity automatically.
 
 ## Publish changes
