@@ -1,11 +1,19 @@
-.photo-loading { background: linear-gradient(100deg, var(--color-border), var(--color-bg), var(--color-border)); background-size: 200% 100%; animation: photo-shimmer 2.4s ease-in-out infinite; }
+.project-card__image[data-video-state="pending"] { background-image: linear-gradient(100deg, var(--color-border), var(--color-bg), var(--color-border)); background-size: 200% 100%; }
+.photo-loading,
+html.video-autoplay-enabled .project-card__image[data-video-state="pending"],
+.project-card__image[data-video-state="revealing"][data-video-underlay="gradient"] { background: linear-gradient(100deg, var(--color-border), var(--color-bg), var(--color-border)); background-size: 200% 100%; animation: photo-shimmer 2.4s ease-in-out infinite; }
 img[data-photo] { transition: opacity .55s ease; }
 /* Loading fades and card zooms share the transition list, so neither replaces the other. */
 .project-card__image img[data-photo] { transition: transform .4s ease, opacity .55s ease; }
 .field-note-card img[data-photo] { display: block; height: auto; }
 img[data-photo].photo-pending { opacity: 0; }
 @keyframes photo-shimmer { 0%, 100% { background-position: 100% 0; } 50% { background-position: 0 0; } }
-@media (prefers-reduced-motion: reduce) { .photo-loading { animation: none; } img[data-photo], .project-card__image img[data-photo] { transition: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .photo-loading,
+  html.video-autoplay-enabled .project-card__image[data-video-state="pending"],
+  .project-card__image[data-video-state="revealing"][data-video-underlay="gradient"] { animation: none; }
+  img[data-photo], .project-card__image img[data-photo] { transition: none; }
+}
 
 /* A real image is the reliable default. Fixed backgrounds are desktop enhancement. */
 .story-separator--parallax { height: auto; background-image: none; background-attachment: scroll; }

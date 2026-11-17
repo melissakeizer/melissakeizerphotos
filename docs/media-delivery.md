@@ -26,9 +26,29 @@ Artwork layers are external SVG images cached across pages, instead of several
 megabytes of paths inlined repeatedly into every HTML document. Both SVG `href`
 and legacy `xlink:href` are supplied for older Safari.
 
-Videos currently used on the site are already modest-resolution, fast-start
-H.264 MP4s. They are preserved without another lossy transcode. Unused video
-sources remain in the repository but are not deployed.
+Video cards use fast-start H.264 MP4s. The wolf has a separate web derivative,
+`wolf-looking-toward-camera-web.mp4`: 2,090,300 bytes instead of 4,901,605
+(57% smaller), with the same 720 × 1280 dimensions, 24 fps and four-second
+sequence. Its unused audio track is omitted. The original remains unchanged;
+unreferenced originals are excluded from deployment. The derivative was checked
+against original frames (SSIM 0.986 across the sequence) and at card size.
+Other video sources are preserved without another transcode.
+
+The wolf derivative can be regenerated with FFmpeg (not a build dependency):
+
+```sh
+ffmpeg -i public/videos/wolf-looking-toward-camera.mp4 -map 0:v:0 -an \
+  -c:v libx264 -preset slow -crf 23 -pix_fmt yuv420p -movflags +faststart \
+  -map_metadata -1 public/videos/wolf-looking-toward-camera-web.mp4
+```
+
+Cards give autoplay one second to provide an actual decoded frame. During that
+time the image-loading gradient remains visible. If playback is slow or blocked,
+the photograph fades in; a later video frame fades over it for 550ms. The
+underlying photograph stays visible until the video is opaque. Looping,
+buffering and scrolling do not replay this entrance. Reduced motion uses the
+static photograph. If JavaScript arrives late, an already-visible photograph
+stays in place instead of being hidden again.
 
 ## Verification
 
@@ -58,3 +78,21 @@ New original files can be added normally. Only photographs actually referenced
 by published pages are deployed; draft-only and waiting-area sources are not.
 No separate optimization step or manual compression is required when adding a
 photograph.
+
+## Checking a slow first visit
+
+In Brave/Chrome on the Mac, open Developer Tools → Network, enable **Disable
+cache**, choose **Slow 4G** or **3G** from the throttling menu, then reload with
+Developer Tools open. Enable the Network screenshot capture to inspect the
+loading sequence frame by frame. Restore **No throttling** afterwards. This
+simulates traffic in that desktop browser, not iPhone Safari or its autoplay and
+power-saving policies.
+
+The 17 November video change was checked with normal cold loads, 3.5-second
+video/script delays, a shared 200KiB/s connection with 300ms response latency,
+and failed video responses. These were local production-build tests in a
+desktop browser at desktop/mobile viewport sizes, not physical-device tests.
+The controller regression suite also checks blocked playback, reduced motion,
+offscreen pause, loops, stale callbacks and failures during a fade.
+
+Reference: https://developer.chrome.com/docs/devtools/network/reference/

@@ -38,15 +38,17 @@ const videoPosition = media?.position ?? Astro.props.videoPosition;
 </article>
 
 <script>
+  import '../scripts/photo-loading';
   import { createCardVideo } from '../lib/card-video.mjs';
   clearTimeout((window as Window & { cardVideoFallback?: number }).cardVideoFallback);
   const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const videoFirst = document.documentElement.classList.contains('video-autoplay-enabled');
   const controllers = new Map<HTMLVideoElement, ReturnType<typeof createCardVideo>>();
   const observer = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
     entries.forEach(entry => controllers.get(entry.target as HTMLVideoElement)?.setVisible(entry.isIntersecting));
   }, { rootMargin: '100px' }) : undefined;
   document.querySelectorAll<HTMLVideoElement>('.project-card__video').forEach(video => {
-    const controller = createCardVideo(video, { reducedMotion: () => motion.matches, pageVisible: () => !document.hidden });
+    const controller = createCardVideo(video, { videoFirst, reducedMotion: () => motion.matches, pageVisible: () => !document.hidden });
     controllers.set(video, controller);
     if (observer) observer.observe(video);
     else controller.setVisible(true);
@@ -66,10 +68,12 @@ const videoPosition = media?.position ?? Astro.props.videoPosition;
   .project-card a:focus-visible .project-card__type { border-top-color: var(--color-text); }
   /* Video layers round fractional card edges independently during compositing.
      Bleed one pixel behind the clip, so sibling hover repaints expose no seam. */
-  .project-card__image[data-video-state] { background: var(--color-bg); }
-  .project-card__image video { display: block; inset: -1px; width: calc(100% + 2px); height: calc(100% + 2px); opacity: 0; transition: transform .4s ease; }
+  .project-card__image[data-video-state] { background-color: var(--color-bg); }
+  .project-card__image video { display: block; inset: -1px; width: calc(100% + 2px); height: calc(100% + 2px); opacity: 0; transition: transform .4s ease, opacity .55s ease; }
   :global(html.video-autoplay-enabled) .project-card__image[data-video-state="pending"] > img { opacity: 0; }
+  .project-card__image[data-video-state="revealing"][data-video-underlay="gradient"] > img { opacity: 0; }
   .project-card__image[data-video-state="playing"] > img { visibility: hidden; }
+  .project-card__image[data-video-state="revealing"] video,
   .project-card__image[data-video-state="playing"] video { opacity: 1; }
   .project-card a:hover :is(img, video),
   .project-card a:focus-visible :is(img, video) { transform: scale(1.02); }
