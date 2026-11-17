@@ -15,7 +15,6 @@ RewriteRule ^categories/travel/?$ https://melissakeizer.photos/categories/advent
 RewriteRule ^categories/(animals|adventures|pet-sessions)/?$ https://melissakeizer.photos/categories/$1/ [R=301,L,QSD]
 RewriteRule ^site/contact/?$ https://melissakeizer.photos/contact/ [R=301,L,QSD]
 # Story rules below are limited to public legacy stories also published locally.
-RewriteRule ^746862776d2576268afc65758bbab369/?$ https://melissakeizer.photos/stories/746862776d2576268afc65758bbab369/ [R=301,L,QSD]
 RewriteRule ^a-story-of-ice-and-fire/?$ https://melissakeizer.photos/stories/a-story-of-ice-and-fire/ [R=301,L,QSD]
 RewriteRule ^aint-nothin-but-a-hound-dog/?$ https://melissakeizer.photos/stories/aint-nothin-but-a-hound-dog/ [R=301,L,QSD]
 RewriteRule ^an-afternoon-with-angus/?$ https://melissakeizer.photos/stories/an-afternoon-with-angus/ [R=301,L,QSD]
@@ -28,6 +27,7 @@ RewriteRule ^bring-your-dog-to-work-day/?$ https://melissakeizer.photos/stories/
 RewriteRule ^buffy-tess/?$ https://melissakeizer.photos/stories/buffy-tess/ [R=301,L,QSD]
 RewriteRule ^candy-basil/?$ https://melissakeizer.photos/stories/candy-basil/ [R=301,L,QSD]
 RewriteRule ^cat-colony-of-cala-bona/?$ https://melissakeizer.photos/stories/cat-colony-of-cala-bona/ [R=301,L,QSD]
+RewriteRule ^746862776d2576268afc65758bbab369/?$ https://melissakeizer.photos/stories/claws-out/ [R=301,L,QSD]
 RewriteRule ^creatures/?$ https://melissakeizer.photos/stories/creatures/ [R=301,L,QSD]
 RewriteRule ^designers-explorers/?$ https://melissakeizer.photos/stories/designers-explorers/ [R=301,L,QSD]
 RewriteRule ^dogease/?$ https://melissakeizer.photos/stories/dogease/ [R=301,L,QSD]

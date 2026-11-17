@@ -62,6 +62,16 @@ This records the staged cutover. Propagation checks and the owner's later Exposu
 
 ## Updating this service
 
+Claws Out's destination is now `/stories/claws-out/`. Its original Exposure path
+`/746862776d2576268afc65758bbab369` remains the source key, so legacy links go
+directly to the readable address. `prepare-migration.mjs` explicitly preserves
+that original slug when regenerating the map. The separate compatibility page
+on GitHub Pages at `/stories/746862776d2576268afc65758bbab369/` uses Astro's
+zero-delay HTML refresh and canonical link. GitHub Pages serves that HTML with
+HTTP 200; it is not a server-side 301. Google documents zero-delay refresh as a
+[permanent redirect signal](https://developers.google.com/search/docs/crawling-indexing/301-redirects).
+The old owned domain continues to use real HTTP 301 responses from this Worker.
+
 After changing the source mapping, regenerate it from the repository root and run the tests above. Then, using the authorised official Wrangler CLI, run `wrangler deploy` from `ops/cloudflare/`. This updates the **live** redirect service; pushing to GitHub alone does not. Use a different Worker name and a preview-only configuration for isolated experiments. Do not manually replace the managed Worker DNS records or copy the currently returned Cloudflare IP addresses into DNS.
 
 ## Plan limits and sources

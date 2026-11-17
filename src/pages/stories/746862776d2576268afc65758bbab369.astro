@@ -1,0 +1,6 @@
+---
+// GitHub Pages serves Astro's immediate HTML redirect with a canonical target.
+// Keep this address for existing bookmarks and shares; new links use claws-out.
+const base = (import.meta.env.BASE_URL as string).replace(/\/?$/, '/');
+return Astro.redirect(`${base}stories/claws-out/`, 301);
+---

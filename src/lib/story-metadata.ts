@@ -9,7 +9,7 @@ export interface StoryMetadata {
 export const storyMetadata: Record<string, StoryMetadata> = {
   'barcelona': { thumbnailImage: '/photos/barcelona/web/barcelona-city-edit2.jpg' },
   'wild-ireland': { categories: ['animals'], subtitle: 'Wild Ireland, County Donegal', thumbnailImage: '/photos/wild-ireland/000-cover.jpg' },
-  '746862776d2576268afc65758bbab369': { categories: ['animals'], subtitle: 'A closer look at the characters of a local cat show' },
+  'claws-out': { categories: ['animals'], subtitle: 'A closer look at the characters of a local cat show' },
   'a-few-favourites': { categories: ['animals'], subtitle: 'A portfolio of some of my favourite images' },
   'a-story-of-ice-and-fire': { categories: ['adventures'], subtitle: 'A Game of Thrones themed adventure' },
   'aint-nothin-but-a-hound-dog': { categories: ['pet sessions'], subtitle: 'Elvis the young Basset Hound & his family' },

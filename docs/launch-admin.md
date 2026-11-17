@@ -12,7 +12,7 @@ PUBLIC_UMAMI_SCRIPT_URL = https://cloud.umami.is/script.js
 PUBLIC_UMAMI_ENABLED = true
 ```
 
-These repository variables are configured and deployed. Browser inspection confirmed the live script loads without console errors; dashboard ingestion still needs Melissa's account-side check. The website ID is public, not an API credential. Never paste an API key into these variables. To pause later, set ENABLED to false and rebuild.
+These repository variables are configured and deployed. Browser inspection confirmed the live script loads without console errors. On 17 November Melissa confirmed Umami is set up; account-side setup is complete by owner confirmation. The website ID is public, not an API credential. Never paste an API key into these variables. To pause later, set ENABLED to false and rebuild.
 
 Page views provide sources, popular stories and device/browser breakdown. Events: `see_all_stories`, `browse_photostream`, `homepage_photostream_photo`, `related_story`, `outbound_social`. Only public route/anchor or social hostname is attached. No identify calls, session replay, heatmaps, forms, query strings or full referrer paths. Local previews and other domains never track. Do Not Track, Global Privacy Control and browser opt-out are honoured. Privacy link is in the footer.
 
@@ -28,6 +28,22 @@ Sources checked 16 November 2026:
 ## Google Search Console
 
 Add a Domain property for `melissakeizer.photos` and complete Google's DNS TXT verification in its Porkbun DNS account. No Search Console verification record has been added by Codex. Alternatively, use a URL-prefix property and set `PUBLIC_GOOGLE_SITE_VERIFICATION` to the HTML verification token in the same GitHub Variables screen, then rebuild. Submit `https://melissakeizer.photos/sitemap.xml` after verification. Inspect homepage, one story, archive pagination and both PhotoStream pages. Search results/indexing are not guaranteed by metadata alone.
+
+On 17 November Melissa reported completing the independent PageSpeed, Search
+Console, LinkedIn preview, Rich Results and sitemap checks. Do not repeat account
+setup unnecessarily. To confirm Search Console's exact state, select the correct
+property, check **Settings → Ownership verification**, then **Sitemaps** for
+`sitemap.xml` with **Success**. **URL inspection** reports whether an individual
+URL is on Google; ownership verification and a readable sitemap do not themselves
+prove indexing. See [Google's settings guide](https://support.google.com/webmasters/answer/7687465)
+and [URL inspection guide](https://support.google.com/webmasters/answer/9012289/).
+
+Melissa's screenshots subsequently confirmed the homepage is indexed. PhotoStream
+was **Discovered – currently not indexed**, with no last crawl. Live checks found
+HTTP 200, an `index, follow` directive, the correct self-canonical, an allowing
+robots.txt and a sitemap entry. That status is pending Google's first crawl, not
+evidence of a robots block. Test Live URL and request indexing once if available;
+indexing timing and inclusion remain Google's decision.
 
 ## Legacy redirects — activated 17 November 2026
 

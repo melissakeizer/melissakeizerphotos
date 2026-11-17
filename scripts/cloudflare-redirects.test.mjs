@@ -31,6 +31,14 @@ test('trailing slashes and HEAD requests preserve the mapped destination', async
     }
   }
 });
+test('the original Claws Out URL goes directly to its readable new address', () => {
+  const oldPath = '/746862776d2576268afc65758bbab369';
+  for (const host of ['melissakeizerphotography.com', 'www.melissakeizerphotography.com']) {
+    const response = handleRequest(new Request(`https://${host}${oldPath}`));
+    assert.equal(response.status, 301);
+    assert.equal(response.headers.get('Location'), 'https://melissakeizer.photos/stories/claws-out/');
+  }
+});
 test('archive page queries take precedence and all private query values are dropped', () => {
   const response = handleRequest(new Request('https://melissakeizerphotography.com/?token=private&page=2'));
   assert.equal(response.headers.get('Location'), 'https://melissakeizer.photos/posts/');

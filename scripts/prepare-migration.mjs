@@ -3,6 +3,8 @@ const inventory = JSON.parse(await fs.readFile('docs/exposure-public-inventory.j
 const observed = new Map(inventory.stories.map(story => [new URL(story.url).pathname.slice(1), story]));
 // Owner decision, 16 November 2026: keep source photography but retire this gallery.
 const retiredSlugs = new Set(['a-few-favourites']);
+// Public story names can improve without changing their original Exposure URLs.
+const legacySlugs = { 'claws-out': '746862776d2576268afc65758bbab369' };
 const rows = ['custom_domain_url,exposure_subdomain_url,new_url,legacy_listing,new_site_state,redirect_status,legacy_photo_ids'];
 // A concise handover for a human technician; the ticket requests all host/scheme variants.
 const providerRows = [['old_url', 'new_url']];
@@ -38,16 +40,17 @@ for (const file of (await fs.readdir('src/content/stories')).sort()) {
   if (!file.endsWith('.md')) continue;
   const text = await fs.readFile(`src/content/stories/${file}`, 'utf8');
   const slug = file.slice(0, -3);
+  const legacySlug = legacySlugs[slug] ?? slug;
   const draft = /^draft:\s*true\s*$/m.test(text);
-  const old = observed.get(slug);
+  const old = observed.get(legacySlug);
   const retired = retiredSlugs.has(slug);
   const status = retired ? 'RETIRED — omit from redirect request' : draft ? 'HOLD — unpublished destination' : old ? 'candidate — hosting and cutover review required' : 'HOLD — not seen in public legacy archive';
-  rows.push(`https://www.melissakeizerphotography.com/${slug},https://melissakeizer.exposure.co/${slug},${retired ? '' : `https://melissakeizer.photos/stories/${slug}/`},${old ? 'observed 2026-11-16' : 'not observed'},${retired ? 'retired' : draft ? 'draft' : 'published'},${status},${old?.photoIds ?? ''}`);
+  rows.push(`https://www.melissakeizerphotography.com/${legacySlug},https://melissakeizer.exposure.co/${legacySlug},${retired ? '' : `https://melissakeizer.photos/stories/${slug}/`},${old ? 'observed 2026-11-16' : 'not observed'},${retired ? 'retired' : draft ? 'draft' : 'published'},${status},${old?.photoIds ?? ''}`);
   if (old && !draft && !retired) {
     await fs.access(`dist/stories/${slug}/index.html`);
-    const escaped = slug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const escaped = legacySlug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     redirects.push(`RewriteRule ^${escaped}/?$ https://melissakeizer.photos/stories/${slug}/ [R=301,L,QSD]`);
-    providerMapping(`/${slug}`, `https://melissakeizer.photos/stories/${slug}/`);
+    providerMapping(`/${legacySlug}`, `https://melissakeizer.photos/stories/${slug}/`);
     ready++;
   }
 }
